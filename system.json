@@ -118,8 +118,9 @@
   "secondaryTokenAttribute": "blood",
   "socket": true,
   "url": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public",
-  "manifest": "https://raw.githubusercontent.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/main/system.json",
-  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/archive/refs/heads/main.zip",
+  "manifest": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json",
+  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/download/v1.0.0/noctis.zip",
   "license": "LICENSE.txt",
-  "readme": "README.md"
+  "readme": "README.md",
+  "bugs": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/issues"
 }
