@@ -1,0 +1,48 @@
+<aside class="noctis-context" {{#if sel.itemId}}data-item-id="{{sel.itemId}}"{{/if}}>
+  <header class="ctx-head">
+    {{#if sel.img}}<span class="ctx-medal"><img src="{{sel.img}}" alt=""></span>{{else}}<span class="ctx-medal letter">{{sel.initial}}</span>{{/if}}
+    <div class="ctx-title">
+      <h2>{{sel.title}}</h2>
+      {{#if sel.subtitle}}<span class="ctx-sub">{{sel.subtitle}}</span>{{/if}}
+    </div>
+  </header>
+
+  <div class="ctx-body">
+    {{#if sel.dots}}<div class="ctx-dots">{{sel.dots}}<span class="empty">{{sel.dotsEmpty}}</span></div>{{/if}}
+    {{#if sel.desc}}<p class="ctx-desc">{{sel.desc}}</p>{{/if}}
+    {{#if sel.html}}<div class="ctx-html">{{{sel.html}}}</div>{{/if}}
+    {{#if sel.system}}<div class="ctx-system"><b>Système</b><p>{{sel.system}}</p></div>{{/if}}
+
+    {{#if sel.levels.length}}
+      <ul class="ctx-levels">
+        {{#each sel.levels}}<li class="{{#if current}}current{{/if}}"><b>{{dots}}</b> {{#if name}}<strong>{{name}}</strong> {{/if}}{{text}}</li>{{/each}}
+      </ul>
+    {{/if}}
+
+    {{#if sel.powers.length}}
+      <ul class="ctx-powers">
+        {{#each sel.powers}}<li class="{{#if unlocked}}unlocked{{/if}}"><b>{{dots}}</b> {{name}}</li>{{/each}}
+      </ul>
+    {{/if}}
+
+    {{#if sel.facts.length}}
+      <dl class="ctx-facts">
+        {{#each sel.facts}}<dt>{{label}}</dt><dd>{{value}}</dd>{{/each}}
+      </dl>
+    {{/if}}
+
+    {{#if sel.hint}}<p class="ctx-hint">{{sel.hint}}</p>{{/if}}
+  </div>
+
+  {{#if sel.buttons.length}}
+  <footer class="ctx-actions">
+    {{#each sel.buttons}}
+      {{#if path}}
+        <span class="ctx-btn-wrap" data-path="{{path}}" data-value="{{value}}"><button type="button" class="{{cls}}" data-action="setDots" data-dot="{{dot}}">{{#if icon}}<i class="{{icon}}"></i> {{/if}}{{label}}</button></span>
+      {{else}}
+        <button type="button" class="{{cls}}" data-action="{{action}}" {{#if ref}}data-ref="{{ref}}"{{/if}} {{#if idx}}data-idx="{{idx}}"{{/if}} {{#if kind}}data-kind="{{kind}}"{{/if}}>{{#if icon}}<i class="{{icon}}"></i> {{/if}}{{label}}</button>
+      {{/if}}
+    {{/each}}
+  </footer>
+  {{/if}}
+</aside>

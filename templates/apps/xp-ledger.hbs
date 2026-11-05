@@ -1,0 +1,118 @@
+<div class="ledger">
+  <nav class="dash-tabs">
+    <a class="{{#if isXp}}active{{/if}}" data-action="setTab" data-tab="xp"><i class="fa-solid fa-scroll"></i> Expérience</a>
+    <a class="{{#if isBlood}}active{{/if}}" data-action="setTab" data-tab="blood"><i class="fa-solid fa-droplet"></i> Sang</a>
+  </nav>
+{{#if isXp}}
+  <section class="ledger-award">
+    <h2 class="noctis-section"><span>Attribuer de l'expérience</span></h2>
+    <div class="award-row">
+      <label><span>Montant pour chacun</span><input type="number" name="award.amount" value="3" min="0" max="50"></label>
+      <label class="grow"><span>Motif</span><input type="text" name="award.label" placeholder="ex. Séance 12 — la chute de Brno"></label>
+      <label class="check"><input type="checkbox" name="award.whisper" checked> Prévenir chaque joueur (message privé)</label>
+      <button type="button" data-action="award" class="award-btn"><i class="fa-solid fa-gift"></i> Attribuer</button>
+    </div>
+    <p class="hint">Cochez les personnages concernés ; la colonne « Bonus » ajoute ou retire des points à un seul personnage (roleplay, héroïsme…).</p>
+  </section>
+
+  {{#unless flagged}}<p class="ledger-warn"><i class="fa-solid fa-flag"></i> Aucun personnage n'est marqué « PJ » : la liste montre les acteurs qui ont un joueur. Cliquez sur le bouton <b>PJ</b> en haut de chaque fiche pour fixer la liste.</p>{{/unless}}
+
+  <div class="ledger-table-wrap">
+    <table class="ledger-table">
+      <thead><tr>
+        <th><a data-action="toggleAll" data-tooltip="Tout cocher / décocher"><i class="fa-solid fa-check-double"></i></a></th>
+        <th>Personnage</th><th class="num">Gagné</th><th class="num">Dépensé</th><th class="num">Dispo.</th><th class="bar-col">Répartition</th><th class="num">Bonus</th>
+      </tr></thead>
+      <tbody>
+        {{#each pcs}}
+          <tr data-actor-id="{{id}}">
+            <td><input type="checkbox" class="pc-check" checked></td>
+            <td class="who">
+              <a data-action="openSheet" data-tooltip="Ouvrir la fiche"><img src="{{img}}" alt=""></a>
+              <span class="who-text"><b>{{name}}</b><em>{{player}}{{#if online}} · <i class="fa-solid fa-circle online" data-tooltip="Connecté"></i>{{/if}}</em><small>Dernier gain : {{lastGain}}</small>
+              {{#each alerts}}<span class="alert"><i class="fa-solid fa-triangle-exclamation"></i> {{this}}</span>{{/each}}</span>
+            </td>
+            <td class="num">{{gained}}</td>
+            <td class="num">{{spent}}</td>
+            <td class="num avail {{#if (noctisGt 0 available)}}neg{{/if}}">{{available}}</td>
+            <td class="bar-col"><div class="xp-bar">{{#each segments}}<span class="seg {{cls}}" style="width: {{pct}}%" data-tooltip="{{tip}}"></span>{{/each}}</div></td>
+            <td class="num"><input type="number" class="pc-bonus" value="0" min="-20" max="20"></td>
+          </tr>
+        {{else}}
+          <tr><td colspan="7" class="empty">Aucun personnage joueur trouvé.</td></tr>
+        {{/each}}
+      </tbody>
+      {{#if hasPcs}}
+      <tfoot><tr><td></td><td>Total de la coterie</td><td class="num">{{totals.gained}}</td><td class="num">{{totals.spent}}</td><td class="num">{{totals.available}}</td><td colspan="2"></td></tr></tfoot>
+      {{/if}}
+    </table>
+    <div class="ledger-legend">
+      {{#each families}}<span><i class="sw {{key}}"></i> {{label}}</span>{{/each}}
+      <span><i class="sw avail"></i> Disponible</span>
+    </div>
+  </div>
+
+  <section class="ledger-history">
+    <h2 class="noctis-section"><span>Distributions</span></h2>
+    {{#each history}}
+      <div class="batch">
+        <span class="b-date">{{date}}</span>
+        <span class="b-label"><b>{{label}}</b><small>{{summary}}</small></span>
+        <a class="b-undo" data-action="undoBatch" data-batch="{{id}}" data-tooltip="Retirer cette distribution des fiches"><i class="fa-solid fa-rotate-left"></i> Annuler</a>
+      </div>
+    {{else}}
+      <p class="empty">Aucune distribution pour l'instant.</p>
+    {{/each}}
+  </section>
+{{/if}}
+
+{{#if isBlood}}
+  <section class="ledger-award blood-award">
+    <h2 class="noctis-section"><span>Donner ou retirer du sang</span></h2>
+    <div class="award-row">
+      <label><span>Points de sang</span><input type="number" name="blood.amount" value="2" min="0" max="50"></label>
+      <label class="grow"><span>Motif</span><input type="text" name="blood.reason" placeholder="ex. Chasse au port, calice du troupeau, festin du Prince…"></label>
+      <label class="check"><input type="checkbox" name="blood.whisper" checked> Prévenir chaque joueur (message privé)</label>
+    </div>
+    <div class="award-row blood-buttons">
+      <button type="button" data-action="bloodGive" data-mode="add" class="award-btn"><i class="fa-solid fa-droplet"></i> Ajouter aux cochés</button>
+      <button type="button" data-action="bloodGive" data-mode="remove"><i class="fa-solid fa-droplet-slash"></i> Retirer aux cochés</button>
+      <button type="button" data-action="bloodGive" data-mode="fill"><i class="fa-solid fa-fill-drip"></i> Remplir les cochés</button>
+      <button type="button" data-action="bloodNightfall" data-tooltip="Vampires : −1 sang ; tous : +1 Volonté"><i class="fa-solid fa-moon"></i> Tombée de la nuit</button>
+    </div>
+    <p class="hint">Les réserves restent bornées entre 0 et le maximum de la génération. Les boutons − / + de chaque ligne ajustent sans message.</p>
+  </section>
+
+  {{#unless flagged}}<p class="ledger-warn"><i class="fa-solid fa-flag"></i> Aucun personnage n'est marqué « PJ » : la liste montre les acteurs qui ont un joueur.</p>{{/unless}}
+
+  <div class="ledger-table-wrap">
+    <table class="ledger-table blood-table">
+      <thead><tr>
+        <th><a data-action="toggleAll" data-tooltip="Tout cocher / décocher"><i class="fa-solid fa-check-double"></i></a></th>
+        <th>Personnage</th><th class="num">Sang</th><th class="bar-col">Réserve</th><th class="num">/ tour</th><th class="steps">Ajuster</th>
+      </tr></thead>
+      <tbody>
+        {{#each bloodPcs}}
+          <tr data-actor-id="{{id}}">
+            <td><input type="checkbox" class="pc-check" checked></td>
+            <td class="who">
+              <a data-action="openSheet" data-tooltip="Ouvrir la fiche"><img src="{{img}}" alt=""></a>
+              <span class="who-text"><b>{{name}}</b><em>{{player}}{{#if online}} · <i class="fa-solid fa-circle online" data-tooltip="Connecté"></i>{{/if}}</em><small>{{kind}}</small>
+              {{#if hunger}}<span class="alert"><i class="fa-solid fa-triangle-exclamation"></i> {{hunger}}</span>{{/if}}</span>
+            </td>
+            <td class="num blood-num {{level}}">{{value}}<small>/{{max}}</small></td>
+            <td class="bar-col"><div class="blood-bar {{level}}" data-tooltip="{{value}} / {{max}} ({{pct}} %) · il manque {{missing}}"><span style="width: {{pct}}%"></span></div></td>
+            <td class="num">{{perTurn}}</td>
+            <td class="steps">
+              <a data-action="bloodStep" data-delta="-1">−1</a><a data-action="bloodStep" data-delta="1">+1</a><a data-action="bloodStep" data-delta="5">+5</a>
+              <a data-action="bloodFill" class="fill" data-tooltip="Remplir la réserve"><i class="fa-solid fa-fill-drip"></i></a>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="6" class="empty">Aucun personnage joueur ne se nourrit de sang (vampires et goules).</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+{{/if}}
+</div>

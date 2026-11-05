@@ -1,0 +1,209 @@
+[
+ {
+  "name": "Hâte sanguine",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/discipline.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "hate-sanguine",
+   "value": 0,
+   "isPath": false,
+   "parent": "",
+   "primary": false,
+   "inClan": false,
+   "mechanic": "speed",
+   "powers": [
+    {
+     "level": 1,
+     "name": "Pas léger",
+     "attribute": "",
+     "ability": "",
+     "difficulty": "",
+     "cost": "—",
+     "duration": "permanent",
+     "summary": "Chaque point s'ajoute aux jets de Dextérité et à l'initiative. Dépenser du sang en début de tour échange ce bonus contre des actions supplémentaires (géré par le système)."
+    }
+   ],
+   "description": "<p><b>Exemple de discipline à rôle mécanique « Vélocité ».</b> Le sang accélère le corps jusqu'à brouiller le regard.</p><p>Le système applique seul ses effets : bonus de Dextérité et d'initiative, vitesse de déplacement, et, en combat, la proposition en début de tour de dépenser du sang pour gagner des actions.</p>"
+  }
+ },
+ {
+  "name": "Chair de pierre",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/discipline.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "chair-de-pierre",
+   "value": 0,
+   "isPath": false,
+   "parent": "",
+   "primary": false,
+   "inClan": false,
+   "mechanic": "resilience",
+   "powers": [
+    {
+     "level": 1,
+     "name": "Peau dure",
+     "attribute": "",
+     "ability": "",
+     "difficulty": "",
+     "cost": "—",
+     "duration": "permanent",
+     "summary": "Chaque point ajoute un dé d'absorption contre tous les dégâts, aggravés compris."
+    }
+   ],
+   "description": "<p><b>Exemple de discipline à rôle mécanique « Résilience ».</b> La chair se durcit et refuse la blessure.</p>"
+  }
+ },
+ {
+  "name": "Bras de fer",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/discipline.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "bras-de-fer",
+   "value": 0,
+   "isPath": false,
+   "parent": "",
+   "primary": false,
+   "inClan": false,
+   "mechanic": "might",
+   "powers": [
+    {
+     "level": 1,
+     "name": "Poigne",
+     "attribute": "",
+     "ability": "",
+     "difficulty": "",
+     "cost": "—",
+     "duration": "permanent",
+     "summary": "Chaque point donne une réussite automatique aux jets de Force, y compris les dégâts des coups et des armes de mêlée."
+    }
+   ],
+   "description": "<p><b>Exemple de discipline à rôle mécanique « Vigueur surnaturelle ».</b></p>"
+  }
+ },
+ {
+  "name": "Murmure des ombres",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/discipline.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "murmure-des-ombres",
+   "value": 0,
+   "isPath": false,
+   "parent": "",
+   "primary": false,
+   "inClan": false,
+   "mechanic": "",
+   "powers": [
+    {
+     "level": 1,
+     "name": "Voix du seuil",
+     "attribute": "manipulation",
+     "ability": "subterfuge",
+     "difficulty": "7",
+     "cost": "—",
+     "duration": "une scène",
+     "summary": "Le vampire fait entendre sa voix d'un coin d'ombre qu'il voit, comme s'il s'y tenait."
+    },
+    {
+     "level": 2,
+     "name": "Manteau de suie",
+     "attribute": "wits",
+     "ability": "stealth",
+     "difficulty": "6",
+     "cost": "1 sang",
+     "duration": "une scène",
+     "summary": "Tant qu'il reste dans la pénombre et ne bouge pas plus vite qu'au pas, on ne le remarque qu'en le cherchant (Perception + Vigilance, difficulté 8)."
+    },
+    {
+     "level": 3,
+     "name": "Œil de lanterne",
+     "attribute": "perception",
+     "ability": "occult",
+     "difficulty": "7",
+     "cost": "—",
+     "duration": "un tour",
+     "summary": "Il voit à travers l'obscurité totale et distingue la chaleur des vivants."
+    },
+    {
+     "level": 4,
+     "name": "Passage obscur",
+     "attribute": "dexterity",
+     "ability": "athletics",
+     "difficulty": "7",
+     "cost": "2 sang",
+     "duration": "instantané",
+     "summary": "Il entre dans une ombre et ressort d'une autre, visible et à moins de vingt mètres."
+    },
+    {
+     "level": 5,
+     "name": "Nuit tombante",
+     "attribute": "charisma",
+     "ability": "intimidation",
+     "difficulty": "8",
+     "cost": "1 Volonté",
+     "duration": "une scène",
+     "summary": "Les flammes pâlissent dans un rayon de dix mètres ; les mortels présents ressentent une peur sourde (difficulté +1 à leurs jets)."
+    }
+   ],
+   "description": "<p><b>Exemple de discipline à pouvoirs.</b> Inventée pour montrer l'éditeur : chaque pouvoir a son niveau, son groupement, sa difficulté, son coût et sa durée. Cliquez sur un pouvoir dans la fiche pour le lancer.</p>"
+  }
+ },
+ {
+  "name": "Art du sang",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/discipline.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "art-du-sang",
+   "value": 0,
+   "isPath": false,
+   "parent": "",
+   "primary": false,
+   "inClan": false,
+   "mechanic": "",
+   "powers": [],
+   "description": "<p><b>Exemple de sorcellerie à voies.</b> La discipline mère compte les points ; chaque voie est un objet « discipline » coché « Voie de sorcellerie » qui la désigne comme discipline mère.</p>"
+  }
+ },
+ {
+  "name": "Voie de la braise",
+  "type": "discipline",
+  "img": "systems/noctis/assets/icons/ritual.svg",
+  "folder": "Exemples",
+  "system": {
+   "key": "voie-de-la-braise",
+   "value": 0,
+   "isPath": true,
+   "parent": "art-du-sang",
+   "primary": true,
+   "inClan": false,
+   "mechanic": "",
+   "powers": [
+    {
+     "level": 1,
+     "name": "Étincelle",
+     "attribute": "wits",
+     "ability": "occult",
+     "difficulty": "5",
+     "cost": "1 sang",
+     "duration": "instantané",
+     "summary": "Allume une flamme de la taille d'une bougie sur un objet visible."
+    },
+    {
+     "level": 2,
+     "name": "Chaleur de forge",
+     "attribute": "stamina",
+     "ability": "occult",
+     "difficulty": "6",
+     "cost": "1 sang",
+     "duration": "une scène",
+     "summary": "Un objet de métal tenu en main devient brûlant : qui le touche subit 1 niveau de dégâts létaux par tour."
+    }
+   ],
+   "description": "<p><b>Exemple de voie</b> rattachée à l'Art du sang.</p>"
+  }
+ }
+]

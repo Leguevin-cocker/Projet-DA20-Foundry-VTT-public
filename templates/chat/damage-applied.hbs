@@ -1,0 +1,19 @@
+<div class="noctis-card damage-card">
+  <div class="card-frame">
+    <header>
+      <img class="portrait" src="{{actor.img}}" alt="">
+      <div class="titles">
+        <h3>{{actor.name}} est touché</h3>
+        <span class="sub">{{amount}} niveau{{#if (noctisGt amount 1)}}x{{/if}} {{type}}{{#if source}} · {{source}}{{/if}}</span>
+      </div>
+    </header>
+    <ul class="dmg-steps">
+      {{#if soaked}}<li>Absorption : <b>{{soakSuccesses}}</b></li>{{else}}<li>Sans absorption</li>{{/if}}
+      {{#if halved}}<li>Contondants divisés par deux (vampire)</li>{{/if}}
+      <li class="result">Niveaux perdus : <b>{{remaining}}</b></li>
+    </ul>
+    <div class="outcome {{#if remaining}}failure{{else}}success{{/if}}"><span class="label">État : {{status}}</span></div>
+    {{#if torpor}}<p class="alert">Le vampire sombre dans la torpeur.</p>{{/if}}
+    {{#if finalDeath}}<p class="alert death">Mort ultime.</p>{{/if}}
+  </div>
+</div>

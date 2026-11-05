@@ -1,0 +1,10 @@
+<li class="item-row draggable {{#if cost}}mf-row mf-{{item.type}}{{/if}}" data-item-id="{{item.id}}">
+  {{#if cost}}<span class="mf-icon" data-tooltip="{{item.system.category}}">{{noctisMfIcon item.system.category}}</span>{{else}}<img class="item-img" src="{{item.img}}" alt="">{{/if}}
+  <a class="item-name" data-action="select" data-kind="item">{{item.name}}</a>
+  {{#if cost}}<span class="item-cost">{{item.system.cost}} pt{{#if (noctisGt item.system.cost 1)}}s{{/if}}</span>{{/if}}
+  <span class="item-controls">
+    <a data-action="itemChat" data-tooltip="Montrer dans le chat"><i class="fa-solid fa-comment"></i></a>
+    <a data-action="itemEdit" data-tooltip="Ouvrir"><i class="fa-solid fa-pen"></i></a>
+    <a data-action="itemDelete" data-tooltip="Supprimer"><i class="fa-solid fa-trash"></i></a>
+  </span>
+</li>

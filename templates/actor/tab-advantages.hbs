@@ -1,0 +1,52 @@
+<section class="tab tab-advantages {{tab.cssClass}}" data-tab="advantages">
+  {{#if clan}}
+    <div class="clan-banner" data-item-id="{{clan.id}}">
+      {{#if clanEmblem}}<img src="{{clanEmblem}}" alt="">{{/if}}
+      <div>
+        <h3><a data-action="select" data-kind="item">{{clan.name}}</a>{{#if clan.system.nickname}} <em>— {{clan.system.nickname}}</em>{{/if}}</h3>
+        <p class="weakness"><b>Faiblesse :</b> {{clanWeakness}}</p>
+      </div>
+    </div>
+  {{else if isVampire}}
+    <p class="drop-hint"><i class="fa-solid fa-hand-pointer"></i> Glissez une lignée depuis l'onglet Objets ou un compendium (exemples : <b>Noctis — Exemples : lignées</b>).</p>
+  {{/if}}
+
+  <h2 class="noctis-section"><span>Historiques</span></h2>
+  <div class="columns two backgrounds">
+    {{#each backgrounds}}
+      <div class="trait-row bg-row">
+        <a class="trait-label" data-action="select" data-kind="background" data-key="{{key}}" data-tooltip="Clic : détails">{{label}}</a>
+        <input class="spec" type="text" name="{{notesPath}}" value="{{notes}}" placeholder="précisions">
+        {{noctisDots value=value max=max path=path}}
+      </div>
+    {{/each}}
+  </div>
+
+  <div class="columns two">
+    <div>
+      <h2 class="noctis-section"><span>Atouts</span></h2>
+      <ul class="item-list">
+        {{#each merits}}{{> "systems/noctis/templates/actor/parts/item-row.hbs" item=this cost=true}}{{/each}}
+      </ul>
+      <div class="list-footer"><span>Total : {{meritTotal}} pt(s)</span><a class="add-row" data-action="itemCreate" data-type="merit"><i class="fa-solid fa-plus"></i></a></div>
+    </div>
+    <div>
+      <h2 class="noctis-section"><span>Handicaps</span></h2>
+      <ul class="item-list">
+        {{#each flaws}}{{> "systems/noctis/templates/actor/parts/item-row.hbs" item=this cost=true}}{{/each}}
+      </ul>
+      <div class="list-footer"><span>Total : {{flawTotal}} pt(s){{#if (noctisGt flawTotal 7)}} <em class="warn">(7 maximum à la création)</em>{{/if}}</span><a class="add-row" data-action="itemCreate" data-type="flaw"><i class="fa-solid fa-plus"></i></a></div>
+    </div>
+  </div>
+
+  <h2 class="noctis-section"><span>Dérangements</span></h2>
+  <ul class="item-list">
+    {{#each derangements}}{{> "systems/noctis/templates/actor/parts/item-row.hbs" item=this}}{{/each}}
+  </ul>
+  <div class="list-footer"><span></span><a class="add-row" data-action="itemCreate" data-type="derangement"><i class="fa-solid fa-plus"></i> dérangement</a></div>
+
+  {{#unless isVampire}}
+    <h2 class="noctis-section"><span>Vraie Foi</span></h2>
+    <div class="trait-row">{{noctisDots value=system.faith max=10 path="system.faith"}}</div>
+  {{/unless}}
+</section>

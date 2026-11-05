@@ -1,0 +1,193 @@
+{{#*inline "cardTpl"}}
+          <article class="cal-card {{#if hidden}}secret{{/if}}" style="--c: {{cat.color}}" data-event-id="{{id}}">
+            <header><i class="{{cat.icon}}"></i> <b>{{title}}</b>
+              {{#if @root.isGM}}<span class="cal-ctrl">
+                <a data-action="toggleReveal" data-tooltip="{{#if hidden}}Révéler aux joueurs (message dans le chat){{else}}Cacher aux joueurs{{/if}}"><i class="fa-solid {{#if hidden}}fa-eye-slash{{else}}fa-eye{{/if}}"></i></a>
+                <a data-action="editEvent" data-tooltip="Modifier"><i class="fa-solid fa-pen"></i></a>
+                <a data-action="deleteEvent" data-tooltip="Supprimer"><i class="fa-solid fa-trash"></i></a>
+              </span>{{/if}}
+            </header>
+            <p class="cal-cat">{{#if approx}}{{dateLabel}} · {{/if}}{{cat.label}}{{#if public}} · histoire des mortels{{/if}}{{#if hidden}} · <em>caché aux joueurs</em>{{/if}}{{#if (noctisEq category "memory")}} · {{author}}{{/if}}</p>
+            {{#if text}}<p>{{text}}</p>{{/if}}
+            {{#if @root.isGM}}{{#if gmNote}}<p class="cal-gmnote"><i class="fa-solid fa-user-secret"></i> {{gmNote}}</p>{{/if}}{{#if source}}<p class="cal-src"><i class="fa-solid fa-book"></i> {{source}}</p>{{/if}}{{/if}}
+          </article>
+{{/inline}}
+{{#*inline "navTpl"}}
+      <div class="cal-nav">
+        <a data-action="prevYear" data-tooltip="{{#if isCentury}}Dix siècles en arrière{{else}}{{#if isYear}}Dix ans en arrière{{else}}Année précédente{{/if}}{{/if}}"><i class="fa-solid fa-angles-left"></i></a>
+        <a data-action="prev" data-tooltip="Précédent"><i class="fa-solid fa-angle-left"></i></a>
+        <h2>{{navLabel}}{{#if isCentury}} <small>{{centuryRange}}</small>{{/if}}</h2>
+        <a data-action="next" data-tooltip="Suivant"><i class="fa-solid fa-angle-right"></i></a>
+        <a data-action="nextYear" data-tooltip="{{#if isCentury}}Dix siècles en avant{{else}}{{#if isYear}}Dix ans en avant{{else}}Année suivante{{/if}}{{/if}}"><i class="fa-solid fa-angles-right"></i></a>
+        <a class="cal-today-btn" data-action="today"><i class="fa-solid fa-location-crosshairs"></i> Aujourd'hui</a>
+      </div>
+{{/inline}}
+{{#*inline "listTpl"}}
+          <li class="cal-li {{#if hidden}}secret{{/if}}" style="--c: {{cat.color}}" data-event-id="{{id}}" data-tooltip="{{text}}">
+            <i class="{{cat.icon}}"></i><span class="cal-li-date">{{dateLabel}}</span><span class="cal-li-title">{{title}}</span>
+            {{#if @root.isGM}}<a data-action="toggleReveal" class="cal-li-eye" data-tooltip="{{#if hidden}}Révéler aux joueurs{{else}}Cacher aux joueurs{{/if}}"><i class="fa-solid {{#if hidden}}fa-eye-slash{{else}}fa-eye{{/if}}"></i></a>{{/if}}
+          </li>
+{{/inline}}
+<div class="cal {{#if gmView}}is-gm{{else}}is-players{{/if}}">
+  <header class="cal-top {{#if now.night}}night{{else}}day{{/if}}">
+    <div class="cal-now">
+      <span class="cal-moon" data-tooltip="{{now.moon.label}} ({{now.moon.illumination}} %)">{{now.moon.icon}}</span>
+      <div>
+        <b>{{now.dateLabel}}</b>
+        <span>{{now.timeLabel}} · {{#if now.night}}<i class="fa-solid fa-moon"></i> nuit — aube dans {{now.toDawnLabel}}{{else}}<i class="fa-solid fa-sun"></i> jour — nuit dans {{now.toDuskLabel}}{{/if}}</span>
+        <small>Lever {{now.sunrise}} · coucher {{now.sunset}}{{#each now.feasts}} · <i class="fa-solid fa-church"></i> {{this}}{{/each}}</small>
+      </div>
+    </div>
+    {{#if isGM}}
+    <div class="cal-time-ctrl">
+      <a data-action="advance" data-minutes="15" data-tooltip="Avancer de 15 minutes">+15 min</a>
+      <a data-action="advance" data-minutes="60" data-tooltip="Avancer d'une heure">+1 h</a>
+      <a data-action="advance" data-minutes="240" data-tooltip="Avancer de 4 heures">+4 h</a>
+      <a data-action="nextNight" data-tooltip="Jusqu'au prochain coucher du soleil : aube, jour de sommeil, réveil des vampires"><i class="fa-solid fa-moon"></i> Nuit suivante</a>
+      <a data-action="ellipse" data-tooltip="Faire passer des mois ou des années"><i class="fa-solid fa-hourglass-half"></i> Ellipse</a>
+      <a data-action="setDate" data-tooltip="Régler la date et l'heure sans effet"><i class="fa-solid fa-clock"></i></a>
+    </div>
+    {{/if}}
+  </header>
+
+  <nav class="cal-tabs">
+    <a class="{{#if isMonth}}active{{/if}}" data-action="calTab" data-tab="month"><i class="fa-solid fa-calendar-days"></i> Mois</a>
+    <a class="{{#if isYear}}active{{/if}}" data-action="calTab" data-tab="year"><i class="fa-solid fa-calendar"></i> Année</a>
+    <a class="{{#if isCentury}}active{{/if}}" data-action="calTab" data-tab="century"><i class="fa-solid fa-hourglass"></i> Siècle</a>
+    <a class="{{#if isTimeline}}active{{/if}}" data-action="calTab" data-tab="timeline"><i class="fa-solid fa-timeline"></i> Chronologie</a>
+    <span class="cal-viewtag">{{#if gmView}}<i class="fa-solid fa-user-secret"></i> Vue du MJ{{else}}<i class="fa-solid fa-users"></i> Vue des joueurs{{/if}}</span>
+    {{#if isGM}}{{#if hiddenCount}}<span class="cal-hidden-count" data-tooltip="Événements préparés, pas encore révélés aux joueurs"><i class="fa-solid fa-eye-slash"></i> {{hiddenCount}} caché(s)</span>{{/if}}{{/if}}
+  </nav>
+
+  {{#if isMonth}}
+  <div class="cal-body">
+    <section class="cal-month">
+      {{> navTpl}}
+      <div class="cal-grid">
+        {{#each weekdays}}<div class="cal-wd">{{this}}</div>{{/each}}
+        {{#each cells}}
+          {{#if empty}}<div class="cal-cell empty"></div>{{else}}
+          <div class="cal-cell {{#if today}}today{{/if}} {{#if selected}}selected{{/if}} {{#if past}}past{{/if}}" data-action="pick" data-day="{{day}}">
+            <span class="cal-d">{{day}}</span>
+            {{#if moon}}<span class="cal-m" data-tooltip="{{moon.label}}">{{moon.icon}}</span>{{/if}}
+            {{#if feast}}<span class="cal-feast">{{feast}}</span>{{/if}}
+            <span class="cal-evs">
+              {{#each events}}<span class="cal-ev {{#if hidden}}secret{{/if}}" style="--c: {{cat.color}}" data-tooltip="{{title}}{{#if hidden}} (caché){{/if}}"><i class="{{cat.icon}}"></i> {{title}}</span>{{/each}}
+              {{#if more}}<span class="cal-more">+{{more}}</span>{{/if}}
+            </span>
+          </div>
+          {{/if}}
+        {{/each}}
+      </div>
+    </section>
+
+    <aside class="cal-side">
+      <div class="cal-side-head">
+        <h3>{{day.label}}</h3>
+        <p><span>{{day.moon.icon}} {{day.moon.label}}</span> · <span>{{day.relative}}</span></p>
+        <p class="cal-sun"><i class="fa-solid fa-sun"></i> {{day.sunrise}} → {{day.sunset}} · <i class="fa-solid fa-moon"></i> nuit de {{day.night}}</p>
+        {{#each day.feasts}}<p class="cal-feast-line"><i class="fa-solid fa-church"></i> {{this}}</p>{{/each}}
+      </div>
+      <div class="cal-side-body">
+        {{#each day.events}}
+          {{> cardTpl}}
+        {{else}}
+          <p class="empty">Rien de notable ce jour-là{{#unless isGM}}, à votre connaissance{{/unless}}.</p>
+        {{/each}}
+        {{#if monthEvents.length}}
+          <h4 class="cal-sub"><i class="fa-solid fa-calendar"></i> En {{viewMonthName}} {{viewYear}}, sans jour précis</h4>
+          {{#each monthEvents}}{{> cardTpl}}{{/each}}
+        {{/if}}
+        {{#if yearEvents.length}}
+          <h4 class="cal-sub"><i class="fa-solid fa-hourglass"></i> Cette année-là ({{viewYear}})</h4>
+          {{#each yearEvents}}{{> cardTpl}}{{/each}}
+        {{/if}}
+        <div class="cal-side-actions">
+          <button type="button" data-action="addEvent"><i class="fa-solid fa-plus"></i> {{#if isGM}}Nouvel événement{{else}}Ajouter un souvenir{{/if}}</button>
+          {{#if isGM}}{{#unless day.isToday}}<button type="button" data-action="setToday" data-tooltip="Placer la chronique à cette date (sans effet)"><i class="fa-solid fa-flag"></i> Aller à cette date</button>{{/unless}}{{/if}}
+        </div>
+        {{#if hasSleepers}}
+          <h4 class="cal-sleep-title"><i class="fa-solid fa-bed"></i> Dormeurs</h4>
+          {{#each sleepers}}
+            <div class="cal-sleeper"><img src="{{img}}" alt=""><span><b>{{name}}</b>{{#if info}}<small>Torpeur ({{info.label}}) · {{#if info.ready}}peut tenter de s'éveiller{{else}}réveil possible le {{info.untilLabel}} (dans {{info.leftLabel}}){{/if}}</small>{{/if}}</span></div>
+          {{/each}}
+        {{/if}}
+      </div>
+    </aside>
+  </div>
+  {{/if}}
+
+  {{#if isYear}}
+  <div class="cal-body">
+    <section class="cal-month">
+      {{> navTpl}}
+      <div class="cal-year">
+        {{#each yearMonths}}
+          <div class="ym {{#if current}}current{{/if}}">
+            <a class="ym-title" data-action="gotoMonth" data-month="{{month}}" data-year="{{../viewYear}}">{{name}}{{#if count}} <span class="ym-count">{{count}}</span>{{/if}}</a>
+            <div class="ym-grid">
+              {{#each ../weekdays}}<span class="ym-wd">{{this}}</span>{{/each}}
+              {{#each days}}{{#if empty}}<span></span>{{else}}<a class="ym-d {{#if count}}has{{/if}} {{#if today}}today{{/if}}" {{#if count}}style="--c: {{color}}"{{/if}} data-action="pick" data-day="{{day}}" data-month="{{month}}" data-year="{{year}}" {{#if count}}data-tooltip="{{count}} événement(s)"{{/if}}>{{day}}</a>{{/if}}{{/each}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </section>
+    <aside class="cal-side">
+      <div class="cal-side-head"><h3>Année {{viewYear}}</h3><p>{{yearList.length}} événement(s){{#if isGM}}{{else}} connu(s){{/if}}</p></div>
+      <ul class="cal-yearlist">{{#each yearList}}{{> listTpl}}{{else}}<p class="empty">Rien de notable cette année.</p>{{/each}}</ul>
+    </aside>
+  </div>
+  {{/if}}
+
+  {{#if isCentury}}
+  <div class="cal-body">
+    <section class="cal-month">
+      {{> navTpl}}
+      <div class="cal-century">
+        {{#each decades}}
+          <div class="cd-label">{{label}}{{#if count}} <small>{{count}}</small>{{/if}}</div>
+          {{#each years}}<a class="cd-y heat-{{heat}} {{#if now}}now{{/if}} {{#if view}}view{{/if}}" data-action="gotoYear" data-year="{{year}}" data-tooltip="{{year}}{{#if count}} : {{count}} événement(s){{/if}}">{{year}}{{#if count}}<i>{{count}}</i>{{/if}}</a>{{/each}}
+        {{/each}}
+      </div>
+      <p class="cd-legend"><span class="cd-y heat-0">·</span> aucun <span class="cd-y heat-1">·</span><span class="cd-y heat-2">·</span><span class="cd-y heat-3">·</span><span class="cd-y heat-4">·</span> de plus en plus d'événements <span class="cd-y now">·</span> année en cours</p>
+    </section>
+    <aside class="cal-side">
+      <div class="cal-side-head"><h3>{{navLabel}}</h3><p>{{centuryRange}} · {{centuryCount}} événement(s)</p></div>
+      <ul class="cal-yearlist">{{#each centuryList}}{{> listTpl}}{{else}}<p class="empty">Rien de notable pour ce siècle.</p>{{/each}}</ul>
+    </aside>
+  </div>
+  {{/if}}
+
+  {{#if isTimeline}}
+  <div class="cal-timeline-wrap">
+    <div class="cal-filters">
+      <input type="search" name="search" value="{{search}}" placeholder="Chercher un nom, un lieu…">
+      {{#each categories}}<a class="cal-chip {{#if active}}active{{/if}}" style="--c: {{color}}" data-action="filterCat" data-cat="{{key}}"><i class="{{icon}}"></i> {{label}}</a>{{/each}}
+    </div>
+    <div class="timeline">
+      {{#each years}}
+        <section class="tl-year">
+          <h3>{{year}}</h3>
+          {{#each events}}
+            {{#if nowBefore}}<div class="tl-now"><span><i class="fa-solid fa-hourglass-half"></i> Aujourd'hui · {{../../now.dateLabel}}</span></div>{{/if}}
+            <article class="tl-item {{#if hidden}}secret{{/if}}" style="--c: {{cat.color}}" data-event-id="{{id}}">
+              <span class="tl-dot"><i class="{{cat.icon}}"></i></span>
+              <div class="tl-body">
+                <header><a data-action="pick" data-day="{{day}}" data-month="{{month}}" data-year="{{year}}" class="tl-date">{{monthLabel}}</a> <b>{{title}}</b>
+                  {{#if ../../isGM}}<span class="cal-ctrl"><a data-action="toggleReveal" data-tooltip="{{#if hidden}}Révéler{{else}}Cacher{{/if}}"><i class="fa-solid {{#if hidden}}fa-eye-slash{{else}}fa-eye{{/if}}"></i></a><a data-action="editEvent"><i class="fa-solid fa-pen"></i></a></span>{{/if}}
+                </header>
+                {{#if text}}<p>{{text}}</p>{{/if}}
+                <small>{{cat.label}}{{#if public}} · histoire des mortels{{/if}}{{#if (noctisEq category "memory")}} · {{author}}{{/if}}{{#if hidden}} · caché aux joueurs{{/if}}{{#if ../../isGM}}{{#if source}} · {{source}}{{/if}}{{/if}}</small>
+                {{#if ../../isGM}}{{#if gmNote}}<p class="cal-gmnote"><i class="fa-solid fa-user-secret"></i> {{gmNote}}</p>{{/if}}{{/if}}
+              </div>
+            </article>
+          {{/each}}
+        </section>
+      {{else}}
+        <p class="empty">{{#if isGM}}Aucun événement. Créez-en depuis le calendrier : ils restent cachés jusqu'à ce que vous les révéliez.{{else}}La chronique n'a encore rien retenu. Les événements apparaîtront ici à mesure que le conteur les révèle, et vous pouvez ajouter vos propres souvenirs.{{/if}}</p>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,32 @@
+<section class="tab tab-variants {{tab.cssClass}}" data-tab="variants">
+  <h2 class="noctis-section"><span>Variantes de règles</span></h2>
+  <p class="variants-intro">Ces règles sont choisies par le Conteur pour toute la chronique ; elles s'appliquent automatiquement aux jets et aux cartes de combat.{{#if isGM}} <a data-action="openRuleSettings"><i class="fa-solid fa-gear"></i> Modifier dans les paramètres du jeu</a>{{/if}}</p>
+
+  <h3 class="variants-head active"><i class="fa-solid fa-circle-check"></i> Variantes actives ({{variants.active.length}})</h3>
+  {{#each variants.active}}
+    <article class="variant-card active">
+      <i class="v-icon {{icon}}"></i>
+      <div class="v-body">
+        <header><b>{{title}}</b><span class="v-group">{{group}}</span></header>
+        <p class="v-choice">{{choice}}</p>
+        <p class="v-text">{{text}}</p>
+        <p class="v-book"><i class="fa-solid fa-book"></i> Au lieu de la règle de base : {{book}}</p>
+      </div>
+    </article>
+  {{else}}
+    <p class="empty">Aucune variante : la chronique suit les règles de base.</p>
+  {{/each}}
+
+  <details class="variants-book">
+    <summary><i class="fa-solid fa-book"></i> Règles de base en vigueur ({{variants.book.length}})</summary>
+    {{#each variants.book}}
+      <article class="variant-card book">
+        <i class="v-icon {{icon}}"></i>
+        <div class="v-body">
+          <header><b>{{title}}</b><span class="v-group">{{group}}</span></header>
+          <p class="v-text">{{text}}</p>
+        </div>
+      </article>
+    {{/each}}
+  </details>
+</section>

@@ -1,0 +1,33 @@
+<section class="tab tab-biography {{tab.cssClass}}" data-tab="biography">
+  <div class="columns two bio-fields">
+    {{#if isVampire}}
+    <label><span>Âge réel</span><input type="text" name="system.identity.age" value="{{system.identity.age}}"></label>
+    <label><span>Refuge</span><input type="text" name="system.identity.haven" value="{{system.identity.haven}}"></label>
+    {{/if}}
+    <label><span>Âge apparent</span><input type="text" name="system.identity.apparentAge" value="{{system.identity.apparentAge}}"></label>
+    <label><span>Terrain de chasse</span><input type="text" name="system.possessions.feeding" value="{{system.possessions.feeding}}"></label>
+  </div>
+
+  <h2 class="noctis-section"><span>Histoire</span></h2>
+  <prose-mirror name="system.biography" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.biography}}">{{{enrichedBio}}}</prose-mirror>
+
+  <h2 class="noctis-section"><span>Possessions</span></h2>
+  <div class="columns two">
+    <label class="area"><span>Équipement porté</span><textarea name="system.possessions.carried" rows="3">{{system.possessions.carried}}</textarea></label>
+    <label class="area"><span>Biens possédés</span><textarea name="system.possessions.owned" rows="3">{{system.possessions.owned}}</textarea></label>
+    <label class="area"><span>Montures et transport</span><textarea name="system.possessions.transport" rows="2">{{system.possessions.transport}}</textarea></label>
+  </div>
+  <ul class="item-list">
+    {{#each gear}}
+      <li class="item-row draggable" data-item-id="{{id}}">
+        <img class="item-img" src="{{img}}" alt=""><a class="item-name" data-action="select" data-kind="item">{{name}}</a>
+        <span class="item-cost">×{{system.quantity}}</span>
+        <span class="item-controls"><a data-action="itemChat"><i class="fa-solid fa-comment"></i></a><a data-action="itemDelete"><i class="fa-solid fa-trash"></i></a></span>
+      </li>
+    {{/each}}
+  </ul>
+  <div class="list-footer"><span></span><a class="add-row" data-action="itemCreate" data-type="gear"><i class="fa-solid fa-plus"></i> objet</a></div>
+
+  <h2 class="noctis-section"><span>Notes</span></h2>
+  <prose-mirror name="system.notes" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.notes}}">{{{enrichedNotes}}}</prose-mirror>
+</section>

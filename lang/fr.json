@@ -1,0 +1,26 @@
+{
+  "TYPES": {
+    "Actor": {
+      "vampire": "Vampire",
+      "ghoul": "Goule",
+      "mortal": "Mortel",
+      "npc": "PNJ"
+    },
+    "Item": {
+      "clan": "Clan / lignée",
+      "discipline": "Discipline / voie",
+      "merit": "Atout",
+      "flaw": "Handicap",
+      "ability": "Capacité",
+      "road": "Voie (morale)",
+      "weapon": "Arme",
+      "armor": "Armure",
+      "gear": "Objet",
+      "ritual": "Rituel",
+      "derangement": "Dérangement"
+    }
+  },
+  "NOCTIS": {
+    "SystemTitle": "Noctis"
+  }
+}

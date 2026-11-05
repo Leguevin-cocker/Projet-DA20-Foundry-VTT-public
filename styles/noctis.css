@@ -1,0 +1,1607 @@
+/* ==========================================================================
+   Noctis — feuille de style
+   Parchemin, liserés rouges,
+   titres onciaux, filets doubles carmin.
+   ========================================================================== */
+
+@font-face { font-family: "NOCTIS Uncial"; src: url("../assets/fonts/UncialAntiqua-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "NOCTIS Cinzel"; src: url("../assets/fonts/Cinzel.ttf") format("truetype"); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: "NOCTIS Garamond"; src: url("../assets/fonts/EBGaramond.ttf") format("truetype"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "NOCTIS Garamond"; src: url("../assets/fonts/EBGaramond-Italic.ttf") format("truetype"); font-style: italic; font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "NOCTIS Fell SC"; src: url("../assets/fonts/IMFellEnglishSC.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --noctis-parchment: #f2e8d2;
+  --noctis-parchment-2: #e9dcbf;
+  --noctis-parchment-3: #dccaa4;
+  --noctis-ink: #2b1b15;
+  --noctis-ink-soft: #5a4636;
+  --noctis-muted: #8c7a63;
+  --noctis-blood: #7b1015;
+  --noctis-blood-bright: #a3161c;
+  --noctis-blood-deep: #4a070a;
+  --noctis-gold: #a8832f;
+  --noctis-line: rgba(123, 16, 21, 0.55);
+  --noctis-shadow: rgba(43, 27, 21, 0.25);
+  --noctis-font-title: "NOCTIS Uncial", "Cinzel Decorative", serif;
+  --noctis-font-head: "NOCTIS Cinzel", "Cinzel", "Trajan Pro", serif;
+  --noctis-font-body: "NOCTIS Garamond", "EB Garamond", Garamond, Georgia, serif;
+  --noctis-font-sc: "NOCTIS Fell SC", "NOCTIS Cinzel", serif;
+}
+
+/* --------------------------------------------------------------------------
+   Fenêtre de fiche
+   -------------------------------------------------------------------------- */
+.noctis.sheet .window-content,
+.noctis.noctis-roll-dialog .window-content,
+.noctis.noctis-dialog .window-content,
+.noctis.noctis-creator .window-content {
+  background: var(--noctis-parchment) url("../assets/ui/parchment.webp") center / cover;
+  color: var(--noctis-ink);
+  font-family: var(--noctis-font-body);
+  font-size: 15px;
+  padding: 0;
+}
+
+.noctis.sheet.actor .window-content {
+  position: relative;
+  padding: 36px 34px 30px 42px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* Liseré décoratif (CSS seul), posé par-dessus le contenu */
+.noctis.sheet.actor .window-content::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  border: 3px double var(--noctis-blood);
+  box-shadow: inset 0 0 0 5px rgba(201, 163, 90, 0.35), inset 0 0 18px rgba(90, 16, 20, 0.25);
+  z-index: 2;
+}
+
+.noctis input[type="text"], .noctis input[type="number"], .noctis select, .noctis textarea {
+  font-family: var(--noctis-font-body);
+  color: var(--noctis-ink);
+  background: rgba(255, 252, 244, 0.45);
+  border: none;
+  border-bottom: 1px solid rgba(90, 70, 54, 0.45);
+  border-radius: 0;
+  box-shadow: none;
+}
+.noctis input:focus, .noctis select:focus, .noctis textarea:focus {
+  outline: none;
+  border-bottom-color: var(--noctis-blood);
+  background: rgba(255, 252, 244, 0.8);
+  box-shadow: none;
+}
+.noctis textarea { border: 1px solid rgba(90, 70, 54, 0.3); border-radius: 3px; }
+.noctis button:not(.header-control) {
+  font-family: var(--noctis-font-head);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--noctis-parchment);
+  background: linear-gradient(180deg, var(--noctis-blood-bright), var(--noctis-blood-deep));
+  border: 1px solid var(--noctis-blood-deep);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 2px var(--noctis-shadow);
+  padding: 3px 9px;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.noctis button:not(.header-control):hover { filter: brightness(1.15); box-shadow: 0 0 6px rgba(163, 22, 28, 0.6); }
+.noctis a { color: inherit; }
+.noctis .hint { font-style: italic; color: var(--noctis-muted); font-size: 13px; }
+.noctis .warn { color: var(--noctis-blood-bright); font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   Titres de section : filets doubles carmin comme sur la feuille officielle
+   -------------------------------------------------------------------------- */
+.noctis .noctis-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 8px;
+  border: none;
+  font-family: var(--noctis-font-title);
+  font-size: 22px;
+  font-weight: normal;
+  color: var(--noctis-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.noctis .noctis-section::before, .noctis .noctis-section::after {
+  content: "";
+  flex: 1;
+  height: 5px;
+  border-top: 1px solid var(--noctis-blood);
+  border-bottom: 2px solid var(--noctis-blood);
+  opacity: 0.85;
+}
+.noctis .noctis-subsection {
+  font-family: var(--noctis-font-head);
+  font-size: 14px;
+  color: var(--noctis-blood);
+  border-bottom: 1px solid var(--noctis-line);
+  margin: 12px 0 6px;
+}
+
+/* --------------------------------------------------------------------------
+   En-tête
+   -------------------------------------------------------------------------- */
+.noctis .noctis-header {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  grid-template-areas: "portrait identity" "resources resources";
+  gap: 6px 14px;
+  position: relative;
+  z-index: 1;
+}
+.noctis .portrait-wrap { grid-area: portrait; position: relative; width: 118px; height: 140px; }
+.noctis .portrait {
+  width: 118px; height: 140px; object-fit: cover; object-position: top;
+  border: 2px solid var(--noctis-blood-deep);
+  border-radius: 50% 50% 4px 4px / 34% 34% 4px 4px;
+  box-shadow: 0 2px 8px var(--noctis-shadow), inset 0 0 0 1px var(--noctis-gold);
+  cursor: pointer;
+  background: var(--noctis-parchment-2);
+}
+.noctis .clan-emblem {
+  position: absolute; right: -14px; bottom: -10px; width: 58px; height: 58px; object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  border: none;
+}
+.noctis .identity { grid-area: identity; min-width: 0; }
+.noctis .title-row { display: flex; align-items: center; gap: 8px; }
+.noctis .actor-name {
+  flex: 1;
+  font-family: var(--noctis-font-title) !important;
+  font-size: 32px !important;
+  height: 44px;
+  color: var(--noctis-blood-deep) !important;
+  background: transparent !important;
+  border-bottom: 2px solid var(--noctis-blood) !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.noctis .header-controls { display: flex; gap: 4px; }
+.noctis .icon-btn {
+  width: 30px; height: 30px; padding: 0; display: grid; place-items: center; font-size: 14px;
+  background: transparent; color: var(--noctis-blood); border: 1px solid var(--noctis-line); box-shadow: none;
+}
+.noctis .icon-btn:hover { background: rgba(123, 16, 21, 0.1); }
+.noctis .icon-btn.is-locked, .noctis .icon-btn.done { color: var(--noctis-parchment); background: var(--noctis-blood); }
+
+.noctis .identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 96px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, auto);
+  gap: 2px 12px;
+  margin-top: 6px;
+}
+.noctis .identity-grid label { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.noctis .identity-grid label > span:first-child {
+  font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); white-space: nowrap;
+}
+.noctis .identity-grid input, .noctis .identity-grid select { flex: 1; min-width: 0; height: 22px; font-size: 15px; background: transparent; }
+.noctis .identity-grid .gen-value { font-weight: 600; color: var(--noctis-blood); }
+.noctis .identity-grid .gen-base { flex: 0 0 56px; font-size: 12px; }
+.noctis .xp-badge {
+  grid-row: 1 / span 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--noctis-line); border-radius: 6px;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 250, 238, 0.85), rgba(220, 202, 164, 0.6));
+  cursor: pointer;
+}
+.noctis .xp-badge .xp-label { font-family: var(--noctis-font-head); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--noctis-ink-soft); }
+.noctis .xp-badge .xp-available { font-family: var(--noctis-font-title); font-size: 30px; line-height: 1; color: var(--noctis-blood); }
+.noctis .xp-badge .xp-total { font-size: 12px; color: var(--noctis-muted); }
+
+/* Ressources */
+.noctis .resources {
+  grid-area: resources;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1.15fr 0.9fr;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-top: 4px;
+  background: rgba(255, 250, 238, 0.45);
+  border: 1px solid rgba(123, 16, 21, 0.25);
+  border-radius: 4px;
+}
+.noctis.type-mortal .resources, .noctis.type-npc .resources { grid-template-columns: 1fr 1.2fr 1fr; }
+.noctis .resource .res-title {
+  font-family: var(--noctis-font-head); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--noctis-ink-soft);
+  display: flex; align-items: center; gap: 5px; margin-bottom: 4px; white-space: nowrap; overflow: hidden;
+}
+.noctis .resource .res-title b { color: var(--noctis-blood); font-size: 14px; }
+.noctis .resource .res-title em { font-family: var(--noctis-font-body); font-weight: normal; text-transform: none; font-size: 12px; }
+.noctis .resource .res-title i { color: var(--noctis-blood); }
+.noctis .roll-link { cursor: pointer; margin-left: auto; opacity: 0.7; }
+.noctis .roll-link:hover { opacity: 1; }
+.noctis .resource .penalty { margin-left: auto; color: var(--noctis-blood-bright); font-family: var(--noctis-font-body); text-transform: none; }
+.noctis .resource .state { font-family: var(--noctis-font-body); text-transform: none; padding: 0 4px; border-radius: 3px; color: var(--noctis-parchment); background: var(--noctis-blood-deep); }
+.noctis .resource.health.critical { box-shadow: inset 0 0 0 1px var(--noctis-blood-bright); border-radius: 4px; }
+.noctis .aura { font-size: 12px; font-style: italic; color: var(--noctis-muted); }
+.noctis .road-name { overflow: hidden; text-overflow: ellipsis; }
+
+/* --------------------------------------------------------------------------
+   Points et cases
+   -------------------------------------------------------------------------- */
+.noctis .noctis-dots { display: inline-flex; gap: 3px; align-items: center; flex-shrink: 0; }
+.noctis .noctis-dots .dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 1.5px solid var(--noctis-ink);
+  background: rgba(255, 252, 244, 0.6);
+  cursor: pointer;
+  transition: transform 0.08s, background 0.15s;
+}
+.noctis .noctis-dots .dot.sep { margin-left: 5px; }
+.noctis .noctis-dots .dot:hover { transform: scale(1.25); box-shadow: 0 0 4px var(--noctis-blood-bright); }
+.noctis .noctis-dots .dot.filled {
+  background: radial-gradient(circle at 35% 30%, #c0262d, var(--noctis-blood) 45%, var(--noctis-blood-deep));
+  border-color: var(--noctis-blood-deep);
+}
+.noctis .noctis-dots .dot.bonus { background: radial-gradient(circle at 35% 30%, #e5c66b, var(--noctis-gold)); border-color: #6e5419; }
+.noctis .noctis-dots .dot.malus { opacity: 0.35; }
+.noctis .noctis-dots.locked .dot { cursor: default; }
+.noctis .noctis-dots.wide .dot { width: 10px; height: 10px; }
+.noctis.locked .noctis-dots .dot:not(.filled):hover { box-shadow: 0 0 6px var(--noctis-gold); }
+
+.noctis .squares { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
+.noctis .squares .sq {
+  width: 12px; height: 12px; border: 1.5px solid var(--noctis-ink-soft); background: rgba(255, 252, 244, 0.6); cursor: pointer;
+}
+.noctis .squares .sq.unavailable { opacity: 0.25; }
+.noctis .blood-squares .sq { border-radius: 50% 50% 50% 0; transform: rotate(-45deg) scale(0.88); border-color: var(--noctis-blood-deep); }
+.noctis .blood-squares .sq.filled { background: radial-gradient(circle at 60% 40%, #d0303a, var(--noctis-blood) 60%, var(--noctis-blood-deep)); }
+.noctis .wp-squares .sq.filled { background: var(--noctis-ink); }
+.noctis .squares .sq:hover { box-shadow: 0 0 4px var(--noctis-blood-bright); }
+
+.noctis .health-track { display: flex; gap: 3px; }
+.noctis .hbox {
+  position: relative; display: inline-block; width: 18px; height: 18px;
+  border: 1.5px solid var(--noctis-ink); background: rgba(255, 252, 244, 0.6); cursor: pointer;
+}
+.noctis .hbox::after { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 800; font-size: 14px; line-height: 1; }
+.noctis .hbox.bashing::after { content: "╱"; color: var(--noctis-ink); }
+.noctis .hbox.lethal::after { content: "✕"; color: var(--noctis-blood); }
+.noctis .hbox.aggravated { background: var(--noctis-blood-deep); }
+.noctis .hbox.aggravated::after { content: "✱"; color: #ffcf9a; }
+
+/* --------------------------------------------------------------------------
+   Onglets
+   -------------------------------------------------------------------------- */
+.noctis .noctis-tabs {
+  display: flex; justify-content: center; gap: 4px; margin: 10px 0 2px; position: relative; z-index: 1;
+  border-bottom: 2px solid var(--noctis-blood);
+}
+.noctis .noctis-tabs .tab-link {
+  font-family: var(--noctis-font-head); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 5px 12px 3px; color: var(--noctis-ink-soft); border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+.noctis .noctis-tabs .tab-link:hover { color: var(--noctis-blood); text-shadow: 0 0 4px rgba(163, 22, 28, 0.35); }
+.noctis .noctis-tabs .tab-link.active { color: var(--noctis-parchment); background: linear-gradient(180deg, var(--noctis-blood-bright), var(--noctis-blood)); border-color: var(--noctis-blood-deep); }
+
+.noctis.sheet.actor section.tab { display: none; flex: 1; overflow-y: auto; padding: 0 6px 20px 2px; position: relative; z-index: 1; }
+.noctis.sheet.actor section.tab.active { display: block; }
+
+/* --------------------------------------------------------------------------
+   Traits
+   -------------------------------------------------------------------------- */
+.noctis .columns { display: grid; gap: 4px 22px; }
+.noctis .columns.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.noctis .columns.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.noctis .columns > * { min-width: 0; }
+.noctis .trait-group h3 {
+  font-family: var(--noctis-font-head); font-size: 15px; font-weight: 700; text-align: center; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--noctis-ink); border: none; margin: 2px 0 4px;
+}
+.noctis .trait-row { display: flex; align-items: center; gap: 4px; min-height: 22px; min-width: 0; }
+.noctis .trait-label {
+  flex: 0 0 auto; max-width: 52%; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+}
+.noctis .trait-label:hover { color: var(--noctis-blood); text-shadow: 0 0 3px rgba(163, 22, 28, 0.3); }
+.noctis .trait-label.static { cursor: default; }
+.noctis .trait-label.static:hover { color: inherit; text-shadow: none; }
+.noctis .trait-row .spec {
+  flex: 1; min-width: 20px; height: 18px; font-size: 12px; font-style: italic; color: var(--noctis-ink-soft);
+  border-bottom: 1px dotted rgba(90, 70, 54, 0.45); background: transparent;
+}
+.noctis .trait-row .spec::placeholder { color: transparent; }
+.noctis .trait-row:hover .spec::placeholder { color: rgba(140, 122, 99, 0.6); }
+.noctis .trait-row.modded .trait-label { font-weight: 600; }
+.noctis .trait-row .boost { font-size: 11px; color: var(--noctis-blood-bright); font-weight: 700; }
+.noctis .trait-row.secondary .trait-label { font-style: italic; }
+.noctis .mini-controls { display: inline-flex; gap: 5px; font-size: 11px; color: var(--noctis-muted); }
+.noctis .mini-controls a:hover { color: var(--noctis-blood); }
+.noctis .add-row { display: inline-block; font-size: 12px; font-style: italic; color: var(--noctis-muted); margin-top: 3px; cursor: pointer; }
+.noctis .add-row:hover { color: var(--noctis-blood); }
+
+.noctis .virtues-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.noctis .virtue { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.noctis .virtue-type { font-family: var(--noctis-font-body); font-size: 15px; flex: 1; background: transparent; }
+.noctis .virtue-type.static { padding-left: 4px; }
+
+.noctis .quick-rolls { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 14px; }
+
+/* --------------------------------------------------------------------------
+   Disciplines
+   -------------------------------------------------------------------------- */
+.noctis .drop-hint {
+  text-align: center; padding: 14px; margin: 8px 0; color: var(--noctis-muted); font-style: italic;
+  border: 1px dashed var(--noctis-line); border-radius: 6px;
+}
+.noctis .discipline-list { display: flex; flex-direction: column; gap: 8px; }
+.noctis .discipline-card {
+  border: 1px solid rgba(123, 16, 21, 0.3); border-radius: 5px; background: rgba(255, 250, 238, 0.5);
+  box-shadow: 0 1px 3px var(--noctis-shadow);
+}
+.noctis .discipline-card.in-clan { border-left: 4px solid var(--noctis-blood); }
+.noctis .discipline-card > header { display: flex; align-items: center; gap: 8px; padding: 4px 8px; }
+.noctis .discipline-card > header img { width: 38px; height: 38px; border: none; border-radius: 4px; }
+.noctis .discipline-card .toggle { cursor: pointer; color: var(--noctis-muted); transition: transform 0.15s; }
+.noctis .discipline-card.collapsed .toggle { transform: rotate(-90deg); }
+.noctis .discipline-card.collapsed .powers { display: none; }
+.noctis .disc-title { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.noctis .disc-name { font-family: var(--noctis-font-head); font-weight: 700; font-size: 16px; cursor: pointer; }
+.noctis .tag {
+  font-family: var(--noctis-font-body); font-size: 11px; padding: 0 5px; border-radius: 8px; white-space: nowrap;
+  border: 1px solid var(--noctis-line); color: var(--noctis-blood);
+}
+.noctis .tag.clan { background: var(--noctis-blood); color: var(--noctis-parchment); border-color: var(--noctis-blood-deep); }
+.noctis .powers { list-style: none; margin: 0; padding: 0 8px 6px 46px; }
+.noctis .power { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; border-top: 1px dotted rgba(90, 70, 54, 0.25); font-size: 14px; }
+.noctis .power.locked { opacity: 0.4; }
+.noctis .power.advanced .power-level { color: var(--noctis-gold); }
+.noctis .power-level { flex: 0 0 62px; color: var(--noctis-blood); letter-spacing: -1px; font-size: 13px; }
+.noctis .power-name { flex: 1; font-weight: 600; }
+.noctis .power-pool { color: var(--noctis-ink-soft); font-size: 13px; font-style: italic; }
+.noctis .power-page { color: var(--noctis-muted); font-size: 11px; }
+.noctis .power-roll { color: var(--noctis-blood); cursor: pointer; }
+.noctis .power-roll:hover { text-shadow: 0 0 5px var(--noctis-blood-bright); }
+.noctis .add-buttons { display: flex; gap: 18px; justify-content: center; margin-top: 8px; }
+
+/* --------------------------------------------------------------------------
+   Listes d'objets
+   -------------------------------------------------------------------------- */
+.noctis .item-list { list-style: none; margin: 0; padding: 0; }
+.noctis .item-row { display: flex; align-items: center; gap: 8px; padding: 3px 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.3); }
+.noctis .item-row:hover { background: rgba(123, 16, 21, 0.06); }
+.noctis .item-img { width: 26px; height: 26px; border: none; border-radius: 3px; object-fit: cover; }
+.noctis .item-name { flex: 1; cursor: pointer; }
+.noctis .item-cost { font-size: 13px; color: var(--noctis-ink-soft); font-style: italic; }
+.noctis .item-controls { display: inline-flex; gap: 6px; font-size: 12px; color: var(--noctis-muted); }
+.noctis .item-controls a:hover { color: var(--noctis-blood); }
+.noctis .unequipped { opacity: 0.55; }
+.noctis .list-footer { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--noctis-ink-soft); padding: 2px 4px; }
+
+.noctis .clan-banner {
+  display: flex; gap: 14px; align-items: center; padding: 10px 14px; margin-top: 6px;
+  background: linear-gradient(90deg, rgba(123, 16, 21, 0.12), rgba(255, 250, 238, 0.4));
+  border: 1px solid rgba(123, 16, 21, 0.3); border-radius: 6px;
+}
+.noctis .clan-banner img { width: 74px; height: 74px; object-fit: contain; border: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); }
+.noctis .clan-banner h3 { font-family: var(--noctis-font-title); font-size: 24px; border: none; margin: 0; color: var(--noctis-blood-deep); }
+.noctis .clan-banner h3 em { font-family: var(--noctis-font-body); font-size: 15px; color: var(--noctis-ink-soft); }
+.noctis .clan-banner .weakness { margin: 4px 0 0; font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   Combat
+   -------------------------------------------------------------------------- */
+.noctis .combat-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }
+.noctis .stat-card {
+  display: flex; flex-direction: column; align-items: center; padding: 6px 4px; border-radius: 6px;
+  border: 1px solid rgba(123, 16, 21, 0.35); background: rgba(255, 250, 238, 0.55); cursor: pointer;
+  box-shadow: 0 1px 3px var(--noctis-shadow);
+}
+.noctis .stat-card:hover { box-shadow: 0 0 8px rgba(163, 22, 28, 0.45); }
+.noctis .stat-label { font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .stat-value { font-family: var(--noctis-font-title); font-size: 28px; color: var(--noctis-blood); line-height: 1.1; }
+.noctis .stat-sub { font-size: 12px; color: var(--noctis-muted); }
+.noctis .health-panel { display: grid; grid-template-columns: 260px 1fr; gap: 20px; }
+.noctis .health-table { width: 100%; border-collapse: collapse; background: none; border: none; }
+.noctis .health-table td { padding: 2px 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.3); }
+.noctis .health-table .hl-pen { text-align: right; color: var(--noctis-blood); width: 30px; }
+.noctis .health-table tr.aggravated td, .noctis .health-table tr.lethal td, .noctis .health-table tr.bashing td { background: rgba(123, 16, 21, 0.06); }
+.noctis .health-actions .counts { display: flex; gap: 14px; margin: 0 0 6px; font-size: 14px; }
+.noctis .health-actions .counts .l { color: var(--noctis-blood); }
+.noctis .health-actions .counts .a { color: var(--noctis-blood-deep); font-weight: 700; }
+.noctis .health-actions h4 { font-family: var(--noctis-font-head); color: var(--noctis-blood); margin: 10px 0 4px; border-bottom: 1px solid var(--noctis-line); }
+.noctis .btn-row { display: flex; flex-wrap: wrap; gap: 5px; margin: 5px 0; }
+.noctis .weapon-table { width: 100%; border-collapse: collapse; background: none; border: none; font-size: 14px; }
+.noctis .weapon-table th { font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; color: var(--noctis-ink-soft); text-align: left; border-bottom: 1px solid var(--noctis-blood); background: none; }
+.noctis .weapon-table td { padding: 3px 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.3); }
+.noctis .weapon-table tr.unarmed { color: var(--noctis-muted); font-style: italic; }
+.noctis .weapon-table .ctrl { white-space: nowrap; text-align: right; }
+.noctis .weapon-table .ctrl a { margin-left: 6px; color: var(--noctis-muted); cursor: pointer; }
+.noctis .weapon-table .ctrl a.attack-btn { color: var(--noctis-blood); font-size: 15px; }
+
+/* --------------------------------------------------------------------------
+   Expérience
+   -------------------------------------------------------------------------- */
+.noctis .xp-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 10px 0; }
+.noctis .xp-card {
+  display: flex; flex-direction: column; align-items: center; padding: 8px; border-radius: 8px;
+  border: 1px solid rgba(123, 16, 21, 0.35); background: rgba(255, 250, 238, 0.6);
+}
+.noctis .xp-card .n { font-family: var(--noctis-font-title); font-size: 36px; line-height: 1; }
+.noctis .xp-card .l { font-family: var(--noctis-font-head); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--noctis-ink-soft); }
+.noctis .xp-card.available { background: linear-gradient(180deg, var(--noctis-blood-bright), var(--noctis-blood-deep)); }
+.noctis .xp-card.available .n, .noctis .xp-card.available .l { color: var(--noctis-parchment); }
+.noctis .xp-card.spent .n { color: var(--noctis-ink-soft); }
+.noctis .xp-card.gained .n { color: var(--noctis-blood); }
+.noctis .xp-actions { display: flex; justify-content: center; gap: 10px; }
+.noctis .xp-log { width: 100%; border-collapse: collapse; background: none; border: none; font-size: 14px; }
+.noctis .xp-log th { font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; color: var(--noctis-ink-soft); text-align: left; border-bottom: 1px solid var(--noctis-blood); background: none; }
+.noctis .xp-log td { padding: 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.3); vertical-align: top; }
+.noctis .xp-log tr.gain .amount { color: #2f6b2a; font-weight: 700; }
+.noctis .xp-log tr.spend .amount { color: var(--noctis-blood); font-weight: 700; }
+.noctis .xp-log tr.free .amount { color: var(--noctis-muted); text-decoration: line-through; }
+.noctis .xp-log .date { white-space: nowrap; color: var(--noctis-ink-soft); width: 82px; }
+.noctis .xp-log .cat { font-size: 12px; color: var(--noctis-ink-soft); }
+.noctis .xp-log .note { font-size: 12px; font-style: italic; color: var(--noctis-muted); }
+.noctis .xp-log .ctrl a { color: var(--noctis-muted); cursor: pointer; }
+.noctis .badge { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 9px; border: 1px solid; white-space: nowrap; cursor: pointer; }
+.noctis .badge.gain { color: #2f6b2a; border-color: #2f6b2a; cursor: default; }
+.noctis .badge.paid { color: var(--noctis-parchment); background: var(--noctis-blood); border-color: var(--noctis-blood-deep); }
+.noctis .badge.free { color: var(--noctis-gold); border-color: var(--noctis-gold); background: rgba(168, 131, 47, 0.1); }
+.noctis .xp-costs { margin-top: 16px; font-size: 13px; }
+.noctis .xp-costs summary { cursor: pointer; font-family: var(--noctis-font-head); color: var(--noctis-blood); }
+.noctis .xp-costs table { width: 100%; background: none; border: none; }
+.noctis .xp-costs td { padding: 1px 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.25); }
+.noctis .empty { text-align: center; color: var(--noctis-muted); font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   Chronique
+   -------------------------------------------------------------------------- */
+.noctis .bio-fields label, .noctis label.area { display: flex; flex-direction: column; }
+.noctis .bio-fields label > span, .noctis label.area > span { font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis prose-mirror { min-height: 120px; display: block; background: rgba(255, 252, 244, 0.35); border: 1px solid rgba(90, 70, 54, 0.2); border-radius: 4px; padding: 4px 8px; }
+
+/* --------------------------------------------------------------------------
+   Fiche d'objet
+   -------------------------------------------------------------------------- */
+.noctis.sheet.item .window-content { padding: 14px 18px; }
+.noctis .item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--noctis-blood); }
+.noctis .item-portrait { width: 64px; height: 64px; border: 2px solid var(--noctis-blood-deep); border-radius: 6px; object-fit: cover; cursor: pointer; }
+.noctis .item-emblem { width: 72px; height: 72px; object-fit: contain; border: none; }
+.noctis .item-title { flex: 1; display: flex; flex-direction: column; }
+.noctis .item-header .item-name { font-family: var(--noctis-font-title); font-size: 26px; height: 38px; color: var(--noctis-blood-deep); background: transparent; }
+.noctis .item-type { font-family: var(--noctis-font-head); font-size: 12px; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .item-body { padding-top: 8px; }
+.noctis .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+.noctis .fields-grid label { display: flex; align-items: center; gap: 8px; }
+.noctis .fields-grid label.wide { grid-column: 1 / -1; }
+.noctis .fields-grid label > span { flex: 0 0 auto; font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .fields-grid input, .noctis .fields-grid select, .noctis .fields-grid textarea { flex: 1; }
+.noctis .fields-grid input[type="checkbox"] { flex: 0 0 auto; }
+.noctis .powers-editor, .noctis .bonus-editor, .noctis .modifier-editor, .noctis .sins-editor { width: 100%; border-collapse: collapse; background: none; border: none; font-size: 13px; }
+.noctis .powers-editor th, .noctis .bonus-editor th { font-family: var(--noctis-font-head); font-size: 10px; text-transform: uppercase; color: var(--noctis-ink-soft); background: none; }
+.noctis .powers-editor td, .noctis .bonus-editor td, .noctis .modifier-editor td, .noctis .sins-editor td { padding: 1px 2px; }
+.noctis .powers-editor input[type="number"] { width: 42px; }
+.noctis .powers-editor .summary-row textarea { width: 100%; font-size: 12px; }
+.noctis .automation { margin-top: 12px; border: 1px solid rgba(123, 16, 21, 0.25); border-radius: 5px; padding: 4px 10px; background: rgba(255, 250, 238, 0.4); }
+.noctis .automation summary { cursor: pointer; font-family: var(--noctis-font-head); color: var(--noctis-blood); }
+.noctis .automation h4 { font-family: var(--noctis-font-head); font-size: 13px; margin: 8px 0 2px; }
+.noctis .clan-weakness-preview { margin-top: 8px; font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   Fenêtres de dialogue
+   -------------------------------------------------------------------------- */
+.noctis.noctis-roll-dialog .window-content { padding: 12px 16px; }
+.noctis .noctis-roll-form { display: flex; flex-direction: column; gap: 8px; }
+.noctis .noctis-roll-form label:not(.check) > span { font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .pool-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 6px; }
+.noctis .pool-row label { display: flex; flex-direction: column; }
+.noctis .pool-row .plus { font-family: var(--noctis-font-title); font-size: 22px; color: var(--noctis-blood); padding-bottom: 2px; }
+.noctis .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.noctis .row-2 label { display: flex; flex-direction: column; }
+.noctis .stepper { display: flex; align-items: center; gap: 4px; }
+.noctis .stepper input { width: 48px; text-align: center; font-size: 18px; font-weight: 700; }
+.noctis .stepper button { width: 26px; height: 24px; padding: 0; }
+.noctis .options { display: flex; flex-direction: column; gap: 3px; }
+.noctis label.check { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.noctis label.check.disabled { opacity: 0.5; }
+.noctis label.inline { display: flex; align-items: center; gap: 6px; }
+.noctis .boost-row { display: flex; align-items: center; gap: 8px; font-size: 14px; flex-wrap: wrap; }
+.noctis .boost-row label.mini { display: flex; align-items: center; gap: 3px; }
+.noctis .boost-row label.mini input { width: 38px; }
+.noctis fieldset.bonuses { border: 1px solid rgba(123, 16, 21, 0.3); border-radius: 5px; padding: 4px 8px; }
+.noctis fieldset.bonuses legend { font-family: var(--noctis-font-head); font-size: 12px; color: var(--noctis-blood); }
+.noctis .bonus-row.inapplicable { opacity: 0.45; }
+.noctis .bonus-row .b-label { flex: 1; }
+.noctis .bonus-row .b-val { font-weight: 700; color: var(--noctis-blood); }
+.noctis .bonus-row .b-src { color: var(--noctis-muted); }
+.noctis .summary { text-align: center; padding: 8px; border-top: 2px solid var(--noctis-blood); border-bottom: 1px solid var(--noctis-line); background: rgba(255, 250, 238, 0.5); }
+.noctis .summary [data-summary] { font-family: var(--noctis-font-head); font-size: 16px; }
+.noctis .summary .pool, .noctis .summary .diff { font-family: var(--noctis-font-title); font-size: 26px; color: var(--noctis-blood); }
+.noctis .summary .parts { font-size: 12px; color: var(--noctis-ink-soft); font-style: italic; }
+.noctis .footer-row { display: flex; gap: 8px; align-items: center; }
+.noctis .footer-row select { flex: 1; }
+.noctis .footer-row .roll-btn { font-size: 15px; padding: 4px 16px; }
+.noctis .weapon-line { display: flex; align-items: center; gap: 8px; }
+.noctis .weapon-line img { width: 28px; height: 28px; border: none; }
+
+.noctis-mini-form { display: flex; flex-direction: column; gap: 6px; padding: 4px 0; font-family: var(--noctis-font-body); }
+.noctis-mini-form label { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.noctis-mini-form label input[type="number"] { width: 70px; }
+.noctis-mini-form label.check { justify-content: flex-start; }
+.noctis-mini-form .hint { font-style: italic; font-size: 12px; opacity: 0.8; margin: 0; }
+
+/* --------------------------------------------------------------------------
+   Cartes de chat : liseré décoratif
+   -------------------------------------------------------------------------- */
+.chat-message .noctis-card { font-family: var(--noctis-font-body); color: var(--noctis-ink); }
+.chat-message:has(.noctis-card) { background: var(--noctis-parchment) url("../assets/ui/parchment.webp") center / cover; }
+.noctis-card .card-frame {
+  position: relative;
+  padding: 6px 4px 6px 8px;
+  border: 3px double var(--noctis-blood);
+  box-shadow: inset 0 0 0 3px rgba(201, 163, 90, 0.3);
+  border-radius: 3px;
+  padding: 8px 10px;
+  margin: -2px -4px;
+}
+body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px solid var(--noctis-blood); border-radius: 4px; padding: 8px 10px; }
+.noctis-card header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.noctis-card header .emblem { width: 32px; height: 32px; object-fit: contain; border: none; flex-shrink: 0; }
+.noctis-card header .portrait { width: 38px; height: 38px; object-fit: cover; border: 1px solid var(--noctis-blood-deep); border-radius: 50%; }
+.noctis-card h3 { font-family: var(--noctis-font-title); font-size: 16px; margin: 0; color: var(--noctis-blood-deep); border: none; line-height: 1.15; }
+.noctis-card .sub { font-family: var(--noctis-font-head); font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--noctis-ink-soft); }
+.noctis-card .parts { display: flex; flex-wrap: wrap; gap: 3px; margin: 4px 0; }
+.noctis-card .parts span { font-size: 11px; padding: 0 5px; border: 1px solid rgba(123, 16, 21, 0.3); border-radius: 8px; background: rgba(255, 250, 238, 0.6); }
+.noctis-card .dice { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 8px 0 6px; }
+.noctis-card .d10 {
+  width: 26px; height: 28px; display: grid; place-items: center;
+  font-family: var(--noctis-font-head); font-weight: 800; font-size: 13px;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  background: #cdbb98; color: var(--noctis-ink-soft);
+}
+.noctis-card .d10.hit { background: radial-gradient(circle at 50% 35%, #c42a31, var(--noctis-blood-deep)); color: #fff4e0; }
+.noctis-card .d10.double { background: radial-gradient(circle at 50% 35%, #f0d27a, #8c6a1c); color: var(--noctis-blood-deep); box-shadow: 0 0 6px #f0d27a; }
+.noctis-card .d10.one { background: #1d1310; color: #ff6b6b; }
+.noctis-card .d10.one-soft { background: #8f7d63; color: #2b1b15; }
+.noctis-card .d10.wp { background: var(--noctis-ink); color: #f0d27a; }
+.noctis-card .no-dice { font-style: italic; color: var(--noctis-muted); }
+.noctis-card .outcome {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 3px 6px; border-top: 1px solid var(--noctis-line); border-bottom: 1px solid var(--noctis-line);
+}
+.noctis-card .outcome .count { font-family: var(--noctis-font-title); font-size: 28px; line-height: 1; color: var(--noctis-blood); }
+.noctis-card .outcome .label { font-family: var(--noctis-font-head); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; }
+.noctis-card .outcome.failure .label { color: var(--noctis-ink-soft); }
+.noctis-card .outcome.botch { background: var(--noctis-ink); }
+.noctis-card .outcome.botch .label { color: #ff6b6b; }
+.noctis-card .card-buttons { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+.noctis-card .card-buttons button {
+  font-family: var(--noctis-font-head); font-size: 11px; color: var(--noctis-parchment);
+  background: linear-gradient(180deg, var(--noctis-blood-bright), var(--noctis-blood-deep)); border: 1px solid var(--noctis-blood-deep);
+}
+.noctis-card .hint { font-size: 11px; font-style: italic; color: var(--noctis-muted); text-align: center; margin: 3px 0 0; }
+.noctis-card .extra { font-size: 13px; margin: 4px 0 0; }
+.noctis-card .dmg-steps { list-style: none; padding: 0; margin: 4px 0; font-size: 14px; }
+.noctis-card .dmg-steps .result { font-weight: 700; color: var(--noctis-blood); }
+.noctis-card .alert { text-align: center; font-family: var(--noctis-font-head); font-weight: 700; color: var(--noctis-blood-bright); margin: 4px 0 0; }
+.noctis-card .alert.death { color: #fff; background: var(--noctis-ink); }
+.noctis-card.item-card header img { width: 36px; height: 36px; border: none; }
+.noctis-card.item-card { border: 2px solid var(--noctis-blood); border-radius: 4px; padding: 6px 8px; }
+.noctis-note { font-family: var(--noctis-font-body); font-size: 14px; }
+.noctis-note i { color: var(--noctis-blood); }
+
+/* --------------------------------------------------------------------------
+   En-tête de fenêtre : barre de cuir sombre, filets dorés, boutons ronds carmin
+   -------------------------------------------------------------------------- */
+.application.noctis-window > .window-header {
+  position: relative;
+  height: 40px;
+  padding: 0 10px 0 14px;
+  gap: 8px;
+  color: #f1e3c2;
+  background:
+    radial-gradient(ellipse at 50% -40%, rgba(255, 214, 140, 0.18), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.10) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, #5a4128 0%, #3d2a19 45%, #2a1c10 100%);
+  border: none;
+  border-bottom: 2px solid #1a0f08;
+  box-shadow:
+    inset 0 0 0 1px #8c6a2f,
+    inset 0 0 0 3px #2a1c10,
+    inset 0 0 0 4px #b8913f,
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+/* Frise : petits losanges dorés sous la barre */
+.application.noctis-window > .window-header::after {
+  content: "";
+  position: absolute; left: 6px; right: 6px; bottom: -7px; height: 6px;
+  background:
+    linear-gradient(135deg, transparent 40%, #7b1015 40% 60%, transparent 60%) 0 0 / 12px 6px,
+    linear-gradient(45deg, transparent 40%, #7b1015 40% 60%, transparent 60%) 0 0 / 12px 6px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.application.noctis-window > .window-header .window-title {
+  font-family: var(--noctis-font-head);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #f3e4c0;
+  text-shadow: 0 1px 0 #000, 0 0 6px rgba(255, 200, 120, 0.25);
+}
+.application.noctis-window > .window-header .window-icon { color: #d6b25e; }
+.application.noctis-window > .window-header .header-control,
+.application.noctis-window > .window-header button.header-control {
+  width: 26px; height: 26px; min-width: 26px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #f6e3b3;
+  background: radial-gradient(circle at 35% 30%, #c2262e, #7b1015 55%, #3e0507);
+  border: 1px solid #d6b25e;
+  box-shadow: 0 0 0 1px #2a1c10, 0 1px 3px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  margin-left: 4px;
+}
+.application.noctis-window > .window-header .header-control:hover {
+  color: #fff;
+  box-shadow: 0 0 0 1px #2a1c10, 0 0 8px rgba(214, 178, 94, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.application.noctis-window.minimized > .window-header::after { display: none; }
+
+/* --------------------------------------------------------------------------
+   Bandeau de création et créateur de personnage
+   -------------------------------------------------------------------------- */
+.noctis .creation-banner {
+  margin: 8px 0 0; padding: 5px 10px; font-size: 14px; text-align: center;
+  background: linear-gradient(90deg, rgba(168, 131, 47, 0.15), rgba(168, 131, 47, 0.3), rgba(168, 131, 47, 0.15));
+  border: 1px solid rgba(168, 131, 47, 0.6); border-radius: 4px; position: relative; z-index: 1;
+}
+.noctis .creation-banner a { color: var(--noctis-blood); font-weight: 700; cursor: pointer; text-decoration: underline; }
+
+.noctis.noctis-creator .window-content { padding: 0; }
+.noctis .creator { display: grid; grid-template-columns: 190px 1fr; grid-template-rows: 1fr auto; height: 100%; }
+.noctis .creator-steps {
+  grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 3px; padding: 14px 10px;
+  background: linear-gradient(180deg, #3d2a19, #20140b); color: #f1e3c2; border-right: 3px double #b8913f;
+}
+.noctis .creator-ankh { align-self: center; font-size: 54px; color: #c9a35a; margin-bottom: 8px; }
+.noctis .cstep { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-family: var(--noctis-font-head); font-size: 13px; color: #d9c7a0; }
+.noctis .cstep .num { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; border: 1px solid #b8913f; }
+.noctis .cstep:hover { background: rgba(255, 255, 255, 0.07); }
+.noctis .cstep.active { background: linear-gradient(90deg, #7b1015, #4a070a); color: #fff; }
+.noctis .cstep.done .num { background: #b8913f; color: #20140b; }
+.noctis .cstep.error .num { background: #a3161c; color: #fff; border-color: #ff9b9b; }
+.noctis .mode-badge { margin-top: 12px; text-align: center; font-family: var(--noctis-font-head); font-size: 12px; padding: 3px; border: 1px solid #b8913f; border-radius: 10px; }
+.noctis .mode-badge.free { background: #b8913f; color: #20140b; }
+.noctis .bonus-meter { margin-top: 10px; display: flex; align-items: center; gap: 8px; justify-content: center; }
+.noctis .bonus-meter .n { font-family: var(--noctis-font-title); font-size: 34px; color: #f0c86a; }
+.noctis .bonus-meter .l { font-size: 12px; line-height: 1.2; }
+.noctis .creator-steps .reset { margin-top: auto; font-size: 12px; color: #c9b48a; cursor: pointer; text-align: center; }
+.noctis .creator-main { overflow-y: auto; padding: 10px 24px 20px; }
+.noctis .creator-main .lead { font-size: 15px; line-height: 1.45; }
+.noctis .creator-main .alert { color: #fff; background: var(--noctis-blood); padding: 6px 10px; border-radius: 4px; }
+.noctis .creator-nav { grid-column: 2; display: flex; gap: 8px; padding: 8px 24px; border-top: 2px solid var(--noctis-blood); background: rgba(255, 250, 238, 0.6); }
+.noctis .creator-nav .spacer { flex: 1; }
+.noctis .creator-nav button { font-size: 14px; padding: 4px 16px; }
+.noctis .mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.noctis .mode-card { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 22px; border: 2px solid rgba(123, 16, 21, 0.4); border-radius: 10px; background: rgba(255, 250, 238, 0.6); cursor: pointer; transition: transform 0.1s, box-shadow 0.15s; }
+.noctis .mode-card:hover { transform: translateY(-2px); box-shadow: 0 0 14px rgba(163, 22, 28, 0.45); }
+.noctis .mode-card i { font-size: 40px; color: var(--noctis-blood); }
+.noctis .mode-card h3 { font-family: var(--noctis-font-title); font-size: 24px; border: none; margin: 8px 0; }
+.noctis .cgrid { display: grid; gap: 8px 22px; }
+.noctis .cgrid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.noctis .cgrid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.noctis .cgrid .wide { grid-column: 1 / -1; }
+.noctis .cgrid label { display: flex; flex-direction: column; }
+.noctis .cgrid label > span { font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .cgrid .desc, .noctis .creator-main .desc { font-style: italic; color: var(--noctis-ink-soft); margin: 2px 0; }
+.noctis .clan-card { display: flex; gap: 14px; align-items: center; margin-top: 8px; padding: 10px; border: 1px solid rgba(123, 16, 21, 0.3); border-radius: 6px; background: rgba(255, 250, 238, 0.55); }
+.noctis .clan-card img { width: 90px; height: 90px; object-fit: contain; border: none; }
+.noctis .clan-card h4 { font-family: var(--noctis-font-title); font-size: 22px; margin: 0; }
+.noctis .clan-card h4 em { font-family: var(--noctis-font-body); font-size: 14px; color: var(--noctis-ink-soft); }
+.noctis .clan-card p { margin: 3px 0; }
+.noctis .cgroup { padding: 8px 10px; border: 1px solid rgba(123, 16, 21, 0.25); border-radius: 6px; background: rgba(255, 250, 238, 0.45); }
+.noctis .cgroup.ok { border-color: #5b7d2f; box-shadow: inset 0 0 0 1px rgba(91, 125, 47, 0.4); }
+.noctis .cgroup h3 { font-family: var(--noctis-font-head); font-size: 15px; text-align: center; text-transform: uppercase; border: none; margin: 2px 0 4px; }
+.noctis .cgroup .counter { text-align: center; font-size: 13px; margin: 3px 0 6px; }
+.noctis .cgroup .counter b { font-family: var(--noctis-font-title); font-size: 20px; color: var(--noctis-blood); }
+.noctis .cgroup.ok .counter b { color: #5b7d2f; }
+.noctis .ctrait { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 22px; }
+.noctis .ctrait em.b { font-size: 11px; color: var(--noctis-gold); }
+.noctis .ctrait.disc img { width: 22px; height: 22px; border: none; }
+.noctis .ctrait.disc span { flex: 1; }
+.noctis .cgroup .derived { font-size: 13px; text-align: center; margin-top: 8px; }
+.noctis .finals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0; }
+.noctis .final-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border: 1px solid rgba(123, 16, 21, 0.35); border-radius: 8px; background: rgba(255, 250, 238, 0.6); }
+.noctis .final-card .l { font-family: var(--noctis-font-head); font-size: 12px; text-transform: uppercase; }
+.noctis .final-card .n { font-family: var(--noctis-font-title); font-size: 36px; color: var(--noctis-blood); }
+.noctis .final-card .f { font-size: 12px; color: var(--noctis-muted); text-align: center; }
+.noctis .bonus-summary { text-align: center; font-size: 15px; margin: 6px 0 10px; }
+.noctis .brow { display: flex; align-items: center; gap: 6px; font-size: 14px; padding: 1px 0; border-bottom: 1px dotted rgba(90, 70, 54, 0.25); }
+.noctis .brow span { flex: 1; }
+.noctis .brow b { width: 18px; text-align: center; color: var(--noctis-blood); }
+.noctis .brow a { color: var(--noctis-muted); cursor: pointer; padding: 0 3px; }
+.noctis .brow a:hover { color: var(--noctis-blood); }
+.noctis .bonus-grid h3 { margin-top: 8px; }
+.noctis .mf { margin-top: 12px; }
+.noctis .mf-list { max-height: 260px; overflow-y: auto; }
+.noctis .mf-row { display: flex; align-items: center; gap: 6px; font-size: 14px; padding: 2px 4px; cursor: pointer; border-radius: 3px; }
+.noctis .mf-row:hover { background: rgba(123, 16, 21, 0.07); }
+.noctis .mf-row.on { background: rgba(123, 16, 21, 0.12); font-weight: 600; }
+.noctis .mf-row span { flex: 1; }
+.noctis .mf-row em { font-size: 11px; color: var(--noctis-muted); }
+.noctis .summary-head { display: flex; gap: 14px; align-items: center; }
+.noctis .summary-head img { width: 80px; height: 80px; object-fit: contain; border: none; }
+.noctis .summary-head h3 { font-family: var(--noctis-font-title); font-size: 28px; border: none; margin: 0; color: var(--noctis-blood-deep); }
+.noctis .summary h4 { font-family: var(--noctis-font-head); border-bottom: 1px solid var(--noctis-line); margin: 10px 0 4px; }
+.noctis .srow { display: flex; justify-content: space-between; font-size: 14px; }
+.noctis .errors, .noctis .step-errors { margin-top: 12px; padding: 8px 12px; border: 1px solid var(--noctis-blood-bright); border-radius: 6px; background: rgba(163, 22, 28, 0.08); color: var(--noctis-blood-deep); }
+.noctis .step-errors { list-style: none; }
+.noctis .finish-row { text-align: center; margin-top: 18px; }
+.noctis button.big { font-size: 18px; padding: 8px 28px; font-family: var(--noctis-font-title); }
+
+/* --------------------------------------------------------------------------
+   Journal d'expérience : en-tête clair ; récapitulatif de création
+   -------------------------------------------------------------------------- */
+.noctis .xp-log thead, .noctis .xp-log thead tr, .noctis .xp-log thead th {
+  background: rgba(163, 22, 28, 0.08) !important;
+  color: var(--noctis-blood-deep) !important;
+  text-shadow: none;
+}
+.noctis .xp-log thead th { padding: 6px 4px; border-bottom: 2px solid var(--noctis-blood); }
+.noctis .xp-log tbody tr, .noctis .xp-costs table tr { background: transparent !important; }
+.noctis .xp-log tbody tr:hover { background: rgba(163, 22, 28, 0.05) !important; }
+
+.noctis .xp-creation h4 {
+  margin: 10px 0 2px; font-family: var(--noctis-font-head); font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--noctis-blood); border: none;
+}
+.noctis .xp-creation h4 em { font-family: var(--noctis-font-body); text-transform: none; letter-spacing: 0; font-weight: normal; font-size: 12px; color: var(--noctis-ink-soft); margin-left: 6px; }
+.noctis .xp-creation table { width: 100%; border-collapse: collapse; background: none; border: none; }
+.noctis .xp-creation td { padding: 3px 4px; border-bottom: 1px dotted rgba(90, 70, 54, 0.3); vertical-align: top; }
+.noctis .xp-creation td.lbl { width: 34%; }
+.noctis .xp-creation td.pts { width: 70px; text-align: right; font-weight: 700; white-space: nowrap; color: var(--noctis-blood); }
+.noctis .xp-creation td.det { font-size: 13px; color: var(--noctis-ink-soft); }
+
+/* Infobulles du créateur */
+.noctis .ctrait .tip, .noctis .brow .tip { cursor: help; border-bottom: 1px dotted rgba(90, 70, 54, 0.45); }
+#tooltip .noctis-tip, .locked-tooltip .noctis-tip { max-width: 460px; text-align: left; font-size: 12.5px; line-height: 1.35; }
+#tooltip .noctis-tip li, .locked-tooltip .noctis-tip li { margin-bottom: 2px; }
+#tooltip .noctis-tip .meta, .locked-tooltip .noctis-tip .meta { font-size: 12px; opacity: 0.9; }
+#tooltip .noctis-tip strong { color: #e9c46a; }
+#tooltip .noctis-tip h4, .locked-tooltip .noctis-tip h4 { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #e9c46a; border: none; }
+#tooltip .noctis-tip p, .locked-tooltip .noctis-tip p { margin: 0 0 4px; }
+#tooltip .noctis-tip ul, .locked-tooltip .noctis-tip ul { margin: 2px 0 4px; padding: 0; list-style: none; }
+#tooltip .noctis-tip li b { color: #c2262e; letter-spacing: -1px; margin-right: 4px; }
+#tooltip .noctis-tip .cost, .locked-tooltip .noctis-tip .cost { font-style: italic; opacity: 0.85; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 4px; }
+
+/* ==========================================================================
+   Habillage « Kingdom Come » de la fiche d'acteur
+   En-tête fixe (portrait + identité + ressources), écussons d'onglets,
+   liste sur parchemin au centre, panneau contextuel carmin à droite.
+   ========================================================================== */
+.noctis.sheet.actor.kcd {
+  --kcd-wood: #3a2717; --kcd-wood-dark: #1f150e; --kcd-night: #120c08;
+  --kcd-gold: #c9a35a; --kcd-gold-light: #e8cf8a; --kcd-cream: #f1e3c2; --kcd-ivory: #fff3cf;
+  --kcd-parch-1: #e9dec4; --kcd-parch-2: #d8c8a2; --kcd-slate: #3d4a5c; --kcd-select: #e3c15b;
+  --kcd-crimson: #5a1014; --kcd-crimson-dark: #2e080a;
+}
+.noctis.sheet.actor.kcd .window-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  padding: 0;
+  background: var(--kcd-wood-dark);
+  color: var(--noctis-ink);
+  overflow: hidden;
+}
+.noctis.sheet.actor.kcd .window-content::before { display: none; }
+.noctis.sheet.actor.kcd .window-content > .noctis-header { grid-column: 1 / -1; grid-row: 1; }
+.noctis.sheet.actor.kcd .window-content > .tabs-wrap { grid-column: 1 / -1; grid-row: 2; }
+.noctis.sheet.actor.kcd .window-content > section.tab { grid-column: 1; grid-row: 3; }
+.noctis.sheet.actor.kcd .window-content > .noctis-context { grid-column: 2; grid-row: 3; }
+
+/* ---- En-tête fixe ---- */
+.noctis.kcd .noctis-header {
+  grid-template-columns: 150px minmax(0, 1fr);
+  padding: 14px 18px 12px;
+  gap: 8px 18px;
+  color: var(--kcd-cream);
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0 2px, transparent 2px 7px),
+    linear-gradient(180deg, var(--kcd-wood), var(--kcd-wood-dark));
+  border-bottom: 1px solid #6b5230;
+}
+.noctis.kcd .portrait-wrap { width: 150px; height: 178px; grid-row: 1 / span 2; }
+.noctis.kcd .portrait {
+  width: 150px; height: 178px;
+  border: 2px solid var(--kcd-gold);
+  border-radius: 75px 75px 4px 4px;
+  box-shadow: inset 0 0 24px #000, 0 0 0 4px #2a1d13, 0 0 0 5px #6b5230, 0 6px 14px rgba(0, 0, 0, 0.6);
+  background: #0d0805;
+}
+.noctis.kcd .clan-emblem { right: -10px; bottom: -8px; width: 62px; height: 62px; }
+.noctis.kcd .noctis-header { grid-template-areas: "portrait identity" "portrait resources"; }
+.noctis.kcd .actor-name {
+  color: var(--kcd-gold-light) !important;
+  border-bottom: 1px solid rgba(201, 163, 90, 0.5) !important;
+  text-shadow: 0 2px 4px #000;
+  font-size: 30px !important;
+}
+.noctis.kcd .identity-grid label > span:first-child { color: var(--kcd-gold); font-family: var(--noctis-font-head); }
+.noctis.kcd .noctis-header input[type="text"], .noctis.kcd .noctis-header select {
+  color: var(--kcd-cream); background: transparent; border-bottom: 1px dotted rgba(201, 163, 90, 0.45);
+}
+.noctis.kcd .noctis-header select option { color: #2b2118; }
+.noctis.kcd .identity-grid .gen-value { color: var(--kcd-ivory); }
+.noctis.kcd .icon-btn {
+  width: 30px; height: 30px; border-radius: 50%; color: #f6e3b3;
+  background: radial-gradient(circle at 35% 30%, #c2262e, #7b1015 55%, #3e0507);
+  border: 1px solid var(--kcd-gold);
+}
+.noctis.kcd .xp-badge {
+  background: var(--kcd-night); border: 1px solid var(--kcd-gold); border-radius: 2px;
+  box-shadow: inset 0 0 12px #000;
+}
+.noctis.kcd .xp-badge .xp-label { color: var(--kcd-gold); }
+.noctis.kcd .xp-badge .xp-available { color: var(--kcd-ivory); }
+.noctis.kcd .xp-badge .xp-total { color: #bfae88; }
+
+.noctis.kcd .resources {
+  background: var(--kcd-night); border: 1px solid #6b5230; border-radius: 0;
+  box-shadow: inset 0 0 14px #000;
+}
+.noctis.kcd .resource .res-title { color: #d9c9a3; }
+.noctis.kcd .resource .res-title b { color: var(--kcd-ivory); }
+.noctis.kcd .resource .res-title i { color: #e0605a; }
+.noctis.kcd .noctis-header .noctis-dots .dot { border-color: var(--kcd-gold); background: #2a1d13; }
+.noctis.kcd .noctis-header .noctis-dots .dot.filled { background: radial-gradient(circle at 35% 30%, #e0505a, #8a1c1c 55%, #4a0a0d); border-color: #e0605a; }
+.noctis.kcd .noctis-header .squares .sq { border-color: rgba(201, 163, 90, 0.7); background: #2a1d13; }
+.noctis.kcd .noctis-header .wp-squares .sq.filled { background: var(--kcd-cream); }
+.noctis.kcd .noctis-header .blood-squares .sq { border-color: #a3161c; }
+.noctis.kcd .noctis-header .hbox { border-color: rgba(201, 163, 90, 0.8); background: #2a1d13; }
+.noctis.kcd .noctis-header .hbox.bashing::after { color: var(--kcd-cream); }
+.noctis.kcd .noctis-header .hbox.lethal::after { color: #ff7a7a; }
+.noctis.kcd .aura { color: #bfae88; }
+
+/* ---- Onglets en écussons ---- */
+.noctis.kcd .tabs-wrap { background: linear-gradient(180deg, #23170e, var(--kcd-wood-dark)); padding: 8px 12px 4px; }
+.noctis.kcd .creation-banner { margin: 0 0 6px; color: var(--kcd-cream); background: rgba(90, 16, 20, 0.6); border: 1px solid #6b5230; }
+.noctis.kcd .creation-banner a { color: var(--kcd-gold-light); text-decoration: underline; }
+.noctis.kcd .noctis-tabs { gap: 18px; margin: 0; border: none; }
+.noctis.kcd .noctis-tabs .tab-link {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 0; border: none; background: none !important; border-radius: 0;
+  font-size: 11px; color: #bfae88;
+}
+.noctis.kcd .noctis-tabs .tab-link i {
+  width: 42px; height: 48px; display: grid; place-items: center; font-size: 17px; color: var(--kcd-ivory);
+  clip-path: polygon(0 0, 100% 0, 100% 58%, 50% 100%, 0 58%);
+  background: var(--shield, #8a1c1c);
+  box-shadow: inset 0 0 0 2px var(--kcd-gold), inset 0 -10px 16px rgba(0, 0, 0, 0.35);
+  padding-bottom: 8px; box-sizing: border-box;
+  transition: transform 0.12s, filter 0.12s;
+}
+.noctis.kcd .noctis-tabs .tab-link:nth-child(1) { --shield: #8a1c1c; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(2) { --shield: #4a2a6a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(3) { --shield: #7a5a1a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(4) { --shield: #2f4a6a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(5) { --shield: #2f5a3a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(6) { --shield: #5a3a22; }
+.noctis.kcd .noctis-tabs .tab-link:hover { color: var(--kcd-ivory); text-shadow: none; }
+.noctis.kcd .noctis-tabs .tab-link:hover i { filter: brightness(1.2); }
+.noctis.kcd .noctis-tabs .tab-link.active { color: var(--kcd-ivory); }
+.noctis.kcd .noctis-tabs .tab-link.active i {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: inset 0 0 0 3px var(--kcd-select), inset 0 -10px 16px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.15);
+}
+.noctis.kcd .noctis-tabs .tab-link.active span { border-bottom: 2px solid var(--kcd-gold); }
+
+/* ---- Liste centrale sur parchemin ---- */
+.noctis.sheet.actor.kcd section.tab {
+  margin: 4px 0 12px 12px;
+  padding: 4px 14px 18px;
+  background: linear-gradient(180deg, var(--kcd-parch-1), var(--kcd-parch-2));
+  border: 1px solid #6b5230;
+  box-shadow: inset 0 0 40px rgba(90, 60, 30, 0.35);
+}
+.noctis.kcd section.tab .noctis-section {
+  justify-content: center;
+  margin: 12px -6px 6px;
+  padding: 3px 10px;
+  font-family: var(--noctis-font-head); font-size: 13px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--kcd-slate);
+  background: linear-gradient(90deg, rgba(61, 74, 92, 0.12), rgba(61, 74, 92, 0.34), rgba(61, 74, 92, 0.12));
+}
+.noctis.kcd section.tab .noctis-section::before, .noctis.kcd section.tab .noctis-section::after { display: none; }
+.noctis.kcd .trait-group h3 {
+  font-size: 11px; color: #e9dec4; background: var(--kcd-slate); padding: 3px 6px; margin: 4px 0 2px; letter-spacing: 0.08em;
+}
+.noctis.kcd .trait-row, .noctis.kcd .item-row, .noctis.kcd .virtue {
+  padding: 2px 6px; border-bottom: 1px dotted rgba(90, 60, 30, 0.3);
+}
+.noctis.kcd .trait-row:hover, .noctis.kcd .item-row:hover, .noctis.kcd .weapon-table tbody tr:hover { background: rgba(201, 163, 90, 0.18); }
+.noctis.kcd .is-selected, .noctis.kcd .weapon-table tbody tr.is-selected, .noctis.kcd .power.is-selected {
+  background: var(--kcd-select) !important;
+  box-shadow: inset 3px 0 0 #8a6a2a;
+}
+.noctis.kcd .is-selected .spec::placeholder { color: rgba(43, 33, 24, 0.5); }
+.noctis.kcd .trait-label:hover, .noctis.kcd .item-name:hover, .noctis.kcd .power-name:hover, .noctis.kcd .disc-name:hover { color: var(--noctis-blood); }
+.noctis.kcd .power-name { cursor: pointer; }
+.noctis.kcd .virtue-info { color: var(--kcd-slate); font-size: 12px; cursor: pointer; }
+.noctis.kcd .discipline-card > header.is-selected { box-shadow: inset 0 0 0 2px #8a6a2a; }
+
+/* ---- Panneau contextuel ---- */
+.noctis.kcd .noctis-context {
+  display: flex; flex-direction: column; min-height: 0;
+  margin: 4px 12px 12px 10px;
+  padding: 18px 18px 14px;
+  color: var(--kcd-cream);
+  background: linear-gradient(180deg, var(--kcd-crimson), var(--kcd-crimson-dark));
+  border: 1px solid #6b5230;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.45);
+}
+.noctis.kcd .ctx-head { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(201, 163, 90, 0.4); }
+.noctis.kcd .ctx-medal {
+  flex: 0 0 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #9a7a44, #3a2717); border: 1px solid var(--kcd-gold);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+.noctis.kcd .ctx-medal img { width: 40px; height: 40px; object-fit: contain; border: none; }
+.noctis.kcd .ctx-medal.letter { font-family: var(--noctis-font-head); font-size: 22px; color: var(--kcd-ivory); }
+.noctis.kcd .ctx-title { min-width: 0; display: flex; flex-direction: column; }
+.noctis.kcd .ctx-title h2 { margin: 0; border: none; font-family: var(--noctis-font-head); font-size: 20px; font-weight: 700; color: var(--kcd-ivory); line-height: 1.15; }
+.noctis.kcd .ctx-sub { font-size: 13px; color: #d9c9a3; font-style: italic; }
+.noctis.kcd .ctx-body { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 2px 6px 0; display: flex; flex-direction: column; gap: 10px; }
+.noctis.kcd .ctx-dots { color: #ff8a80; letter-spacing: 2px; font-size: 16px; }
+.noctis.kcd .ctx-dots .empty { color: rgba(241, 227, 194, 0.35); }
+.noctis.kcd .ctx-desc, .noctis.kcd .ctx-html { margin: 0; font-size: 14.5px; line-height: 1.42; }
+.noctis.kcd .ctx-html p { margin: 0 0 6px; }
+.noctis.kcd .ctx-html a { color: var(--kcd-gold-light); }
+.noctis.kcd .ctx-system { padding: 8px 10px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(201, 163, 90, 0.4); font-size: 13.5px; line-height: 1.4; }
+.noctis.kcd .ctx-system b { font-family: var(--noctis-font-head); font-size: 11px; color: var(--kcd-select); letter-spacing: 0.08em; text-transform: uppercase; }
+.noctis.kcd .ctx-system p { margin: 2px 0 0; }
+.noctis.kcd .ctx-levels, .noctis.kcd .ctx-powers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; border-top: 1px solid rgba(201, 163, 90, 0.3); padding-top: 8px; }
+.noctis.kcd .ctx-levels li, .noctis.kcd .ctx-powers li { font-size: 13px; line-height: 1.3; padding: 3px 6px; color: #d9c9a3; }
+.noctis.kcd .ctx-levels li b, .noctis.kcd .ctx-powers li b { color: var(--kcd-select); letter-spacing: 1px; margin-right: 4px; }
+.noctis.kcd .ctx-levels li strong { color: var(--kcd-ivory); }
+.noctis.kcd .ctx-levels li.current { background: rgba(227, 193, 91, 0.18); color: var(--kcd-ivory); box-shadow: inset 2px 0 0 var(--kcd-select); }
+.noctis.kcd .ctx-powers li { opacity: 0.55; }
+.noctis.kcd .ctx-powers li.unlocked { opacity: 1; color: var(--kcd-ivory); }
+.noctis.kcd .ctx-facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 0; font-size: 13px; border-top: 1px solid rgba(201, 163, 90, 0.3); padding-top: 8px; }
+.noctis.kcd .ctx-facts dt { color: var(--kcd-gold); font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 2px; }
+.noctis.kcd .ctx-facts dd { margin: 0; color: var(--kcd-ivory); }
+.noctis.kcd .ctx-hint { margin: 0; font-size: 13px; font-style: italic; color: #d9c9a3; }
+.noctis.kcd .ctx-actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 10px; border-top: 1px solid rgba(201, 163, 90, 0.4); }
+.noctis.kcd .ctx-actions > *, .noctis.kcd .ctx-btn-wrap { flex: 1 1 130px; display: flex; }
+.noctis.kcd .ctx-actions button {
+  flex: 1; min-height: 40px; margin: 0;
+  font-family: var(--noctis-font-head); font-size: 12.5px; letter-spacing: 0.04em;
+  color: var(--kcd-ivory); background: var(--kcd-crimson-dark); border: 1px solid var(--kcd-gold); border-radius: 0;
+  box-shadow: none;
+}
+.noctis.kcd .ctx-actions button.primary { color: #2b2118; background: var(--kcd-gold); font-weight: 700; }
+.noctis.kcd .ctx-actions button:hover { filter: brightness(1.15); box-shadow: 0 0 8px rgba(227, 193, 91, 0.5); }
+.noctis.kcd .noctis-header .blood-squares .sq.filled { background: radial-gradient(circle at 60% 40%, #e0404a, #a3161c 60%, #5a0a0d); }
+.noctis.kcd .noctis-header .wp-squares .sq.filled { background: var(--kcd-cream); }
+.noctis.kcd .ctx-actions button { font-size: 12px; white-space: nowrap; }
+.noctis.kcd .discipline-card > header img {
+  width: 42px; height: 42px; padding: 5px; box-sizing: border-box; object-fit: contain; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #9a7a44, #3a2717); border: 1px solid var(--kcd-gold);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.noctis.kcd .discipline-card { border-color: #6b5230; }
+
+/* ---- Écussons supplémentaires ---- */
+.noctis.kcd .noctis-tabs { gap: 12px; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(4) { --shield: #2f5a5a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(5) { --shield: #5a4a2a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(6) { --shield: #2f4a6a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(7) { --shield: #2f5a3a; }
+.noctis.kcd .noctis-tabs .tab-link:nth-child(8) { --shield: #5a3a22; }
+
+/* ---- Relations ---- */
+.noctis .rel-quota { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.noctis .rel-quota .quota { font-size: 13px; padding: 2px 8px; border: 1px solid rgba(61, 74, 92, 0.4); background: rgba(255, 252, 244, 0.5); }
+.noctis .rel-quota .quota b { margin-left: 4px; }
+.noctis .rel-quota .quota.full { border-color: #2f6b2a; color: #2f6b2a; }
+.noctis .rel-quota .quota.over { border-color: var(--noctis-blood); color: var(--noctis-blood); }
+.noctis .rel-list, .noctis .op-list { display: flex; flex-direction: column; gap: 6px; }
+.noctis .rel-card, .noctis .op-row {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 10px; align-items: start;
+  padding: 6px 8px; background: rgba(255, 252, 244, 0.45); border: 1px solid rgba(90, 60, 30, 0.25);
+  box-shadow: inset 3px 0 0 var(--rel-color, #8c7a63);
+}
+.noctis .op-row { grid-template-columns: 48px minmax(0, 1fr); }
+.noctis .rel-card.attitude-friendly, .noctis .op-row.trust-trust, .noctis .op-row.trust-loyal { --rel-color: #2f6b2a; }
+.noctis .rel-card.attitude-wary, .noctis .op-row.trust-wary { --rel-color: #b8862b; }
+.noctis .rel-card.attitude-hostile, .noctis .op-row.trust-enemy { --rel-color: #8a1c1c; }
+.noctis .rel-img { width: 48px; height: 48px; object-fit: cover; border: 1px solid #6b5230; border-radius: 50%; background: #2a1d13; }
+.noctis .rel-main, .noctis .op-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.noctis .rel-line { display: flex; gap: 6px; align-items: center; min-width: 0; }
+.noctis .rel-line select { flex: 0 0 auto; max-width: 150px; font-size: 13px; height: 24px; }
+.noctis .rel-name { flex: 1; font-weight: 600; font-size: 15px; }
+.noctis .rel-place { font-size: 13px; font-style: italic; }
+.noctis .rel-main textarea, .noctis .op-main textarea { width: 100%; font-size: 13.5px; resize: vertical; min-height: 38px; }
+.noctis .rel-controls a { color: var(--noctis-muted); cursor: pointer; }
+.noctis .op-name { font-size: 15px; }
+.noctis .op-sub { flex: 1; font-size: 12.5px; font-style: italic; color: var(--noctis-ink-soft); }
+
+/* ---- Domaine ---- */
+.noctis .domain-head { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 6px 14px; }
+.noctis .dfield { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.noctis .dfield > span { font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--noctis-ink-soft); }
+.noctis .dfield textarea { width: 100%; resize: vertical; font-size: 14px; }
+.noctis .domain-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.noctis .domain-card { padding: 8px 10px; background: rgba(255, 252, 244, 0.45); border: 1px solid rgba(90, 60, 30, 0.25); display: flex; flex-direction: column; gap: 6px; }
+.noctis .domain-card h3 { margin: 0; font-family: var(--noctis-font-head); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #e9dec4; background: #3d4a5c; padding: 3px 6px; border: none; }
+.noctis .domain-total { margin: 0; font-size: 14px; }
+.noctis .domain-card .split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.noctis .domain-card .split label { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.noctis .domain-card .split input[type="number"] { width: 52px; }
+.noctis .domain-effects { margin: 0; padding-left: 16px; font-size: 13px; }
+.noctis .domain-levels { margin: 0; padding: 0; list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
+.noctis .domain-levels li { padding: 3px 5px; }
+.noctis .domain-levels li b { color: var(--noctis-blood); margin-right: 4px; letter-spacing: 1px; }
+.noctis .domain-levels li.current { background: var(--kcd-select, #e3c15b); }
+.noctis .hunt-calc { margin: 0; font-size: 13.5px; }
+.noctis .hunt button { min-height: 36px; }
+.noctis .domain-card .pool { font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.noctis .domain-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; margin-top: 10px; }
+.noctis .domain-notes .wide, .noctis .domain-head .wide { grid-column: 1 / -1; }
+.noctis .domain-head .wide { grid-column: auto; }
+
+/* ---- Pastille PJ ---- */
+.noctis .icon-btn.pc-flag { font-family: var(--noctis-font-head); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.noctis.kcd .icon-btn.pc-flag { background: #2a1d13; color: #bfae88; }
+.noctis.kcd .icon-btn.pc-flag.on { background: radial-gradient(circle at 35% 30%, #f0d27a, #c9a35a 55%, #7a5a1a); color: #2b2118; box-shadow: 0 0 8px rgba(227, 193, 91, 0.6); }
+.noctis .icon-btn.pc-flag.static { cursor: default; }
+.noctis-pc-badge {
+  display: inline-block; margin-left: 6px; padding: 0 5px; border-radius: 3px; vertical-align: middle;
+  font-size: 10px; font-weight: 700; line-height: 16px; color: #2b2118; background: #c9a35a;
+}
+.noctis-ledger-btn { flex: 0 0 100%; }
+
+/* ---- Registre de l'expérience ---- */
+.noctis.noctis-xp-ledger .window-content {
+  background: linear-gradient(180deg, #e9dec4, #d8c8a2); color: var(--noctis-ink); font-family: var(--noctis-font-body); padding: 10px 16px;
+}
+.noctis .ledger { display: flex; flex-direction: column; gap: 8px; height: 100%; min-height: 0; }
+.noctis .ledger .noctis-section { justify-content: center; margin: 4px 0; padding: 3px; font-family: var(--noctis-font-head); font-size: 13px; letter-spacing: 0.1em; color: #3d4a5c;
+  background: linear-gradient(90deg, rgba(61,74,92,0.12), rgba(61,74,92,0.34), rgba(61,74,92,0.12)); }
+.noctis .ledger .noctis-section::before, .noctis .ledger .noctis-section::after { display: none; }
+.noctis .award-row { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.noctis .award-row label { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.noctis .award-row label > span { font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .award-row label.grow { flex: 1; min-width: 220px; }
+.noctis .award-row label.check { flex-direction: row; align-items: center; gap: 6px; font-size: 13px; }
+.noctis .award-row input[type="number"] { width: 80px; }
+.noctis .award-btn { min-height: 36px; padding: 0 18px; }
+.noctis .ledger-warn { margin: 0; padding: 6px 10px; font-size: 13px; background: rgba(227, 193, 91, 0.35); border: 1px solid #b8862b; }
+.noctis .ledger-table-wrap { flex: 1; min-height: 160px; overflow: auto; }
+.noctis .ledger-table { width: 100%; border-collapse: collapse; background: none; border: none; font-size: 14px; }
+.noctis .ledger-table thead th { position: sticky; top: 0; z-index: 1; background: #3d4a5c !important; color: #e9dec4 !important; font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; padding: 6px; text-align: left; }
+.noctis .ledger-table thead th a { color: inherit; cursor: pointer; }
+.noctis .ledger-table td { padding: 6px; border-bottom: 1px dotted rgba(90, 60, 30, 0.35); vertical-align: middle; }
+.noctis .ledger-table tbody tr { background: transparent !important; }
+.noctis .ledger-table tbody tr:hover { background: rgba(201, 163, 90, 0.18) !important; }
+.noctis .ledger-table .num { text-align: right; width: 64px; font-weight: 600; }
+.noctis .ledger-table .num input { width: 54px; text-align: right; }
+.noctis .ledger-table .avail { color: #2f6b2a; }
+.noctis .ledger-table .avail.neg { color: var(--noctis-blood); }
+.noctis .ledger-table tfoot td { font-family: var(--noctis-font-head); font-size: 12px; border-top: 2px solid #3d4a5c; border-bottom: none; }
+.noctis .ledger-table .who { display: flex; gap: 10px; align-items: center; }
+.noctis .ledger-table .who img { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; border: 1px solid #6b5230; cursor: pointer; }
+.noctis .ledger-table .who-text { display: flex; flex-direction: column; min-width: 0; }
+.noctis .ledger-table .who-text em { font-size: 12.5px; color: var(--noctis-ink-soft); }
+.noctis .ledger-table .who-text small { font-size: 12px; color: var(--noctis-muted); }
+.noctis .ledger-table .online { color: #2f6b2a; font-size: 8px; }
+.noctis .ledger-table .alert { font-size: 12px; color: var(--noctis-blood); }
+.noctis .ledger-table .bar-col { width: 34%; }
+.noctis .xp-bar { display: flex; height: 16px; background: rgba(43, 33, 24, 0.12); border: 1px solid rgba(43, 33, 24, 0.3); overflow: hidden; }
+.noctis .xp-bar .seg { height: 100%; border-right: 1px solid rgba(255, 255, 255, 0.4); }
+.noctis .seg.attr, .noctis .sw.attr { background: #8a1c1c; }
+.noctis .seg.abil, .noctis .sw.abil { background: #2f4a6a; }
+.noctis .seg.disc, .noctis .sw.disc { background: #4a2a6a; }
+.noctis .seg.moral, .noctis .sw.moral { background: #b8862b; }
+.noctis .seg.bg, .noctis .sw.bg { background: #2f5a3a; }
+.noctis .seg.other, .noctis .sw.other { background: #6b6358; }
+.noctis .seg.avail, .noctis .sw.avail { background: repeating-linear-gradient(45deg, #e3c15b 0 4px, #f2dc93 4px 8px); }
+.noctis .ledger-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--noctis-ink-soft); }
+.noctis .ledger-legend .sw { display: inline-block; width: 12px; height: 12px; vertical-align: -1px; border: 1px solid rgba(0,0,0,0.25); }
+.noctis .ledger-history { max-height: 190px; overflow: auto; }
+.noctis .batch { display: flex; gap: 10px; align-items: center; padding: 4px 6px; border-bottom: 1px dotted rgba(90, 60, 30, 0.35); font-size: 13.5px; }
+.noctis .batch .b-date { width: 82px; color: var(--noctis-ink-soft); }
+.noctis .batch .b-label { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.noctis .batch .b-label small { color: var(--noctis-muted); }
+.noctis .batch .b-undo { cursor: pointer; color: var(--noctis-blood); font-size: 12.5px; white-space: nowrap; }
+.noctis-xp-msg { font-size: 14px; }
+
+/* ---- Couleurs des écussons par onglet ---- */
+.noctis.kcd .noctis-tabs .tab-link[data-tab="traits"] { --shield: #2f4a6a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="disciplines"] { --shield: #4a2a6a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="combat"] { --shield: #8a1c1c; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="advantages"] { --shield: #7a5a1a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="experience"] { --shield: #2f5a3a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="relations"] { --shield: #2f5a5a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="domain"] { --shield: #5a4a2a; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="biography"] { --shield: #5a3a22; }
+
+/* ==========================================================================
+   Combat : actions, vitesse, jet opposé, carte de confrontation
+   ========================================================================== */
+.noctis .combat-summary { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
+.noctis .stat-card small { font-size: 0.5em; opacity: 0.7; }
+.noctis .stat-card .stat-btns { display: flex; gap: 10px; margin-top: 2px; font-size: 13px; color: var(--noctis-blood); }
+.noctis .stat-card.actions-card { cursor: default; }
+.noctis .stat-card.actions-card.empty .stat-value { color: var(--noctis-muted); }
+.noctis .stat-card.speed-card { cursor: help; }
+.noctis .combat-pill {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; margin-right: 6px; cursor: pointer;
+  font-family: var(--noctis-font-head); font-size: 13px; color: #fff3cf; background: #8a1c1c; border: 1px solid #c9a35a; border-radius: 12px;
+}
+.noctis .combat-pill.empty { background: #3a2717; color: #bfae88; }
+
+/* Fenêtre de jet : onglets */
+.noctis .roll-tabs { display: flex; gap: 0; margin: -4px -4px 8px; border-bottom: 2px solid var(--noctis-blood); }
+.noctis .roll-tabs a {
+  flex: 1; text-align: center; padding: 6px; cursor: pointer; font-family: var(--noctis-font-head); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--noctis-ink-soft); background: rgba(61, 74, 92, 0.08);
+}
+.noctis .roll-tabs a.active { color: #fff3cf; background: linear-gradient(180deg, var(--noctis-blood-bright), var(--noctis-blood)); }
+.noctis .opposed-box { padding: 6px 8px; margin-bottom: 8px; background: rgba(61, 74, 92, 0.1); border: 1px solid rgba(61, 74, 92, 0.35); }
+.noctis .opposed-box.hidden { display: none; }
+.noctis .opposed-box .target-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.noctis .opposed-box label { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.noctis .opposed-box label > span { font-family: var(--noctis-font-head); font-size: 10.5px; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .opposed-box .hint { margin: 6px 0 0; font-size: 12.5px; }
+
+/* Carte de confrontation */
+.noctis-card.clash-card .clash-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; padding-bottom: 6px; border-bottom: 1px solid rgba(123, 16, 21, 0.4); }
+.noctis-card.clash-card .fighter { display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; min-width: 0; }
+.noctis-card.clash-card .fighter img { width: 56px; height: 56px; object-fit: cover; border-radius: 50%; border: 2px solid #c9a35a; box-shadow: 0 2px 6px rgba(0,0,0,0.5); background: #1a120b; }
+.noctis-card.clash-card .fighter span { font-family: var(--noctis-font-head); font-size: 12.5px; font-weight: 700; line-height: 1.1; color: var(--noctis-ink); overflow-wrap: anywhere; }
+.noctis-card.clash-card .vs { font-family: var(--noctis-font-title); font-size: 26px; color: var(--noctis-blood); text-shadow: 0 1px 0 #fff; }
+.noctis-card.clash-card .clash-weapon { margin: 4px 0; text-align: center; font-size: 12px; font-style: italic; color: var(--noctis-ink-soft); }
+.noctis-card.clash-card .clash-step { padding: 4px 0; border-bottom: 1px dotted rgba(90, 60, 30, 0.35); }
+.noctis-card.clash-card .clash-step h4 { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 2px; border: none; font-family: var(--noctis-font-head); font-size: 12px; color: var(--noctis-blood); }
+.noctis-card.clash-card .clash-step h4 .res { color: var(--noctis-ink); }
+.noctis-card.clash-card .clash-step small { font-size: 11px; color: var(--noctis-muted); }
+.noctis-card.clash-card .dice { display: flex; flex-wrap: wrap; gap: 3px; margin: 2px 0; }
+.noctis-card.clash-card .clash-net { margin: 6px 0; font-size: 13px; text-align: center; }
+.noctis-card.clash-card .clash-wait { margin-top: 6px; padding: 6px; background: rgba(227, 193, 91, 0.25); border: 1px solid #b8862b; }
+.noctis-card.clash-card .clash-wait p { margin: 0 0 4px; font-size: 13px; }
+.noctis-card.clash-card .clash-pending { margin: 6px 0 0; font-size: 12.5px; font-style: italic; text-align: center; color: var(--noctis-ink-soft); }
+.noctis-card.clash-card .clash-notes { margin: 4px 0 0; padding-left: 16px; font-size: 12.5px; }
+.noctis-card.clash-card .alert { color: var(--noctis-blood); font-weight: 700; }
+
+/* Fenêtre de Vélocité */
+.noctis-celerity-dialog .cel-row { display: grid; grid-template-columns: 40px 1fr auto; gap: 8px; align-items: center; margin: 6px 0; }
+.noctis-celerity-dialog .cel-row img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.noctis-celerity-dialog .cel-row span { display: flex; flex-direction: column; }
+.noctis-celerity-dialog .cel-row small { opacity: 0.75; }
+
+/* ==========================================================================
+   Créateur : atouts et handicaps
+   ========================================================================== */
+.noctis .mf-word.merit { color: #2f6b2a; }
+.noctis .mf-word.flaw { color: #8a1c1c; }
+.noctis .mf-totals { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 6px 10px; margin-bottom: 8px; background: rgba(61, 74, 92, 0.1); border: 1px solid rgba(61, 74, 92, 0.3); font-size: 14px; }
+.noctis .mf-totals .merit b { color: #2f6b2a; }
+.noctis .mf-totals .flaw b { color: #8a1c1c; }
+.noctis .mf-section { margin-bottom: 12px; }
+.noctis .mf-cat { display: flex; align-items: center; gap: 8px; margin: 6px 0; padding: 4px 8px; border: none; font-family: var(--noctis-font-head); font-size: 15px; color: #fff3cf; background: linear-gradient(90deg, #3d4a5c, rgba(61, 74, 92, 0.6)); }
+.noctis .mf-icon { font-size: 20px; line-height: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
+.noctis .mf-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.noctis .mf-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.noctis .mf-card {
+  padding: 6px 8px; cursor: pointer; background: rgba(255, 252, 244, 0.55);
+  border: 2px solid var(--mf-color); border-radius: 4px; box-shadow: inset 4px 0 0 var(--mf-color);
+}
+.noctis .mf-card.merit { --mf-color: #2f6b2a; }
+.noctis .mf-card.flaw { --mf-color: #8a1c1c; }
+.noctis .mf-card:hover { background: rgba(255, 252, 244, 0.85); }
+.noctis .mf-card.on { background: color-mix(in srgb, var(--mf-color) 14%, #fffaf0); box-shadow: inset 4px 0 0 var(--mf-color), 0 0 6px color-mix(in srgb, var(--mf-color) 50%, transparent); }
+.noctis .mf-card header { display: flex; align-items: center; gap: 6px; }
+.noctis .mf-card .mf-check { color: var(--mf-color); }
+.noctis .mf-card .mf-name { flex: 1; font-size: 15px; }
+.noctis .mf-card .mf-cost { font-family: var(--noctis-font-head); font-size: 11px; padding: 1px 6px; border-radius: 8px; color: #fff; background: var(--mf-color); white-space: nowrap; }
+.noctis .mf-levels { display: flex; gap: 4px; margin: 5px 0 2px 22px; }
+.noctis .mf-lv {
+  width: 30px; height: 26px; padding: 0; margin: 0; font-family: var(--noctis-font-head); font-weight: 700; font-size: 13px;
+  color: var(--mf-color) !important; background: #fffaf0 !important; border: 1px solid var(--mf-color) !important; border-radius: 4px; box-shadow: none !important;
+}
+.noctis .mf-lv.active { color: #fff !important; background: var(--mf-color) !important; }
+.noctis .mf-level-text { margin: 4px 0 0 22px; font-size: 13px; line-height: 1.35; }
+.noctis .mf-card details { margin: 4px 0 0 22px; font-size: 12.5px; color: var(--noctis-ink-soft); }
+.noctis .mf-card details summary { cursor: pointer; list-style: none; }
+.noctis .mf-card details[open] summary { display: none; }
+.noctis .mf-card details p { margin: 0; }
+.noctis .mf-summary .mf-merit b { color: #2f6b2a; }
+.noctis .mf-summary .mf-flaw b { color: #8a1c1c; }
+.noctis .item-row.mf-row { border: 1px solid var(--mf-color); border-left-width: 4px; border-radius: 3px; margin-bottom: 3px; background: rgba(255, 252, 244, 0.45); }
+.noctis .item-row.mf-merit { --mf-color: #2f6b2a; }
+.noctis .item-row.mf-flaw { --mf-color: #8a1c1c; }
+.noctis .item-row.mf-row .mf-icon { width: 26px; text-align: center; font-size: 17px; }
+.noctis .item-row.mf-row .item-cost { color: #fff; background: var(--mf-color); border-radius: 8px; padding: 0 6px; font-size: 11px; }
+.noctis-mf-dialog .mf-pick-list { display: flex; flex-direction: column; gap: 6px; max-width: 520px; }
+.noctis-mf-dialog .mf-pick { display: flex; gap: 6px; align-items: baseline; font-size: 13.5px; line-height: 1.35; }
+
+/* --------------------------------------------------------------------------
+   Onglet « Variantes » (à droite des onglets)
+   -------------------------------------------------------------------------- */
+.noctis .tabs-row { display: flex; align-items: flex-end; gap: 12px; }
+.noctis .tabs-row > .noctis-tabs:first-child { flex: 1; }
+.noctis .noctis-tabs.noctis-tabs-side { flex: 0 0 auto; justify-content: flex-end; }
+.noctis .noctis-tabs-side .tab-link { position: relative; }
+.noctis.kcd .noctis-tabs-side { padding-left: 14px; border-left: 1px solid rgba(201, 163, 90, 0.35) !important; }
+.noctis.kcd .noctis-tabs .tab-link[data-tab="variants"] { --shield: #3d4a5c; }
+.noctis .noctis-tabs-side .tab-badge {
+  position: absolute; top: -4px; right: -6px; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px;
+  font: 700 10px/16px var(--noctis-font-body, serif); text-align: center; color: #2b2118; background: var(--kcd-select, #e3c15b);
+  box-shadow: 0 0 0 1px #2b2118;
+}
+.noctis .tab-variants .variants-intro { margin: 4px 0 10px; font-style: italic; color: var(--noctis-ink-soft); }
+.noctis .tab-variants .variants-intro a { font-style: normal; font-weight: 700; color: var(--noctis-blood); cursor: pointer; margin-left: 6px; }
+.noctis .tab-variants .variants-head { margin: 12px 0 6px; font-family: var(--noctis-font-head); font-size: 14px; color: #2f5a3a; border: none; }
+.noctis .tab-variants .variant-card {
+  display: flex; gap: 12px; align-items: flex-start; padding: 8px 12px; margin: 0 0 6px;
+  background: rgba(255, 250, 235, 0.55); border: 1px solid #b59a68; border-left: 4px solid #2f5a3a;
+}
+.noctis .tab-variants .variant-card.book { border-left-color: #8a7a5a; background: rgba(255, 250, 235, 0.3); }
+.noctis .tab-variants .v-icon {
+  flex: 0 0 34px; height: 34px; display: grid; place-items: center; font-size: 15px; color: var(--kcd-ivory, #fff3cf);
+  background: #2f5a3a; border: 1px solid var(--kcd-gold, #c9a35a); border-radius: 50%;
+}
+.noctis .tab-variants .variant-card.book .v-icon { background: #6b5a3e; }
+.noctis .tab-variants .v-body { flex: 1; min-width: 0; }
+.noctis .tab-variants .v-body header { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.noctis .tab-variants .v-body header b { font-family: var(--noctis-font-head); font-size: 14px; }
+.noctis .tab-variants .v-group { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #6b5a3e; }
+.noctis .tab-variants .v-choice { margin: 2px 0; font-weight: 700; color: #2f5a3a; font-size: 12px; }
+.noctis .tab-variants .v-text { margin: 2px 0; line-height: 1.4; }
+.noctis .tab-variants .v-book { margin: 4px 0 0; font-size: 11px; color: #6b5a3e; font-style: italic; }
+.noctis .tab-variants .variants-book { margin-top: 14px; }
+.noctis .tab-variants .variants-book summary { cursor: pointer; font-family: var(--noctis-font-head); font-size: 14px; color: #6b5a3e; margin-bottom: 6px; }
+
+/* ---- Tableau de bord MJ : onglets et sang ---- */
+.noctis .dash-tabs { display: flex; gap: 6px; border-bottom: 2px solid #3d4a5c; }
+.noctis .dash-tabs a {
+  padding: 6px 16px 4px; font-family: var(--noctis-font-head); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--noctis-ink-soft); border: 1px solid transparent; border-bottom: none; cursor: pointer;
+}
+.noctis .dash-tabs a:hover { color: #3d4a5c; }
+.noctis .dash-tabs a.active { color: #e9dec4; background: #3d4a5c; border-color: #2b3442; }
+.noctis .dash-tabs a[data-tab="blood"].active { background: #7a1418; border-color: #4a0c0f; }
+.noctis .blood-buttons { gap: 8px; }
+.noctis .blood-buttons button { min-height: 32px; padding: 0 12px; }
+.noctis .blood-num { font-size: 16px; }
+.noctis .blood-num small { font-weight: 400; font-size: 11px; color: var(--noctis-muted); }
+.noctis .blood-num.low { color: var(--noctis-blood); }
+.noctis .blood-bar { height: 14px; background: rgba(43, 33, 24, 0.12); border: 1px solid rgba(43, 33, 24, 0.35); overflow: hidden; }
+.noctis .blood-bar span { display: block; height: 100%; background: linear-gradient(180deg, #b0202a, #6e0f14); }
+.noctis .blood-bar.mid span { background: linear-gradient(180deg, #9a3a1e, #5e1f0e); }
+.noctis .blood-bar.low span { background: repeating-linear-gradient(45deg, #6e0f14 0 5px, #8a1c1c 5px 10px); }
+.noctis .blood-table .steps { white-space: nowrap; width: 180px; }
+.noctis .blood-table .steps a {
+  display: inline-block; min-width: 30px; margin-right: 3px; padding: 2px 5px; text-align: center; font-weight: 700; font-size: 12px; cursor: pointer;
+  color: #f1e3c2; background: #5a1014; border: 1px solid #2e080a;
+}
+.noctis .blood-table .steps a:hover { background: #8a1c1c; }
+.noctis .blood-table .steps a.fill { background: #3d4a5c; border-color: #2b3442; }
+.noctis-blood-msg i { color: #8a1c1c; }
+
+/* ---- Barre de répartition de l'XP sur la fiche ---- */
+.noctis .xp-breakdown { margin: 6px 0 10px; }
+.noctis .xp-breakdown .xp-bar { height: 18px; }
+.noctis .xp-breakdown .ledger-legend b { font-weight: 700; }
+
+/* ---- Fenêtre de jet : boutons − / + ---- */
+.noctis .stepper.small input { width: 36px; font-size: 15px; }
+.noctis .stepper.small button { width: 22px; height: 22px; }
+.noctis .stepper input[type="number"]::-webkit-inner-spin-button, .noctis .stepper input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.noctis .stepper input[type="number"] { -moz-appearance: textfield; }
+.noctis .stepper-line { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
+.noctis .stepper-line.disabled { opacity: 0.5; }
+.noctis .boost-row label.mini { display: inline-flex; align-items: center; gap: 6px; }
+.noctis-card .clash-average { margin: 2px 0; font-size: 12px; font-style: italic; color: #3d4a5c; }
+
+/* ---- Manœuvres (fenêtre de jet et carte) ---- */
+.noctis .maneuver-row { display: flex; align-items: flex-end; gap: 8px; margin-top: 8px; }
+.noctis .maneuver-row label.grow { flex: 1; display: flex; flex-direction: column; }
+.noctis .maneuver-row label > span, .noctis .situation-row label > span { font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; color: var(--noctis-ink-soft); }
+.noctis .maneuver-info { font-size: 18px; color: #3d4a5c; cursor: help; padding-bottom: 4px; }
+.noctis .maneuver-short { margin: 2px 0 6px; font-size: 12px; font-style: italic; color: var(--noctis-blood); min-height: 1em; }
+.noctis .situation-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 6px; }
+.noctis .situation-row label { display: flex; flex-direction: column; min-width: 0; }
+.noctis .situation-row select { width: 100%; font-size: 12px; }
+.noctis-card .clash-maneuver { color: var(--noctis-blood); }
+.noctis-card .clash-effects { list-style: none; margin: 4px 0; padding: 4px 6px; background: rgba(61, 74, 92, 0.1); border-left: 3px solid #3d4a5c; font-size: 12px; }
+.noctis-card .clash-effects li { margin: 2px 0; }
+.noctis-card .clash-effects i { color: #b8862b; margin-right: 3px; }
+
+/* ---- Carte de la Bête ---- */
+.noctis-card.beast-card .beast-head { display: flex; gap: 8px; align-items: center; padding-bottom: 4px; border-bottom: 1px solid rgba(138, 28, 28, 0.4); }
+.noctis-card.beast-card .beast-head img { width: 44px; height: 44px; object-fit: cover; border-radius: 50%; border: 2px solid #8a1c1c; }
+.noctis-card.beast-card .beast-head h3 { margin: 0; font-family: var(--noctis-font-title); font-size: 16px; color: #8a1c1c; border: none; }
+.noctis-card.beast-card .beast-head p { margin: 0; font-size: 12px; }
+.noctis-card.beast-card .beast-head > div { flex: 1; min-width: 0; }
+.noctis-card.beast-card .beast-icon { font-size: 22px; color: #8a1c1c; }
+.noctis-card.beast-card.beast-panic .beast-icon, .noctis-card.beast-card.beast-panic h3 { color: #b8562b; }
+.noctis-card.beast-card .beast-pool { margin: 6px 0 2px; font-size: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.noctis-card.beast-card .beast-gm { margin-left: auto; }
+.noctis-card.beast-card .beast-gm a { display: inline-block; width: 20px; text-align: center; margin-left: 2px; font-weight: 700; color: #f1e3c2; background: #3d4a5c; cursor: pointer; }
+.noctis-card .beast-meter { height: 8px; background: rgba(43, 33, 24, 0.15); border: 1px solid rgba(43, 33, 24, 0.3); margin: 2px 0 6px; }
+.noctis-card .beast-meter span { display: block; height: 100%; background: linear-gradient(90deg, #2f5a3a, #6aa36f); }
+.noctis-card .beast-roll { margin: 4px 0; }
+.noctis-card .beast-note { font-size: 12px; font-style: italic; color: #8a1c1c; }
+.noctis-card.beast-card button.succumb { background: #2e080a; }
+.noctis-card .outcome.partial { background: rgba(184, 134, 43, 0.2); border-color: #b8862b; }
+
+/* ---- États et Bête (onglet Combat) ---- */
+.noctis .state-panel { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.noctis .state-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.noctis .state-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 3px; font-size: 12px; border: 1px solid rgba(90, 60, 30, 0.35); border-radius: 12px; background: rgba(255, 250, 235, 0.4); color: var(--noctis-muted); cursor: pointer; opacity: 0.6; }
+.noctis .state-chip img { width: 18px; height: 18px; border: none; filter: grayscale(1) brightness(0.4); }
+.noctis .state-chip.auto { cursor: help; }
+.noctis .state-chip.on { opacity: 1; color: #f1e3c2; background: #5a1014; border-color: #2e080a; }
+.noctis .state-chip.on img { filter: invert(1); }
+.noctis .state-chip:not(.auto):hover { opacity: 1; }
+.noctis .beast-box { padding: 6px 10px; border: 1px solid rgba(138, 28, 28, 0.35); background: rgba(138, 28, 28, 0.06); }
+.noctis .beast-box.raging { background: rgba(138, 28, 28, 0.2); border-color: #8a1c1c; }
+.noctis .beast-box p { margin: 2px 0 6px; }
+.noctis .warn-text { color: var(--noctis-blood); }
+
+/* ==========================================================================
+   Calendrier de la chronique
+   ========================================================================== */
+.noctis.noctis-calendar .window-content { padding: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #efe4c9, #e2d3b0); }
+.noctis .cal { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.noctis .cal-top { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: #f1e3c2; background: linear-gradient(90deg, #1b1424, #2c1f3a 60%, #3a2717); border-bottom: 2px solid #c9a35a; }
+.noctis .cal-top.day { background: linear-gradient(90deg, #5a3a22, #8a6a3a 60%, #c9a35a); }
+.noctis .cal-now { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.noctis .cal-moon { font-size: 34px; line-height: 1; filter: drop-shadow(0 0 6px rgba(255, 240, 200, 0.5)); }
+.noctis .cal-now > div { display: flex; flex-direction: column; }
+.noctis .cal-now b { font-family: var(--noctis-font-title); font-size: 20px; letter-spacing: 0.02em; color: #fff3cf; }
+.noctis .cal-now span { font-size: 13px; }
+.noctis .cal-now small { font-size: 11.5px; color: #d9c79e; }
+.noctis .cal-time-ctrl { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.noctis .cal-time-ctrl a { padding: 4px 8px; font-size: 12px; font-weight: 700; color: #f1e3c2; background: rgba(0, 0, 0, 0.35); border: 1px solid #c9a35a; cursor: pointer; white-space: nowrap; }
+.noctis .cal-time-ctrl a:hover { background: #5a1014; }
+.noctis .cal-tabs { display: flex; gap: 4px; align-items: flex-end; padding: 6px 14px 0; border-bottom: 2px solid #3d4a5c; }
+.noctis .cal-tabs a { padding: 5px 14px 3px; font-family: var(--noctis-font-head); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--noctis-ink-soft); cursor: pointer; border: 1px solid transparent; border-bottom: none; }
+.noctis .cal-tabs a.active { color: #e9dec4; background: #3d4a5c; border-color: #2b3442; }
+.noctis .cal-hidden-count { margin-left: auto; padding-bottom: 4px; font-size: 12px; color: #4a2a6a; }
+.noctis .cal-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 300px; }
+.noctis .cal-month { padding: 8px 12px; display: flex; flex-direction: column; min-height: 0; }
+.noctis .cal-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.noctis .cal-nav h2 { margin: 0 6px; min-width: 200px; text-align: center; font-family: var(--noctis-font-title); font-size: 22px; text-transform: capitalize; color: #5a1014; border: none; }
+.noctis .cal-nav a { cursor: pointer; color: #3d4a5c; font-size: 16px; padding: 2px 4px; }
+.noctis .cal-nav .cal-today-btn { margin-left: auto; font-size: 12px; font-weight: 700; padding: 3px 8px; border: 1px solid #3d4a5c; }
+.noctis .cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 22px; grid-auto-rows: minmax(70px, 1fr); gap: 3px; }
+.noctis .cal-wd { grid-row: 1; height: 20px; text-align: center; font-family: var(--noctis-font-head); font-size: 11px; text-transform: uppercase; color: #6b5a3e; }
+.noctis .cal-grid > .cal-wd { min-height: 0; }
+.noctis .cal-cell { position: relative; padding: 3px 4px; background: rgba(255, 250, 235, 0.65); border: 1px solid rgba(107, 82, 48, 0.3); cursor: pointer; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.noctis .cal-cell.empty { background: transparent; border-color: transparent; cursor: default; }
+.noctis .cal-cell.past { background: rgba(230, 218, 190, 0.6); }
+.noctis .cal-cell:hover { border-color: #b8862b; }
+.noctis .cal-cell.selected { box-shadow: inset 0 0 0 2px #3d4a5c; }
+.noctis .cal-cell.today { background: #fff8e2; box-shadow: inset 0 0 0 2px #8a1c1c; }
+.noctis .cal-cell.today .cal-d { color: #fff; background: #8a1c1c; }
+.noctis .cal-d { align-self: flex-start; min-width: 20px; padding: 0 4px; font-weight: 700; font-size: 13px; color: #3a2717; border-radius: 9px; text-align: center; }
+.noctis .cal-m { position: absolute; top: 2px; right: 4px; font-size: 13px; }
+.noctis .cal-feast { font-size: 9.5px; font-style: italic; color: #7a5a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.noctis .cal-evs { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; min-width: 0; }
+.noctis .cal-ev { font-size: 10.5px; padding: 0 3px; color: #fff; background: var(--c); border-radius: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.noctis .cal-ev.secret { color: var(--c); background: transparent; border: 1px dashed var(--c); }
+.noctis .cal-more { font-size: 10px; color: #6b5a3e; }
+.noctis .cal-side { display: flex; flex-direction: column; min-height: 0; border-left: 1px solid rgba(107, 82, 48, 0.4); background: rgba(255, 250, 235, 0.45); }
+.noctis .cal-side-head { padding: 10px 12px 6px; border-bottom: 1px solid rgba(107, 82, 48, 0.3); }
+.noctis .cal-side-head h3 { margin: 0 0 2px; font-family: var(--noctis-font-title); font-size: 17px; color: #5a1014; border: none; }
+.noctis .cal-side-head p { margin: 1px 0; font-size: 12px; color: #4a3a28; }
+.noctis .cal-sun { color: #6b5a3e !important; }
+.noctis .cal-feast-line { font-style: italic; color: #7a5a1a !important; }
+.noctis .cal-side-body { flex: 1; overflow-y: auto; padding: 8px 12px; }
+.noctis .cal-card { margin-bottom: 8px; padding: 6px 8px; background: #fffaf0; border: 1px solid rgba(107, 82, 48, 0.3); border-left: 4px solid var(--c); }
+.noctis .cal-card.secret { background: repeating-linear-gradient(45deg, #f6f0e2 0 6px, #efe6d2 6px 12px); border-style: dashed; border-left-style: solid; }
+.noctis .cal-card header { display: flex; align-items: baseline; gap: 5px; }
+.noctis .cal-card header i { color: var(--c); }
+.noctis .cal-card header b { flex: 1; }
+.noctis .cal-card p { margin: 3px 0; font-size: 12.5px; line-height: 1.4; }
+.noctis .cal-cat { font-size: 11px !important; color: #6b5a3e; }
+.noctis .cal-gmnote { color: #4a2a6a; font-style: italic; }
+.noctis .cal-ctrl { display: inline-flex; gap: 6px; }
+.noctis .cal-ctrl a { cursor: pointer; color: #6b5a3e; }
+.noctis .cal-ctrl a:hover { color: #8a1c1c; }
+.noctis .cal-side-actions { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+.noctis .cal-sleep-title { margin: 12px 0 4px; font-family: var(--noctis-font-head); font-size: 13px; color: #3d4a5c; border: none; }
+.noctis .cal-sleeper { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; font-size: 12px; }
+.noctis .cal-sleeper img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #6b5230; }
+.noctis .cal-sleeper span { display: flex; flex-direction: column; }
+.noctis .cal-sleeper small { color: #6b5a3e; }
+/* Chronologie */
+.noctis .cal-timeline-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 14px; }
+.noctis .cal-filters { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 8px; }
+.noctis .cal-filters input[type="search"] { flex: 1 1 200px; }
+.noctis .cal-chip { padding: 2px 8px; font-size: 11.5px; border: 1px solid var(--c); color: var(--c); border-radius: 10px; cursor: pointer; background: rgba(255, 250, 235, 0.6); }
+.noctis .cal-chip.active { color: #fff; background: var(--c); }
+.noctis .timeline { flex: 1; overflow-y: auto; padding-right: 6px; }
+.noctis .tl-year h3 { position: sticky; top: 0; z-index: 1; margin: 6px 0; padding: 2px 0; font-family: var(--noctis-font-title); font-size: 20px; color: #5a1014; background: #e9dcc0; border-bottom: 1px solid #c9a35a; }
+.noctis .tl-item { position: relative; display: flex; gap: 10px; padding: 0 0 12px 4px; }
+.noctis .tl-item::before { content: ""; position: absolute; left: 17px; top: 28px; bottom: 0; width: 2px; background: rgba(107, 82, 48, 0.3); }
+.noctis .tl-dot { flex: 0 0 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--c); border: 2px solid #f1e3c2; box-shadow: 0 0 0 1px var(--c); z-index: 1; font-size: 12px; }
+.noctis .tl-item.secret .tl-dot { color: var(--c); background: #f1e3c2; border-style: dashed; }
+.noctis .tl-item.secret .tl-body { opacity: 0.75; }
+.noctis .tl-body { flex: 1; min-width: 0; padding: 4px 8px; background: rgba(255, 250, 235, 0.7); border: 1px solid rgba(107, 82, 48, 0.25); }
+.noctis .tl-body header { display: flex; gap: 6px; align-items: baseline; }
+.noctis .tl-body header b { flex: 1; }
+.noctis .tl-date { font-family: var(--noctis-font-head); font-size: 12px; color: #3d4a5c; cursor: pointer; white-space: nowrap; }
+.noctis .tl-body p { margin: 3px 0; font-size: 12.5px; line-height: 1.4; }
+.noctis .tl-body small { color: #6b5a3e; font-size: 11px; }
+.noctis .tl-now { margin: 4px 0 10px; text-align: center; border-top: 2px dashed #8a1c1c; }
+.noctis .tl-now span { position: relative; top: -10px; padding: 0 8px; font-size: 12px; font-weight: 700; color: #8a1c1c; background: #e9dcc0; }
+.noctis .cal-form-row { display: flex; gap: 8px; }
+.noctis .cal-form-row label { flex: 1; }
+
+/* Cartes de chat du temps */
+.noctis-card.time-card h3 { margin: 0 0 4px; font-family: var(--noctis-font-title); font-size: 15px; color: #3d4a5c; border: none; }
+.noctis-card.time-card.dawn h3, .noctis-card.time-card.sunrise h3 { color: #b8562b; }
+.noctis-card.time-card.dusk h3 { color: #4a2a6a; }
+.noctis-card.time-card.reveal h3 { color: #5a1014; }
+.noctis-card.time-card p, .noctis-card.time-card li { font-size: 12.5px; }
+.noctis-card.time-card .when { font-style: italic; color: #6b5a3e; margin: 0; }
+.noctis-card.time-card .who { text-align: right; font-style: italic; }
+.noctis-card.time-card a[data-noctis-action] { cursor: pointer; color: #3d4a5c; font-weight: 700; }
+
+/* Horloge en haut de l'écran */
+#noctis-clock {
+  position: fixed; top: 6px; left: 50%; transform: translateX(-50%); z-index: 70;
+  display: flex; align-items: center; gap: 10px; padding: 4px 12px; pointer-events: auto; cursor: pointer;
+  font-family: "Signika", sans-serif; color: #f1e3c2; background: linear-gradient(90deg, rgba(27, 20, 36, 0.92), rgba(58, 39, 23, 0.92));
+  border: 1px solid #c9a35a; border-radius: 4px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+#noctis-clock.day { background: linear-gradient(90deg, rgba(90, 58, 34, 0.92), rgba(160, 120, 60, 0.92)); }
+#noctis-clock.dawn-soon { border-color: #ff9a4a; box-shadow: 0 0 12px rgba(255, 140, 60, 0.7); animation: noctis-dawn 2s ease-in-out infinite; }
+@keyframes noctis-dawn { 50% { box-shadow: 0 0 20px rgba(255, 140, 60, 0.95); } }
+#noctis-clock .clk-moon { font-size: 20px; }
+#noctis-clock .clk-main { display: flex; flex-direction: column; line-height: 1.1; }
+#noctis-clock .clk-main b { font-size: 15px; }
+#noctis-clock .clk-main small { font-size: 11px; color: #d9c79e; }
+#noctis-clock .clk-sun { font-size: 12px; color: #e8cf8a; }
+#noctis-clock.dawn-soon .clk-sun { color: #ffb36b; font-weight: 700; }
+#noctis-clock .clk-gm { display: flex; gap: 4px; }
+#noctis-clock .clk-gm a { padding: 1px 6px; font-size: 11px; border: 1px solid #c9a35a; color: #f1e3c2; }
+#noctis-clock .clk-gm a:hover { background: #5a1014; }
+.noctis-calendar-btn { flex: 0 0 100%; }
+.noctis .rel-bond { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 3px 0; font-size: 11.5px; color: var(--noctis-muted); }
+.noctis .rel-bond label { display: inline-flex; align-items: center; gap: 4px; }
+.noctis .rel-bond select { font-size: 11.5px; height: 22px; }
+.noctis .rel-bond.on { color: #6e0f14; }
+.noctis .rel-bond.on > i { color: #8a1c1c; }
+.noctis-card.beast-card .outcome .label, .noctis-card.time-card .outcome .label { text-transform: none; font-size: 12.5px; letter-spacing: 0; font-family: var(--noctis-font-body); line-height: 1.35; }
+.noctis .cal-sub { margin: 10px 0 4px; font-family: var(--noctis-font-head); font-size: 12px; color: #3d4a5c; border: none; }
+.noctis .cal-src { font-size: 11px !important; color: #6b5a3e; }
+
+/* ==========================================================================
+   Calendrier : lisibilité (couleurs explicites, indépendantes du thème de Foundry)
+   ========================================================================== */
+.noctis.noctis-calendar .window-content { color: #2b2118; font-family: var(--noctis-font-body); font-size: 14px; }
+.noctis.noctis-calendar .cal-card, .noctis.noctis-calendar .tl-body, .noctis.noctis-calendar .cal-li { color: #2b2118; }
+.noctis.noctis-calendar .cal-card header b, .noctis.noctis-calendar .tl-body header b { color: #2b2118; font-family: var(--noctis-font-body); font-size: 15px; font-weight: 700; }
+.noctis.noctis-calendar .cal-card p, .noctis.noctis-calendar .tl-body p { color: #3a2c1e; font-size: 13.5px; }
+.noctis.noctis-calendar .cal-cat, .noctis.noctis-calendar .tl-body small, .noctis.noctis-calendar .cal-src { color: #6b5a3e !important; font-family: var(--noctis-font-body); }
+.noctis.noctis-calendar .cal-gmnote { color: #4a2a6a !important; }
+.noctis.noctis-calendar .cal-card.secret { background: #f3ecdc; border: 1px dashed #9a8a6a; border-left: 4px solid var(--c); }
+.noctis.noctis-calendar .cal-card.secret header b { color: #4a3a28; }
+.noctis.noctis-calendar .tl-item.secret .tl-body { opacity: 1; background: #f3ecdc; border-style: dashed; }
+.noctis.noctis-calendar .cal-tabs { position: relative; }
+.noctis.noctis-calendar .cal-viewtag { margin-left: auto; padding: 0 0 4px 10px; font-family: var(--noctis-font-head); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #3d4a5c; }
+.noctis.noctis-calendar.gm-view .cal-viewtag { color: #4a2a6a; }
+.noctis.noctis-calendar .cal-hidden-count { margin-left: 12px; }
+.noctis.noctis-calendar.gm-view .cal-top { border-bottom-color: #8a5ab0; }
+.noctis.noctis-calendar .cal-nav h2 { text-transform: none; }
+.noctis.noctis-calendar .cal-nav h2 small { font-size: 13px; color: #6b5a3e; font-family: var(--noctis-font-body); }
+.noctis.noctis-calendar .cal-side-head p, .noctis.noctis-calendar .cal-side-head h3 { color: #2b2118; }
+.noctis.noctis-calendar .cal-side-head h3 { color: #5a1014; }
+.noctis.noctis-calendar .cal-d { color: #3a2717; }
+.noctis.noctis-calendar .cal-ev { font-family: var(--noctis-font-body); font-size: 11.5px; }
+.noctis.noctis-calendar .cal-ev.secret { color: #2b2118; background: rgba(255, 255, 255, 0.6); border: 1px dashed var(--c); }
+.noctis.noctis-calendar .empty { color: #6b5a3e; font-style: italic; }
+
+/* Liste compacte (année, siècle) */
+.noctis .cal-yearlist { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 6px 10px; }
+.noctis .cal-li { display: grid; grid-template-columns: 18px 92px 1fr auto; gap: 6px; align-items: baseline; padding: 4px 4px; border-bottom: 1px dotted rgba(107, 82, 48, 0.3); font-size: 13px; }
+.noctis .cal-li > i { color: var(--c); }
+.noctis .cal-li-date { font-size: 11.5px; color: #6b5a3e; }
+.noctis .cal-li-title { font-weight: 600; }
+.noctis .cal-li.secret .cal-li-title { font-weight: 400; font-style: italic; color: #5a4a36; }
+.noctis .cal-li-eye { cursor: pointer; color: #6b5a3e; }
+
+/* Vue de l'année */
+.noctis .cal-year { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding-right: 4px; }
+.noctis .ym { padding: 6px; background: rgba(255, 250, 235, 0.7); border: 1px solid rgba(107, 82, 48, 0.3); }
+.noctis .ym.current { box-shadow: inset 0 0 0 2px #8a1c1c; }
+.noctis .ym-title { display: block; margin-bottom: 4px; text-align: center; font-family: var(--noctis-font-head); font-size: 14px; text-transform: capitalize; color: #5a1014; cursor: pointer; }
+.noctis .ym-count { display: inline-block; min-width: 18px; padding: 0 4px; font-size: 11px; color: #fff; background: #3d4a5c; border-radius: 8px; }
+.noctis .ym-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; font-size: 11px; }
+.noctis .ym-wd { font-size: 9px; color: #8a7a5a; text-transform: uppercase; }
+.noctis .ym-d { padding: 2px 0; color: #3a2717; cursor: pointer; border-radius: 2px; }
+.noctis .ym-d:hover { background: rgba(201, 163, 90, 0.3); }
+.noctis .ym-d.has { color: #fff; background: var(--c); font-weight: 700; }
+.noctis .ym-d.today { box-shadow: inset 0 0 0 2px #8a1c1c; }
+
+/* Vue du siècle */
+.noctis .cal-century { flex: 1; overflow-y: auto; display: grid; grid-template-columns: 96px repeat(10, 1fr); gap: 3px; align-content: start; }
+.noctis .cd-label { align-self: center; font-family: var(--noctis-font-head); font-size: 12px; color: #3d4a5c; }
+.noctis .cd-label small { color: #8a7a5a; }
+.noctis .cd-y { position: relative; display: block; padding: 8px 0; text-align: center; font-size: 12.5px; color: #3a2717; background: rgba(255, 250, 235, 0.7); border: 1px solid rgba(107, 82, 48, 0.25); cursor: pointer; }
+.noctis .cd-y i { position: absolute; top: 1px; right: 3px; font-style: normal; font-size: 9px; font-weight: 700; }
+.noctis .cd-y.heat-1 { background: #e8d3b0; }
+.noctis .cd-y.heat-2 { background: #d9a878; }
+.noctis .cd-y.heat-3 { background: #b8643e; color: #fff; }
+.noctis .cd-y.heat-4 { background: #7a1418; color: #fff; }
+.noctis .cd-y.now { box-shadow: inset 0 0 0 3px #3d4a5c; font-weight: 700; }
+.noctis .cd-y.view { outline: 2px solid #c9a35a; }
+.noctis .cd-legend { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: 11.5px; color: #6b5a3e; }
+.noctis .cd-legend .cd-y { display: inline-block; width: 18px; padding: 2px 0; }
+
+/* ==========================================================================
+   Barre de la chronique (bord gauche de l'écran)
+   ========================================================================== */
+#noctis-dock {
+  position: fixed; left: 0; transform: translateY(-50%); z-index: 60;
+  display: flex; flex-direction: column; align-items: stretch; width: 62px;
+  font-family: "Signika", sans-serif; color: #f1e3c2;
+  background: linear-gradient(180deg, rgba(27, 20, 36, 0.95), rgba(46, 31, 22, 0.95));
+  border: 1px solid #c9a35a; border-left: none; border-radius: 0 6px 6px 0;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
+}
+#noctis-dock.day { background: linear-gradient(180deg, rgba(90, 58, 34, 0.95), rgba(140, 104, 52, 0.95)); }
+#noctis-dock .dock-grip { display: block; text-align: center; font-size: 11px; color: #a08a60; cursor: ns-resize; padding: 2px 0; }
+#noctis-dock a { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f1e3c2; text-decoration: none; cursor: pointer; }
+#noctis-dock .dock-clock { padding: 4px 2px 6px; border-bottom: 1px solid rgba(201, 163, 90, 0.4); line-height: 1.15; }
+#noctis-dock .dock-moon { font-size: 20px; }
+#noctis-dock .dock-clock b { font-size: 13px; }
+#noctis-dock .dock-clock small { font-size: 9.5px; color: #d9c79e; text-align: center; }
+#noctis-dock .dock-dawn { color: #e8cf8a !important; }
+#noctis-dock.dawn-soon { border-color: #ff9a4a; animation: noctis-dawn 2s ease-in-out infinite; }
+#noctis-dock.dawn-soon .dock-dawn { color: #ffb36b !important; font-weight: 700; }
+#noctis-dock .dock-btn { height: 36px; font-size: 16px; border-top: 1px solid rgba(201, 163, 90, 0.18); }
+#noctis-dock .dock-btn span { font-size: 12px; font-weight: 700; }
+#noctis-dock .dock-btn:hover, #noctis-dock .dock-clock:hover { background: rgba(138, 28, 28, 0.6); }
+#noctis-dock .dock-btn.gm { color: #d8c0f0; }
+#noctis-dock .dock-btn.gm[data-dock="gm"] { background: rgba(74, 42, 106, 0.45); }
+
+/* ==========================================================================
+   Atelier du conteur
+   ========================================================================== */
+.noctis.noctis-workshop .window-content { padding: 0; color: #2b2118; font-family: var(--noctis-font-body); background: linear-gradient(180deg, #efe4c9, #e2d3b0); }
+.noctis .ws { display: grid; grid-template-columns: 230px 1fr; height: 100%; min-height: 0; }
+.noctis .ws-kinds { display: flex; flex-direction: column; gap: 2px; padding: 10px 6px; background: linear-gradient(180deg, #2c1f3a, #3a2717); }
+.noctis .ws-kinds a { display: flex; align-items: center; gap: 8px; padding: 8px 10px; color: #e9dec4; cursor: pointer; font-size: 14px; border-left: 3px solid transparent; }
+.noctis .ws-kinds a span { flex: 1; }
+.noctis .ws-kinds a b { font-size: 11px; padding: 0 6px; border-radius: 8px; background: rgba(255, 255, 255, 0.12); }
+.noctis .ws-kinds a:hover { background: rgba(255, 255, 255, 0.08); }
+.noctis .ws-kinds a.active { background: rgba(201, 163, 90, 0.2); border-left-color: #c9a35a; color: #fff3cf; }
+.noctis .ws-export { margin-top: auto; padding: 8px 4px 0; }
+.noctis .ws-export button { width: 100%; font-size: 12px; }
+.noctis .ws-main { display: flex; flex-direction: column; min-height: 0; padding: 10px 14px; }
+.noctis .ws-head h2 { margin: 0 0 4px; font-family: var(--noctis-font-title); font-size: 20px; color: #5a1014; border: none; }
+.noctis .ws-head p { margin: 0 0 8px; font-size: 13px; color: #4a3a28; }
+.noctis .ws-create { display: flex; gap: 6px; margin-bottom: 8px; }
+.noctis .ws-list { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 0; }
+.noctis .ws-list li { display: grid; grid-template-columns: 34px 1fr auto auto; grid-template-rows: auto auto; column-gap: 8px; align-items: center; padding: 6px 8px; margin-bottom: 4px; background: rgba(255, 250, 235, 0.75); border: 1px solid rgba(107, 82, 48, 0.3); border-left: 4px solid #2f5a3a; }
+.noctis .ws-list li.pack { border-left-color: #8a7a5a; }
+.noctis .ws-list li img { grid-row: 1 / 3; width: 32px; height: 32px; object-fit: contain; border: none; }
+.noctis .ws-name { font-weight: 700; font-size: 14.5px; color: #2b2118; cursor: pointer; }
+.noctis .ws-type { font-size: 11px; text-transform: uppercase; color: #6b5a3e; }
+.noctis .ws-src { grid-column: 3; grid-row: 2; font-size: 11px; color: #6b5a3e; text-align: right; }
+.noctis .ws-info { grid-column: 2; grid-row: 2; font-size: 12px; color: #4a3a28; }
+.noctis .ws-ctrl { grid-column: 4; grid-row: 1 / 3; display: flex; gap: 8px; }
+.noctis .ws-ctrl a { cursor: pointer; color: #6b5a3e; }
+.noctis .ws-ctrl a:hover { color: #8a1c1c; }
+.noctis .ws-list li.empty { display: block; font-style: italic; color: #6b5a3e; border-left-color: transparent; }
+.noctis .ws-foot { margin: 8px 0 0; font-size: 12px; color: #6b5a3e; }
+.noctis-workshop-btn { flex: 0 0 100%; }

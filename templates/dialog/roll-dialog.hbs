@@ -1,0 +1,138 @@
+<div class="noctis-roll-form">
+  <nav class="roll-tabs">
+    <a data-action="setMode" data-mode="simple" class="{{#unless opposed}}active{{/unless}}"><i class="fa-solid fa-dice-d10"></i> Jet simple</a>
+    <a data-action="setMode" data-mode="opposed" class="{{#if opposed}}active{{/if}}"><i class="fa-solid fa-khanda"></i> Jet opposé</a>
+  </nav>
+  <input type="hidden" name="mode" value="{{#if opposed}}opposed{{else}}simple{{/if}}">
+  <div class="opposed-box {{#unless opposed}}hidden{{/unless}}">
+    {{#unless targets.hasToken}}<p class="warn">Aucun jeton de {{actor.name}} sur la scène : posez-le pour choisir une cible.</p>{{/unless}}
+    <div class="target-row">
+      <label><span>Corps à corps</span><select name="target.melee" class="target-select"><option value="">—</option>{{#each targets.melee}}<option value="{{tokenUuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+      <label><span>Proche (2-5 cases)</span><select name="target.close" class="target-select"><option value="">—</option>{{#each targets.close}}<option value="{{tokenUuid}}" {{#if selected}}selected{{/if}}>{{name}} ({{cells}})</option>{{/each}}</select></label>
+      <label><span>Distance</span><select name="target.far" class="target-select"><option value="">—</option>{{#each targets.far}}<option value="{{tokenUuid}}" {{#if selected}}selected{{/if}}>{{name}} ({{cells}})</option>{{/each}}</select></label>
+    </div>
+    {{#if maneuvers}}
+    <div class="maneuver-row">
+      <label class="grow"><span>Manœuvre</span>
+        <select name="maneuver">
+          {{#each maneuvers.groups}}<optgroup label="{{label}}">{{#each options}}<option value="{{key}}" {{#if (noctisEq key ../../maneuvers.default)}}selected{{/if}}>{{label}}</option>{{/each}}</optgroup>{{/each}}
+        </select>
+      </label>
+      <i class="fa-solid fa-circle-info maneuver-info" data-maneuver-info data-tooltip-direction="LEFT"></i>
+    </div>
+    <p class="maneuver-short" data-maneuver-short></p>
+    <div class="situation-row">
+      <label data-tooltip="Viser une partie précise du corps ou le défaut de la cuirasse"><span>Ciblage</span>
+        <select name="targeting">{{#each targeting}}<option value="{{key}}" data-tip="{{tip}}">{{label}}</option>{{/each}}</select>
+      </label>
+      <label data-tooltip="De flanc : +1 dé · de dos : +2 dés"><span>Position</span>
+        <select name="position">{{#each positions}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
+      </label>
+      {{#if maneuvers.ranged}}
+      <label data-tooltip="Couvert de la cible : difficulté +1 à +3 pour la toucher"><span>Couvert</span>
+        <select name="cover">{{#each covers}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
+      </label>
+      <label data-tooltip="+1 dé par tour passé à viser, au plus Perception ({{perception}}) ; ne pas se déplacer plus vite qu'au pas"><span>Visée</span>
+        <select name="aim">{{#each aimChoices}}<option value="{{this}}">{{#if this}}{{this}} tour(s) : +{{this}} dé(s){{else}}Aucune{{/if}}</option>{{/each}}</select>
+      </label>
+      {{else}}
+      <label data-tooltip="+1 en difficulté par adversaire au-delà du premier, au plus +4"><span>Adversaires</span>
+        <select name="opponents"><option value="1">Un seul</option><option value="2">2 (+1 diff.)</option><option value="3">3 (+2 diff.)</option><option value="4">4 (+3 diff.)</option><option value="5">5 et plus (+4 diff.)</option></select>
+      </label>
+      {{/if}}
+    </div>
+    {{/if}}
+    <p class="hint">{{#if inCombat}}Actions restantes : <b>{{combat.actions}}</b> / {{combat.actionsMax}} · attaques possibles : <b>{{combat.attacksLeft}}</b>. {{/if}}La cible se défend si elle le peut (coût selon les variantes), puis les dégâts et l'absorption s'enchaînent dans une carte récapitulative.{{#unless weapon}} Sans arme : attaque à mains nues (Force, contondant).{{/unless}}</p>
+  </div>
+  {{#if weapon}}
+    <div class="weapon-line"><img src="{{weapon.img}}" alt=""> <b>{{weapon.name}}</b> — dégâts {{#if weapon.system.damageAttribute}}Force + {{/if}}{{weapon.system.damageBonus}} ({{weaponDamageType}})</div>
+  {{/if}}
+
+  <div class="pool-row">
+    <label><span>Trait</span>
+      <select name="trait1">
+        <option value="none">—</option>
+        {{#each traits1}}<optgroup label="{{label}}">{{#each options}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</optgroup>{{/each}}
+      </select>
+    </label>
+    <span class="plus">+</span>
+    <label><span>Trait</span>
+      <select name="trait2">
+        <option value="none">—</option>
+        {{#each traits2}}<optgroup label="{{label}}">{{#each options}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</optgroup>{{/each}}
+      </select>
+    </label>
+  </div>
+
+  <div class="row-2">
+    <label><span>Dés en plus / en moins</span>
+      <span class="stepper">
+        <button type="button" data-action="step" data-field="bonusDice" data-delta="-1"><i class="fa-solid fa-minus"></i></button>
+        <input type="number" name="bonusDice" value="{{preset.bonusDice}}" min="-20" max="20">
+        <button type="button" data-action="step" data-field="bonusDice" data-delta="1"><i class="fa-solid fa-plus"></i></button>
+      </span>
+    </label>
+    <label class="difficulty"><span>Difficulté</span>
+      <span class="stepper">
+        <button type="button" data-action="diffDown"><i class="fa-solid fa-minus"></i></button>
+        <input type="number" name="difficulty" value="{{preset.difficulty}}" min="2" max="10">
+        <button type="button" data-action="diffUp"><i class="fa-solid fa-plus"></i></button>
+      </span>
+    </label>
+  </div>
+
+  <div class="options">
+    <label class="check"><input type="checkbox" name="specialty"> Spécialité <small data-specs></small></label>
+    <div class="stepper-line {{#unless willpowerTemp}}disabled{{/unless}}">
+      <span class="stepper small">
+        <button type="button" data-action="step" data-field="willpower" data-delta="-1" {{#unless willpowerTemp}}disabled{{/unless}}><i class="fa-solid fa-minus"></i></button>
+        <input type="number" name="willpower" value="0" min="0" max="{{#if willpowerTemp}}1{{else}}0{{/if}}" readonly>
+        <button type="button" data-action="step" data-field="willpower" data-delta="1" {{#unless willpowerTemp}}disabled{{/unless}}><i class="fa-solid fa-plus"></i></button>
+      </span>
+      <span>Volonté dépensée : +1 réussite automatique <small>(1 par tour au plus · {{willpowerTemp}} restant)</small></span>
+    </div>
+    {{#if woundPenalty}}
+      <label class="check"><input type="checkbox" name="ignoreWounds" {{#unless willpowerTemp}}disabled{{/unless}}> Ignorer les blessures ({{woundPenalty}} dés) pour 1 Volonté</label>
+    {{/if}}
+    <label class="inline"><span>Action multiple (n° d'action)</span>
+      <select name="multi"><option value="0">Action unique</option><option value="1">1re de plusieurs (−1 dé, +1)</option><option value="2">2e (−2 dés, +2)</option><option value="3">3e (−3 dés, +3)</option><option value="4">4e (−4 dés, +4)</option></select>
+    </label>
+  </div>
+
+  {{#if usesBlood}}
+    <div class="boost-row">
+      <span>Amplifier par le sang <small>({{blood}} pts)</small> :</span>
+      {{#each boosts}}<label class="mini"><span>{{label}}</span>
+        <span class="stepper small">
+          <button type="button" data-action="step" data-field="boost.{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></button>
+          <input type="number" name="boost.{{key}}" value="0" min="0" max="{{../boostMax}}">
+          <button type="button" data-action="step" data-field="boost.{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></button>
+        </span></label>{{/each}}
+    </div>
+  {{/if}}
+
+  {{#if hasBonuses}}
+    <fieldset class="bonuses">
+      <legend>Bonus et malus de la fiche</legend>
+      {{#each bonuses}}
+        <label class="check bonus-row" data-bonus-target="{{target}}" data-auto="{{auto}}">
+          <input type="checkbox" name="bonus.{{key}}" {{#if auto}}checked{{/if}}>
+          <span class="b-label">{{#if label}}{{label}}{{else}}{{source}}{{/if}}</span>
+          <span class="b-val">{{#if dice}}{{noctisSigned dice}} dé(s){{/if}}{{#if difficulty}} diff. {{noctisSigned difficulty}}{{/if}}</span>
+          <small class="b-src">{{source}}</small>
+        </label>
+      {{/each}}
+    </fieldset>
+  {{/if}}
+
+  <div class="summary">
+    <div data-summary></div>
+    <div class="parts" data-parts></div>
+  </div>
+
+  <div class="footer-row">
+    <select name="rollMode">{{#each rollModes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+    <button type="button" data-action="cancel"><i class="fa-solid fa-xmark"></i> Annuler</button>
+    <button type="submit" class="roll-btn"><i class="fa-solid fa-dice-d10"></i> Lancer</button>
+  </div>
+</div>

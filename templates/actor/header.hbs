@@ -1,0 +1,105 @@
+<header class="noctis-header">
+  <div class="portrait-wrap">
+    <img class="portrait" src="{{actor.img}}" alt="{{actor.name}}" data-action="pickImage" data-tooltip="Changer le portrait">
+    {{#if clanEmblem}}<img class="clan-emblem" src="{{clanEmblem}}" alt="{{clan.name}}" data-tooltip="{{clan.name}}{{#if clan.system.nickname}} — {{clan.system.nickname}}{{/if}}">{{/if}}
+  </div>
+
+  <div class="identity">
+    <div class="title-row">
+      <input class="actor-name" type="text" name="name" value="{{actor.name}}" placeholder="Nom du personnage">
+      {{#if inCombat}}<span class="combat-pill {{#unless system.combat.actions}}empty{{/unless}}" data-action="switchTab" data-tab="combat" data-tooltip="Actions restantes ce tour / attaques possibles"><i class="fa-solid fa-khanda"></i> {{system.combat.actions}}/{{system.combat.actionsMax}} <small>· att. {{system.combat.attacksLeft}}</small></span>{{/if}}
+      <div class="header-controls">
+        {{#if isGM}}
+          <button type="button" class="icon-btn pc-flag {{#if isPC}}on{{/if}}" data-action="togglePC" data-tooltip="{{#if isPC}}Personnage joueur (cliquez pour retirer){{else}}Marquer comme personnage joueur{{/if}}">PJ</button>
+        {{else if isPC}}
+          <span class="icon-btn pc-flag on static" data-tooltip="Personnage joueur">PJ</span>
+        {{/if}}
+        {{#if creationDone}}
+          <button type="button" class="icon-btn lock {{#if locked}}is-locked{{/if}}" data-action="toggleLock" data-tooltip="{{#if locked}}Fiche verrouillée : chaque point coûte de l'expérience. Cliquez pour l'édition libre.{{else}}Édition libre : les points ne coûtent rien. Cliquez pour verrouiller.{{/if}}">
+            <i class="fa-solid {{#if locked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+          </button>
+        {{/if}}
+        <button type="button" class="icon-btn" data-action="openCreator" data-tooltip="Créateur de personnage"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+        <button type="button" class="icon-btn {{#if creationDone}}done{{/if}}" data-action="finishCreation" data-tooltip="{{#if creationDone}}Repasser en mode création{{else}}Terminer la création : les progressions se paieront en expérience{{/if}}"><i class="fa-solid {{#if creationDone}}fa-flag-checkered{{else}}fa-hourglass-half{{/if}}"></i></button>
+      </div>
+    </div>
+
+    <div class="identity-grid">
+      <label><span>Joueur</span><input type="text" name="system.identity.player" value="{{system.identity.player}}"></label>
+      <label><span>Nature</span><input type="text" name="system.identity.nature" value="{{system.identity.nature}}" list="noctis-archetypes-{{actor.id}}"></label>
+      {{#if isVampire}}
+        <label class="clan-field" data-tooltip="Glissez un clan depuis le compendium"><span>Clan</span><input type="text" name="system.identity.clan" value="{{system.identity.clan}}" placeholder="Glissez un clan…"></label>
+      {{else if isGhoul}}
+        <label><span>Domitor</span><input type="text" name="system.identity.domitor" value="{{system.identity.domitor}}"></label>
+      {{else if isNpc}}
+        <label><span>Type</span><select name="system.npcKind">{{noctisOptions npcKinds system.npcKind}}</select></label>
+      {{else}}
+        <label><span>Allégeance</span><input type="text" name="system.identity.domitor" value="{{system.identity.domitor}}"></label>
+      {{/if}}
+      <label><span>Chronique</span><input type="text" name="system.identity.chronicle" value="{{system.identity.chronicle}}"></label>
+      <label><span>Attitude</span><input type="text" name="system.identity.demeanor" value="{{system.identity.demeanor}}" list="noctis-archetypes-{{actor.id}}"></label>
+      {{#if isVampire}}
+        <label class="generation" data-tooltip="Génération de base 12, moins l'historique Génération"><span>Génération</span>
+          <span class="gen-value">{{system.generationLabel}}</span>
+          {{#unless locked}}<select name="system.generationBase" class="gen-base" data-tooltip="Génération sans l'historique">{{#each generationOptions}}<option value="{{this}}" {{#if (noctisEq this ../system.generationBase)}}selected{{/if}}>{{this}}e</option>{{/each}}</select>{{/unless}}
+        </label>
+      {{else}}
+        <label><span>Âge</span><input type="text" name="system.identity.age" value="{{system.identity.age}}"></label>
+      {{/if}}
+      <label><span>Concept</span><input type="text" name="system.identity.concept" value="{{system.identity.concept}}"></label>
+      {{#if isVampire}}
+        <label><span>Sire</span><input type="text" name="system.identity.sire" value="{{system.identity.sire}}"></label>
+      {{else}}
+        <label><span>Refuge</span><input type="text" name="system.identity.haven" value="{{system.identity.haven}}"></label>
+      {{/if}}
+      <div class="xp-badge" data-action="switchTab" data-tab="experience" data-tooltip="Expérience disponible / gagnée au total">
+        <span class="xp-label">Expérience</span>
+        <span class="xp-available">{{system.experience.available}}</span>
+        <span class="xp-total">/ {{system.experience.total}}</span>
+      </div>
+    </div>
+    <datalist id="noctis-archetypes-{{actor.id}}">{{#each archetypes}}<option value="{{this}}"></option>{{/each}}</datalist>
+  </div>
+
+  <div class="resources">
+    {{#if usesBlood}}
+    <div class="resource blood" data-tooltip="Réserve de sang : {{system.blood.value}}/{{system.blood.max}} — {{system.blood.perTurn}} point(s) par tour">
+      <div class="res-title"><i class="fa-solid fa-droplet"></i> Sang <b>{{system.blood.value}}</b>/{{system.blood.max}} <em>({{system.blood.perTurn}}/tour)</em></div>
+      <div class="squares blood-squares" data-path="system.blood.value" data-value="{{system.blood.value}}">
+        {{#each bloodSquares}}<span class="sq {{#if filled}}filled{{/if}}" data-action="setSquares" data-n="{{n}}"></span>{{/each}}
+      </div>
+    </div>
+    {{/if}}
+
+    <div class="resource willpower">
+      <div class="res-title"><i class="fa-solid fa-shield-heart"></i> Volonté
+        <span class="roll-link" data-action="rollVirtue" data-kind="willpower" data-tooltip="Jet de Volonté"><i class="fa-solid fa-dice-d10"></i></span>
+      </div>
+      {{noctisDots value=system.willpower.permanent max=10 path="system.willpower.permanent"}}
+      <div class="squares wp-squares" data-path="system.willpower.temporary" data-value="{{system.willpower.temporary}}">
+        {{#each wpSquares}}<span class="sq {{#if filled}}filled{{/if}} {{#unless available}}unavailable{{/unless}}" data-action="setSquares" data-n="{{n}}"></span>{{/each}}
+      </div>
+    </div>
+
+    <div class="resource health {{#if system.health.incapacitated}}critical{{/if}}">
+      <div class="res-title"><i class="fa-solid fa-heart-pulse"></i> Santé : <b>{{system.health.status}}</b>
+        {{#if system.health.penalty}}<span class="penalty">{{system.health.penalty}} dés</span>{{/if}}
+        {{#if system.health.torpor}}<span class="state torpor">Torpeur</span>{{/if}}
+        {{#if system.health.finalDeath}}<span class="state death">Mort ultime</span>{{/if}}
+      </div>
+      <div class="health-track" data-tooltip="Clic : +1 contondant · Maj+clic : létal · Ctrl+clic : aggravé · Clic droit : soigner">
+        {{#each system.health.track}}
+          <span class="hbox {{state}}" data-action="healthClick" data-health-index="{{index}}" data-tooltip="{{label}}{{#if penalty}} ({{penalty}}){{/if}}"></span>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="resource road">
+      <div class="res-title"><i class="fa-solid fa-route"></i> <span class="road-name">{{#if system.road.name}}{{system.road.name}}{{else}}Voie{{/if}}</span>
+        <span class="roll-link" data-action="rollVirtue" data-kind="road" data-tooltip="Jet de Voie"><i class="fa-solid fa-dice-d10"></i></span>
+      </div>
+      {{noctisDots value=system.road.value max=10 path="system.road.value"}}
+      {{#if system.road.aura}}<div class="aura" data-tooltip="Aura">{{system.road.aura}}</div>{{/if}}
+    </div>
+  </div>
+</header>

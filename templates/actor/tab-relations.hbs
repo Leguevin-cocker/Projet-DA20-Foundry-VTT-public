@@ -1,0 +1,62 @@
+<section class="tab tab-relations {{tab.cssClass}}" data-tab="relations">
+  <h2 class="noctis-section"><span>Alliés, contacts et autres liens</span></h2>
+  <div class="rel-quota">
+    {{#each relQuota}}
+      <span class="quota {{#if over}}over{{/if}} {{#if full}}full{{/if}}" data-tooltip="{{tip}}"><i class="{{icon}}"></i> {{label}} <b>{{count}} / {{allowed}}</b></span>
+    {{/each}}
+  </div>
+  <p class="hint">Glissez ici un acteur (PNJ, autre personnage) pour le lier, ou ajoutez une entrée libre. Les compteurs comparent vos entrées à vos historiques Alliés, Contacts, Mentor, Servants et Troupeau.</p>
+
+  <div class="rel-list">
+    {{#each relations}}
+      <article class="rel-card attitude-{{attitude}}" data-rel-index="{{index}}">
+        <a class="rel-img-wrap" {{#if actorUuid}}data-action="relOpen" data-tooltip="Ouvrir la fiche liée"{{/if}}><img class="rel-img" src="{{img}}" alt=""></a>
+        <div class="rel-main">
+          <div class="rel-line">
+            <input class="rel-name" type="text" data-array="relations" data-index="{{index}}" data-field="name" value="{{name}}" placeholder="Nom">
+            <select data-array="relations" data-index="{{index}}" data-field="kind" data-tooltip="Type de lien">{{noctisOptions ../relKindChoices kind}}</select>
+            <select data-array="relations" data-index="{{index}}" data-field="attitude" data-tooltip="Attitude envers vous">{{noctisOptions ../attitudeChoices attitude}}</select>
+            <select class="rel-influence" data-array="relations" data-index="{{index}}" data-field="influence" data-tooltip="Influence / puissance (0 à 5)">{{noctisOptions ../influenceChoices influence}}</select>
+          </div>
+          <input class="rel-place" type="text" data-array="relations" data-index="{{index}}" data-field="place" value="{{place}}" placeholder="Lieu, milieu, domaine d'expertise…">
+          <div class="rel-bond {{#if bondTo}}on{{/if}} {{#if bondFrom}}on{{/if}}">
+            <i class="fa-solid fa-link" data-tooltip="Lien de sang : 1re gorgée = attachement intermittent ; 2e = le régnant devient une priorité (jet de Volonté pour lui nuire, −1 à ses jets sociaux contre le soumis) ; 3e = asservi"></i>
+            <label>Je suis son soumis <select data-array="relations" data-index="{{index}}" data-field="bondTo">{{noctisOptions ../bondChoices bondTo}}</select></label>
+            <label>Il est mon soumis <select data-array="relations" data-index="{{index}}" data-field="bondFrom">{{noctisOptions ../bondChoices bondFrom}}</select></label>
+          </div>
+          <textarea data-array="relations" data-index="{{index}}" data-field="notes" rows="2" placeholder="Ce qu'il vous apporte, ce qu'il demande en retour…">{{notes}}</textarea>
+        </div>
+        <span class="rel-controls"><a data-action="relDelete" data-tooltip="Supprimer"><i class="fa-solid fa-trash"></i></a></span>
+      </article>
+    {{else}}
+      <p class="empty">Aucun lien pour l'instant.</p>
+    {{/each}}
+  </div>
+  <div class="add-buttons">
+    {{#each relKindList}}<a class="add-row" data-action="relAdd" data-kind="{{key}}"><i class="fa-solid fa-plus"></i> {{label}}</a>{{/each}}
+  </div>
+
+  <h2 class="noctis-section"><span>Ce que je pense des autres personnages</span></h2>
+  <div class="op-list">
+    {{#each opinions}}
+      <div class="op-row trust-{{trustClass}}">
+        <img class="rel-img" src="{{img}}" alt="">
+        <div class="op-main">
+          <div class="rel-line">
+            <b class="op-name">{{name}}</b><span class="op-sub">{{subtitle}}</span>
+            <select data-array="opinions" data-key="{{actorId}}" data-field="trust">{{noctisOptions ../trustChoices trust}}</select>
+          </div>
+          <textarea data-array="opinions" data-key="{{actorId}}" data-field="text" rows="2" placeholder="Votre avis, vos dettes, vos soupçons…">{{text}}</textarea>
+          <div class="rel-bond {{#if bondTo}}on{{/if}} {{#if bondFrom}}on{{/if}}">
+            <i class="fa-solid fa-link" data-tooltip="Lien de sang entre vos deux personnages"></i>
+            <label>Je suis son soumis <select data-array="opinions" data-key="{{actorId}}" data-field="bondTo">{{noctisOptions ../bondChoices bondTo}}</select></label>
+            <label>Il est mon soumis <select data-array="opinions" data-key="{{actorId}}" data-field="bondFrom">{{noctisOptions ../bondChoices bondFrom}}</select></label>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <p class="empty">Aucun autre personnage joueur dans ce monde.</p>
+    {{/each}}
+  </div>
+  <p class="hint">Ces notes se trouvent sur votre fiche : seuls vous et le MJ les voient, sauf si vous donnez à d'autres joueurs le droit de voir votre fiche.</p>
+</section>

@@ -1,0 +1,73 @@
+[
+ {
+  "name": "Veilleurs du Seuil",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Exemples",
+  "system": {
+   "nickname": "Les Portiers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "murmure-des-ombres",
+    "chair-de-pierre",
+    "hate-sanguine"
+   ],
+   "disciplineNote": "",
+   "weakness": "Un Veilleur ne peut franchir le seuil d'une demeure habitée sans y être invité ; forcer le passage lui coûte 1 point de Volonté par tour passé à l'intérieur.",
+   "appearanceZero": false,
+   "roads": "Voie du Cœur",
+   "emblem": "",
+   "description": "<p><b>Lignée d'exemple</b>, inventée pour ce système. Gardiens des passages, ils vendent aux autres vampires le droit d'entrer et de sortir des villes.</p>"
+  }
+ },
+ {
+  "name": "Fils de la Forge",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Exemples",
+  "system": {
+   "nickname": "Les Marteaux",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "bras-de-fer",
+    "chair-de-pierre",
+    "art-du-sang"
+   ],
+   "disciplineNote": "",
+   "weakness": "Le métal froid les trouble : +1 à la difficulté de leurs jets sociaux tant qu'ils portent moins d'un objet de fer forgé de leurs mains.",
+   "appearanceZero": false,
+   "roads": "Voie du Fer",
+   "emblem": "",
+   "description": "<p><b>Lignée d'exemple</b>, inventée pour ce système. Artisans du sang et du métal.</p>"
+  },
+  "flags": {
+   "noctis": {
+    "doubleConscienceXp": false
+   }
+  }
+ },
+ {
+  "name": "Masques de cendre",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Exemples",
+  "system": {
+   "nickname": "Les Visages gris",
+   "isBloodline": true,
+   "parent": "",
+   "disciplines": [
+    "murmure-des-ombres",
+    "hate-sanguine",
+    "art-du-sang"
+   ],
+   "disciplineNote": "",
+   "weakness": "Leur peau grise et craquelée trahit leur nature : Apparence à 0, impossible à augmenter.",
+   "appearanceZero": true,
+   "roads": "",
+   "emblem": "",
+   "description": "<p><b>Lignée d'exemple</b> montrant la faiblesse « Apparence à 0 » gérée par le créateur et la fiche.</p>"
+  }
+ }
+]

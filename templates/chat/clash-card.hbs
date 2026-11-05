@@ -1,0 +1,107 @@
+<div class="noctis-card clash-card stage-{{stage}}">
+  <div class="card-frame">
+    <header class="clash-head">
+      <div class="fighter attacker"><img src="{{attacker.img}}" alt=""><span>{{attacker.name}}</span></div>
+      <div class="vs">VS</div>
+      <div class="fighter defender"><img src="{{defender.img}}" alt=""><span>{{defender.name}}</span></div>
+    </header>
+    <p class="clash-weapon">{{#if maneuver}}<b class="clash-maneuver" data-tooltip="{{maneuver.short}}">{{maneuver.label}}</b> · {{/if}}{{weapon.name}} · attaque {{attackKindLabel}}{{#unless noDamage}} · dégâts {{weapon.damageTypeLabel}}{{/unless}}{{#if maneuver.targeting}} · ciblage : {{maneuver.targeting}}{{/if}}</p>
+
+    <section class="clash-step">
+      <h4><i class="fa-solid fa-khanda"></i> Attaque <span class="res">{{attack.successes}} réussite(s)</span></h4>
+      <div class="dice">{{#each attack.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}{{#if attack.willpower}}<span class="d10 wp"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}</div>
+      <small>{{attack.pool}} dés, diff. {{attack.difficulty}}{{#if attack.parts}} · {{attack.parts}}{{/if}}</small>
+    </section>
+
+    {{#if defense}}
+    <section class="clash-step">
+      <h4><i class="fa-solid fa-shield"></i> Défense : {{defense.label}} <span class="res">{{defense.successes}} réussite(s)</span></h4>
+      {{#if defense.faces}}<div class="dice">{{#each defense.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div><small>{{defense.pool}} dés, diff. {{defense.difficulty}}{{#if (noctisGt defense.difficulty 6)}} (difficulté accrue){{/if}}{{#if defense.parts}} · {{defense.parts}}{{/if}}</small>{{/if}}
+    </section>
+    {{/if}}
+
+    {{#if waitingDefense}}
+    <section class="clash-wait" data-clash-owner="defender">
+      <p><b>{{defender.name}}</b>, comment vous défendez-vous ?{{#if defenseCost}} <em>({{defenseCost}})</em>{{/if}}</p>
+      <div class="card-buttons">
+        {{#each defenseChoices}}<button type="button" data-clash-step="defend" data-choice="{{key}}" data-tooltip="{{parts}}"><i class="fa-solid fa-shield-halved"></i> {{label}} ({{pool}} dés)</button>{{/each}}
+        <button type="button" data-clash-step="defend" data-choice="none"><i class="fa-solid fa-person"></i> Ne pas se défendre</button>
+      </div>
+    </section>
+    <p class="clash-pending" data-clash-pending="defender">En attente de la défense de {{defender.name}}…</p>
+    {{/if}}
+
+    {{#if (noctisGt net 0)}}
+    <p class="clash-net">Touché : <b>{{net}}</b> réussite(s) nette(s) → <b>{{damagePool}}</b> dés de dégâts ({{damageFormula}})</p>
+    {{/if}}
+
+    {{#if waitingDamage}}
+    <section class="clash-wait" data-clash-owner="attacker">
+      <div class="card-buttons">
+        <button type="button" data-clash-step="damage" data-choice="full"><i class="fa-solid fa-burst"></i> Lancer les dégâts ({{damagePool}} dés)</button>
+        <button type="button" data-clash-step="damage" data-choice="half" data-tooltip="Retenir son coup : niveaux de dégâts divisés par deux, arrondi au supérieur"><i class="fa-solid fa-hand"></i> Dégâts ½</button>
+      </div>
+    </section>
+    <p class="clash-pending" data-clash-pending="attacker">En attente des dégâts de {{attacker.name}}…</p>
+    {{/if}}
+
+    {{#if damage}}
+    <section class="clash-step">
+      <h4><i class="fa-solid fa-burst"></i> Dégâts <span class="res">{{damage.levels}} niveau(x) {{damage.typeLabel}}</span></h4>
+      <div class="dice">{{#each damage.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div>
+      {{#if damage.average}}<p class="clash-average">Résultat moyen du PNJ, sans jet : {{damage.pool}} dés ÷ 2 = <b>{{damage.successes}}</b></p>{{/if}}
+      <small>{{damage.pool}} dés, diff. 6{{#if damage.parts}} · {{damage.parts}}{{/if}}{{#if damage.minApplied}} · minimum 1 réussite (variante){{/if}}{{#if damage.half}} · {{damage.halfReason}} : {{damage.before}} → {{damage.levels}} (moitié, arrondi au supérieur){{/if}}</small>
+    </section>
+    {{/if}}
+
+    {{#if waitingSoak}}
+    <section class="clash-wait" data-clash-owner="defender">
+      <p><b>{{defender.name}}</b> encaisse {{damage.levels}} niveau(x) {{damage.typeLabel}}.</p>
+      <div class="card-buttons">
+        <button type="button" data-clash-step="soak" data-choice="full"><i class="fa-solid fa-shield-heart"></i> Absorber</button>
+        <button type="button" data-clash-step="soak" data-choice="half" data-tooltip="Après absorption, ne subir que la moitié des niveaux (arrondi au supérieur)"><i class="fa-solid fa-scale-balanced"></i> Absorber et prendre la moitié</button>
+        {{#if wpSoak}}
+        <button type="button" data-clash-step="soak" data-choice="wp" data-tooltip="Dépense 1 point de Volonté : 1 réussite automatique d'absorption (variante)"><i class="fa-solid fa-shield-heart"></i> Absorber + Volonté</button>
+        <button type="button" data-clash-step="soak" data-choice="wpHalf" data-tooltip="1 point de Volonté (+1 réussite), puis moitié des niveaux restants"><i class="fa-solid fa-scale-balanced"></i> Volonté et moitié</button>
+        {{/if}}
+      </div>
+    </section>
+    <p class="clash-pending" data-clash-pending="defender">En attente de l'absorption de {{defender.name}}…</p>
+    {{/if}}
+
+    {{#if soak}}
+    <section class="clash-step">
+      <h4><i class="fa-solid fa-shield-heart"></i> Absorption <span class="res">{{soak.successes}} niveau(x)</span></h4>
+      <div class="dice">{{#each soak.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}{{#if soak.willpower}}<span class="d10 wp"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}</div>
+      {{#if soak.average}}<p class="clash-average">Résultat moyen du PNJ, sans jet : {{soak.pool}} dés ÷ 2 = <b>{{soak.successes}}</b></p>{{/if}}
+      <small>{{soak.pool}} dés, diff. 6{{#if soak.parts}} · {{soak.parts}}{{/if}}</small>
+    </section>
+    {{/if}}
+
+    {{#if effects}}
+    <ul class="clash-effects">{{#each effects}}<li><i class="fa-solid fa-bolt"></i> {{this}}</li>{{/each}}</ul>
+    {{/if}}
+    {{#if finished}}
+      {{#if hit}}
+        {{#if result}}
+        <div class="outcome {{#if result.remaining}}failure{{else}}success{{/if}}">
+          <span class="label">{{defender.name}} perd <b>{{result.remaining}}</b> niveau(x) de santé{{#if result.typeLabel}} ({{result.typeLabel}}){{/if}}</span>
+        </div>
+        <ul class="clash-notes">
+          {{#if result.halved}}<li>Contondants divisés par deux (vampire).</li>{{/if}}
+          {{#if result.half}}<li>{{result.halfReason}}</li>{{/if}}
+          {{#if result.note}}<li>{{result.note}}</li>{{/if}}
+          {{#if result.status}}<li>État : <b>{{result.status}}</b></li>{{/if}}
+          {{#if result.torpor}}<li class="alert">Torpeur.</li>{{/if}}
+          {{#if result.finalDeath}}<li class="alert">Mort ultime.</li>{{/if}}
+        </ul>
+        {{else}}
+        <div class="outcome success"><span class="label">{{#if maneuver}}{{maneuver.label}} réussie{{else}}Touché{{/if}}</span></div>
+        {{/if}}
+      {{else}}
+        <div class="outcome failure"><span class="label">Raté — {{missReason}}</span></div>
+      {{/if}}
+    {{/if}}
+    {{#if error}}<p class="alert">{{error}}</p>{{/if}}
+  </div>
+</div>

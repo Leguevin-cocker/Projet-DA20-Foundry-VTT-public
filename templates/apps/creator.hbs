@@ -1,0 +1,290 @@
+<div class="creator">
+  <aside class="creator-steps">
+    <i class="creator-ankh fa-solid fa-droplet"></i>
+    {{#each steps}}
+      <a class="cstep {{#if active}}active{{/if}} {{#if done}}done{{/if}} {{#if error}}error{{/if}}" data-action="goto" data-step="{{id}}">
+        <span class="num">{{id}}</span><i class="{{icon}}"></i> <span>{{label}}</span>
+      </a>
+    {{/each}}
+    {{#if modeChosen}}
+      <div class="mode-badge {{#if free}}free{{/if}}">{{#if free}}Mode libre{{else}}Mode guidé{{/if}}</div>
+      <div class="bonus-meter"><span class="n">{{bonusLeft}}</span><span class="l">points de bonus<br>restants / {{bonusTotal}}</span></div>
+      <a class="reset" data-action="reset"><i class="fa-solid fa-rotate-left"></i> Recommencer</a>
+    {{/if}}
+  </aside>
+
+  <section class="creator-main">
+    {{#if noPacks}}
+      <p class="alert">Aucune lignée trouvée. Créez vos lignées, disciplines et Voies dans l'onglet Objets (ou importez un compendium), puis rouvrez le créateur.</p>
+    {{/if}}
+
+    {{!-- ===================== 0. MODE ===================== --}}
+    {{#if (noctisEq step 0)}}
+      <h2 class="noctis-section"><span>Naissance d'un vampire</span></h2>
+      <p class="lead">La création se fait en cinq étapes : un concept, des attributs, des capacités, des avantages, puis les touches finales et les points de bonus. Choisissez comment vous voulez avancer.</p>
+      <div class="mode-cards">
+        <a class="mode-card" data-action="setMode" data-mode="guided">
+          <i class="fa-solid fa-book-skull"></i>
+          <h3>Mode guidé</h3>
+          <p>Pas à pas. Chaque choix est expliqué, les points restants sont comptés et vous ne pouvez avancer qu'une fois l'étape valide.</p>
+        </a>
+        <a class="mode-card" data-action="setMode" data-mode="free">
+          <i class="fa-solid fa-feather-pointed"></i>
+          <h3>Mode libre</h3>
+          <p>Pour le conteur ou un joueur expérimenté : mêmes écrans, aucune limite ni contrôle. Toutes les disciplines sont proposées. Idéal pour un PNJ ou un ancien.</p>
+        </a>
+      </div>
+    {{/if}}
+
+    {{!-- ===================== 1. CONCEPT ===================== --}}
+    {{#if (noctisEq step 1)}}
+      <h2 class="noctis-section"><span>Étape I : le concept</span></h2>
+      <p class="lead">Qui était votre personnage de son vivant ? Pourquoi son sire l'a-t-il choisi ? Que fait-il de ses nuits ? Le concept, le clan et la Voie donnent le ton de tout le reste.</p>
+      <div class="cgrid two">
+        <label><span>Nom</span><input type="text" name="st.name" value="{{st.name}}"></label>
+        <label><span>Joueur</span><input type="text" name="st.player" value="{{st.player}}"></label>
+        <label class="wide"><span>Concept</span><input type="text" name="st.concept" value="{{st.concept}}" list="noctis-concepts"></label>
+        <datalist id="noctis-concepts">{{#each concepts}}<option value="{{this}}"></option>{{/each}}</datalist>
+        <label><span>Sire</span><input type="text" name="st.sire" value="{{st.sire}}"></label>
+      </div>
+
+      <h3 class="noctis-subsection">Clan</h3>
+      <div class="clan-pick">
+        <select name="st.clanId">
+          <option value="">— Choisir un clan ou une lignée —</option>
+          <optgroup label="Clans">{{#each clans}}{{#unless bloodline}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/unless}}{{/each}}</optgroup>
+          <optgroup label="Lignées">{{#each clans}}{{#if bloodline}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/if}}{{/each}}</optgroup>
+        </select>
+        {{#if clan}}
+          <div class="clan-card">
+            <img src="{{clan.system.emblem}}" alt="">
+            <div>
+              <h4>{{clan.name}} <em>{{clan.system.nickname}}</em></h4>
+              <p><b>Disciplines de clan :</b> {{clanDiscLabels}}{{#if clan.system.disciplineNote}} <em>({{clan.system.disciplineNote}})</em>{{/if}}</p>
+              <p><b>Faiblesse :</b> {{clan.system.weakness}}</p>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+
+      <h3 class="noctis-subsection">Nature et attitude</h3>
+      <p class="hint">La <b>nature</b> est la personnalité profonde : agir selon elle permet de regagner de la Volonté. L'<b>attitude</b> est le masque montré au monde.</p>
+      <div class="cgrid two">
+        <label><span>Nature</span><select name="st.nature"><option value="">—</option>{{#each archetypes}}<option value="{{name}}" {{#if (noctisEq name ../st.nature)}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+        <label><span>Attitude</span><select name="st.demeanor"><option value="">—</option>{{#each archetypes}}<option value="{{name}}" {{#if (noctisEq name ../st.demeanor)}}selected{{/if}}>{{name}}</option>{{/each}}</select></label>
+        <p class="desc">{{natureDesc}}</p><p class="desc">{{demeanorDesc}}</p>
+      </div>
+
+      <h3 class="noctis-subsection">Voie</h3>
+      <p class="hint">La Voie est la morale qui retient la Bête. Elle fixe vos deux premières vertus : Conscience ou Conviction, Maîtrise de soi ou Instinct.</p>
+      <select name="st.roadId"><option value="">— Choisir une Voie —</option>{{#each roads}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select>
+      {{#if road}}<p class="desc"><b>{{road.name}}</b> ({{road.system.latin}}) — vertus : {{#with virtues}}{{this.[0].label}} et {{this.[1].label}}{{/with}}.</p>{{/if}}
+    {{/if}}
+
+    {{!-- ===================== 2. ATTRIBUTS ===================== --}}
+    {{#if (noctisEq step 2)}}
+      <h2 class="noctis-section"><span>Étape II : les attributs</span></h2>
+      <p class="lead">Chaque attribut commence à 1 point. Classez les catégories par importance : <b>7</b> points pour la primaire, <b>5</b> pour la secondaire, <b>3</b> pour la tertiaire.{{#if noAppearance}} Faiblesse de lignée : l'Apparence reste à 0.{{/if}}</p>
+      <div class="cgrid three">
+        {{#each attrGroups}}
+          <div class="cgroup {{#if ok}}ok{{/if}}">
+            <h3>{{label}}</h3>
+            <select name="st.attrRank.{{key}}">{{noctisOptions ../rankChoices rank}}</select>
+            <div class="counter">{{#if (noctisEq points null)}}—{{else}}<b>{{left}}</b> / {{points}} restants{{/if}}</div>
+            {{#each traits}}
+              <div class="ctrait" data-base="{{base}}" data-bonus="{{bonus}}">
+                <span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span>
+                {{noctisDots value=value max=5 path=path locked=locked}}
+                {{#if bonus}}<em class="b">+{{bonus}} bonus</em>{{/if}}
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+      <p class="hint">Force, Dextérité, Vigueur pour le corps ; Charisme, Manipulation, Apparence pour les relations ; Perception, Intelligence, Astuce pour l'esprit.</p>
+    {{/if}}
+
+    {{!-- ===================== 3. CAPACITÉS ===================== --}}
+    {{#if (noctisEq step 3)}}
+      <h2 class="noctis-section"><span>Étape III : les capacités</span></h2>
+      <p class="lead">Classez talents, compétences et connaissances : <b>13</b>, <b>9</b> et <b>5</b> points. Aucune capacité ne peut dépasser <b>3</b> à ce stade (les points de bonus permettront d'aller plus haut).</p>
+      <div class="cgrid three">
+        {{#each abilGroups}}
+          <div class="cgroup {{#if ok}}ok{{/if}}">
+            <h3>{{label}}</h3>
+            <select name="st.abilRank.{{key}}">{{noctisOptions ../rankChoices rank}}</select>
+            <div class="counter">{{#if (noctisEq points null)}}—{{else}}<b>{{left}}</b> / {{points}} restants{{/if}}</div>
+            {{#each traits}}
+              <div class="ctrait" data-base="0" data-bonus="{{bonus}}">
+                <span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span>
+                {{noctisDots value=value max=5 path=path}}
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+    {{/if}}
+
+    {{!-- ===================== 4. AVANTAGES ===================== --}}
+    {{#if (noctisEq step 4)}}
+      <h2 class="noctis-section"><span>Étape IV : les avantages</span></h2>
+      <div class="cgrid three adv">
+        <div class="cgroup {{#if (noctisEq discSpent 4)}}ok{{/if}}">
+          <h3>Disciplines</h3>
+          <div class="counter"><b>{{discSpent}}</b> / 4</div>
+          <p class="hint">{{#if guided}}4 points parmi les disciplines de votre clan.{{else}}Toutes les disciplines sont proposées.{{/if}}</p>
+          {{#each disciplines}}
+            <div class="ctrait disc" data-base="0" data-bonus="{{bonus}}">
+              <img src="{{img}}" alt=""><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}{{#unless inClan}} <em>(hors clan)</em>{{/unless}}</span>
+              {{noctisDots value=value max=5 path=path}}
+            </div>
+          {{/each}}
+          {{#unless disciplines.length}}<p class="hint">Choisissez d'abord un clan.</p>{{/unless}}
+        </div>
+        <div class="cgroup {{#if (noctisEq bgSpent 5)}}ok{{/if}}">
+          <h3>Historiques</h3>
+          <div class="counter"><b>{{bgSpent}}</b> / 5</div>
+          <p class="hint">Génération abaisse votre génération (12e par défaut) ; Domaine et Troupeau remplissent votre réserve de sang de départ.</p>
+          {{#each backgrounds}}
+            <div class="ctrait" data-base="0" data-bonus="{{bonus}}"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span>{{noctisDots value=value max=5 path=path}}</div>
+          {{/each}}
+        </div>
+        <div class="cgroup {{#if (noctisEq virtSpent 7)}}ok{{/if}}">
+          <h3>Vertus</h3>
+          <div class="counter"><b>{{virtSpent}}</b> / 7</div>
+          <p class="hint">Chaque vertu commence à 1. Les deux premières (selon votre Voie) donneront votre score de Voie ; le Courage donnera votre Volonté.</p>
+          {{#each virtues}}
+            <div class="ctrait" data-base="1" data-bonus="{{bonus}}"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span>{{noctisDots value=value max=5 path=path}}</div>
+          {{/each}}
+          <p class="derived">Génération : <b>{{generationLabel}}</b> · Réserve max. {{gs.blood}} · {{gs.perTurn}}/tour</p>
+        </div>
+      </div>
+    {{/if}}
+
+    {{!-- ===================== 5. TOUCHES FINALES ===================== --}}
+    {{#if (noctisEq step 5)}}
+      <h2 class="noctis-section"><span>Étape V : les touches finales</span></h2>
+      <div class="finals">
+        <div class="final-card"><span class="l">{{#if road}}{{road.name}}{{else}}Voie{{/if}}</span><span class="n">{{roadBase}}</span><span class="f">= {{virtues.[0].label}} + {{virtues.[1].label}}</span></div>
+        <div class="final-card"><span class="l">Volonté</span><span class="n">{{willBase}}</span><span class="f">= Courage</span></div>
+        <div class="final-card"><span class="l">Génération</span><span class="n">{{generation}}e</span><span class="f">max. traits {{gs.maxTrait}}</span></div>
+        <div class="final-card blood">
+          <span class="l">Sang de départ</span>
+          {{#if (noctisEq bloodStart null)}}<button type="button" data-action="rollBlood"><i class="fa-solid fa-dice-d10"></i> Lancer 1d10</button>
+          {{else}}<span class="n">{{bloodStart}}</span><span class="f">dé {{st.bloodRoll}} + Domaine + Troupeau (max {{gs.blood}})</span>{{/if}}
+        </div>
+      </div>
+      <p class="lead">Un niveau de Voie de 5 à 7 est courant : le vampire a choisi une direction sans s'y être encore jeté. Une Volonté basse rend vulnérable aux tentations ; les points de bonus permettront de la relever.</p>
+    {{/if}}
+
+    {{!-- ===================== 6. BONUS ===================== --}}
+    {{!-- ===================== 6. ATOUTS ET HANDICAPS ===================== --}}
+    {{#if (noctisEq step 6)}}
+      <h2 class="noctis-section"><span>Étape VI : atouts et handicaps</span></h2>
+      <p class="lead">Facultatifs. Les <b class="mf-word merit">atouts</b> coûtent des points de bonus ; les <b class="mf-word flaw">handicaps</b> en rapportent (7 au maximum). Pour ceux qui ont plusieurs niveaux, cliquez sur le niveau voulu : son effet s'affiche dessous.</p>
+      <div class="mf-totals">
+        <span class="merit">Atouts : <b>{{meritCost}}</b> pt(s)</span>
+        <span class="flaw">Handicaps : <b>{{flawRaw}}</b> pt(s){{#if (noctisGt flawRaw 7)}} <em>(7 comptés)</em>{{/if}}</span>
+        <span>Points de bonus restants : <b class="{{#if (noctisGt 0 bonusLeft)}}warn{{/if}}">{{bonusLeft}}</b> / {{bonusTotal}}</span>
+      </div>
+      {{#each mfSections}}
+        <section class="mf-section">
+          <h3 class="mf-cat"><span class="mf-icon">{{icon}}</span> {{label}}</h3>
+          <div class="mf-cols">
+            <div class="mf-col">
+              {{#each merits}}{{> mfCard}}{{/each}}
+              {{#unless merits.length}}<p class="hint">Aucun atout de ce type.</p>{{/unless}}
+            </div>
+            <div class="mf-col">
+              {{#each flaws}}{{> mfCard}}{{/each}}
+              {{#unless flaws.length}}<p class="hint">Aucun handicap de ce type.</p>{{/unless}}
+            </div>
+          </div>
+        </section>
+      {{/each}}
+    {{/if}}
+
+    {{!-- ===================== 7. POINTS DE BONUS ===================== --}}
+    {{#if (noctisEq step 7)}}
+      <h2 class="noctis-section"><span>Étape VII : points de bonus</span></h2>
+      <p class="lead">Vous disposez de <b>15</b> points de bonus{{#if flawGain}}, plus <b>{{flawGain}}</b> gagnés par vos handicaps (7 au maximum){{/if}}. Coûts : attribut 5, capacité 2, discipline 7, historique 1, vertu 2, Voie 2, Volonté 1. Les atouts choisis à l'étape précédente sont déjà déduits.</p>
+      <div class="bonus-summary">Dépensés : <b>{{bonusSpent}}</b> en traits + <b>{{meritCost}}</b> en atouts — reste <b class="{{#if (noctisGt 0 bonusLeft)}}warn{{/if}}">{{bonusLeft}}</b></div>
+      <div class="cgrid three bonus-grid">
+        <div class="cgroup">
+          <h3>Attributs (5)</h3>
+          {{#each attrGroups}}{{#each traits}}{{#unless locked}}
+            <div class="brow"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span><b>{{value}}</b>
+              <a data-action="bonus" data-group="attributes" data-key="{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="attributes" data-key="{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          {{/unless}}{{/each}}{{/each}}
+          <h3>Vertus (2)</h3>
+          {{#each virtues}}
+            <div class="brow"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span><b>{{value}}</b>
+              <a data-action="bonus" data-group="virtues" data-key="{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="virtues" data-key="{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          {{/each}}
+          <div class="brow"><span class="tip" data-tooltip-html="{{roadTip}}" data-tooltip-direction="RIGHT">Voie (2)</span><b>{{roadValue}}</b>
+            <a data-action="bonus" data-group="road" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="road" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          <div class="brow"><span class="tip" data-tooltip-html="{{willTip}}" data-tooltip-direction="RIGHT">Volonté (1)</span><b>{{willValue}}</b>
+            <a data-action="bonus" data-group="willpower" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="willpower" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+        </div>
+        <div class="cgroup">
+          <h3>Capacités (2)</h3>
+          {{#each abilGroups}}{{#each traits}}
+            <div class="brow"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span><b>{{value}}</b>
+              <a data-action="bonus" data-group="abilities" data-key="{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="abilities" data-key="{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          {{/each}}{{/each}}
+        </div>
+        <div class="cgroup">
+          <h3>Disciplines (7)</h3>
+          {{#each disciplines}}
+            <div class="brow"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span><b>{{value}}</b>
+              <a data-action="bonus" data-group="disciplines" data-key="{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="disciplines" data-key="{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          {{/each}}
+          <h3>Historiques (1)</h3>
+          {{#each backgrounds}}
+            <div class="brow"><span class="tip" data-tooltip-html="{{tip}}" data-tooltip-direction="RIGHT">{{label}}</span><b>{{value}}</b>
+              <a data-action="bonus" data-group="backgrounds" data-key="{{key}}" data-delta="-1"><i class="fa-solid fa-minus"></i></a><a data-action="bonus" data-group="backgrounds" data-key="{{key}}" data-delta="1"><i class="fa-solid fa-plus"></i></a></div>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
+    {{!-- ===================== 8. RÉSUMÉ ===================== --}}
+    {{#if (noctisEq step 8)}}
+      <h2 class="noctis-section"><span>L'étincelle de non-vie</span></h2>
+      <div class="summary-head">
+        {{#if clan}}<img src="{{clan.system.emblem}}" alt="">{{/if}}
+        <div><h3>{{st.name}}</h3><p>{{#if clan}}{{clan.name}} · {{/if}}{{generationLabel}} génération · {{#if road}}{{road.name}} {{roadValue}}{{/if}}</p>
+        <p><em>{{st.concept}}</em> — Nature : {{st.nature}}, Attitude : {{st.demeanor}}</p></div>
+      </div>
+      <div class="cgrid three summary">
+        {{#each attrGroups}}<div><h4>{{label}}</h4>{{#each traits}}<div class="srow">{{label}} <b>{{value}}</b></div>{{/each}}</div>{{/each}}
+      </div>
+      <div class="cgrid three summary">
+        <div><h4>Disciplines</h4>{{#each disciplines}}{{#if value}}<div class="srow">{{label}} <b>{{value}}</b></div>{{/if}}{{/each}}</div>
+        <div><h4>Historiques</h4>{{#each backgrounds}}{{#if value}}<div class="srow">{{label}} <b>{{value}}</b></div>{{/if}}{{/each}}</div>
+        <div><h4>Vertus</h4>{{#each virtues}}<div class="srow">{{label}} <b>{{value}}</b></div>{{/each}}<div class="srow">Volonté <b>{{willValue}}</b></div>{{#if bloodStart}}<div class="srow">Sang <b>{{bloodStart}}</b></div>{{/if}}</div>
+      </div>
+      {{#if hasChosenMF}}
+        <div class="summary mf-summary"><h4>Atouts et handicaps</h4>
+          {{#each chosenMF}}<div class="srow mf-{{kind}}">{{icon}} {{name}} <b>{{level}}</b></div>{{/each}}
+        </div>
+      {{/if}}
+      {{#if allErrors.length}}
+        <div class="errors"><h4>{{#if guided}}À corriger avant de créer{{else}}Écarts avec les règles (mode libre){{/if}}</h4><ul>{{#each allErrors}}<li>{{this}}</li>{{/each}}</ul></div>
+      {{/if}}
+      <div class="finish-row"><button type="button" class="big" data-action="finish"><i class="fa-solid fa-droplet"></i> Créer le personnage</button></div>
+    {{/if}}
+
+    {{#if stepErrors.length}}{{#unless (noctisEq step 8)}}
+      <ul class="step-errors">{{#each stepErrors}}<li><i class="fa-solid fa-triangle-exclamation"></i> {{this}}</li>{{/each}}</ul>
+    {{/unless}}{{/if}}
+  </section>
+
+  {{#if modeChosen}}
+  <footer class="creator-nav">
+    {{#unless isFirst}}<button type="button" data-action="prev"><i class="fa-solid fa-arrow-left"></i> Précédent</button>{{/unless}}
+    <span class="spacer"></span>
+    {{#unless isLast}}<button type="button" data-action="next">Suivant <i class="fa-solid fa-arrow-right"></i></button>{{/unless}}
+  </footer>
+  {{/if}}
+</div>

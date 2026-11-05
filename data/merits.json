@@ -1,0 +1,136 @@
+[
+ {
+  "name": "Sommeil léger",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Exemples — atouts",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "physical",
+   "levels": [],
+   "description": "<p>Vous vous éveillez au moindre bruit, même en plein jour, et agissez normalement le premier tour.</p>"
+  }
+ },
+ {
+  "name": "Œil du marchand",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Exemples — atouts",
+  "system": {
+   "cost": 1,
+   "costText": "",
+   "category": "mental",
+   "levels": [],
+   "description": "<p>Vous estimez d'un regard la valeur d'un objet ou d'une marchandise : −2 à la difficulté pour les évaluer.</p>"
+  }
+ },
+ {
+  "name": "Réseau de veilleurs",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Exemples — atouts",
+  "system": {
+   "cost": 1,
+   "costText": "1 à 3",
+   "category": "social",
+   "levels": [
+    {
+     "value": 1,
+     "text": "Un quartier."
+    },
+    {
+     "value": 2,
+     "text": "Une ville."
+    },
+    {
+     "value": 3,
+     "text": "Une région."
+    }
+   ],
+   "description": "<p>Des gens du peuple vous préviennent quand on vous cherche.</p>"
+  }
+ },
+ {
+  "name": "Sang tenace",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Exemples — atouts",
+  "system": {
+   "cost": 3,
+   "costText": "",
+   "category": "supernatural",
+   "levels": [],
+   "description": "<p>Votre sang ne perd pas sa force hors du corps : il se conserve une nuit entière dans un récipient.</p>"
+  }
+ },
+ {
+  "name": "Mauvaise réputation",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Exemples — handicaps",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "social",
+   "levels": [],
+   "description": "<p>On murmure sur votre compte : +1 à la difficulté des jets sociaux face à ceux qui vous connaissent de nom.</p>"
+  }
+ },
+ {
+  "name": "Rival",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Exemples — handicaps",
+  "system": {
+   "cost": 1,
+   "costText": "1 à 4",
+   "category": "social",
+   "levels": [
+    {
+     "value": 1,
+     "text": "Un rival de peu de poids."
+    },
+    {
+     "value": 2,
+     "text": "Un rival de votre rang."
+    },
+    {
+     "value": 3,
+     "text": "Un rival plus puissant que vous."
+    },
+    {
+     "value": 4,
+     "text": "Un rival redoutable, entouré d'alliés."
+    }
+   ],
+   "description": "<p>Quelqu'un s'oppose à vous et cherche à vous nuire.</p>"
+  }
+ },
+ {
+  "name": "Phobie",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Exemples — handicaps",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "mental",
+   "levels": [],
+   "description": "<p>Une peur irrationnelle (choisissez-la) : jet de Courage pour ne pas fuir quand vous y êtes confronté.</p>"
+  }
+ },
+ {
+  "name": "Soif ardente",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Exemples — handicaps",
+  "system": {
+   "cost": 3,
+   "costText": "",
+   "category": "supernatural",
+   "levels": [],
+   "description": "<p>Vous perdez 2 points de sang au réveil au lieu d'un.</p>"
+  }
+ }
+]

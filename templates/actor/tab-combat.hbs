@@ -1,0 +1,137 @@
+<section class="tab tab-combat {{tab.cssClass}}" data-tab="combat">
+  <div class="combat-summary">
+    <div class="stat-card actions-card {{#unless system.combat.actions}}empty{{/unless}}" data-tooltip="Actions restantes ce tour. Attaquer coûte une action ; le coût de la défense et de la guérison dépend des variantes (onglet Variantes). Remises à 1 à chaque nouveau tour.">
+      <span class="stat-label">Actions</span><span class="stat-value">{{system.combat.actions}}<small>/{{system.combat.actionsMax}}</small></span>
+      <span class="stat-sub">attaques : {{system.combat.attacksLeft}}{{#if system.combat.celerityActive}} · Vélocité {{system.combat.celerityActive}}{{/if}}{{#if system.combat.defensePenalty}} · −{{system.combat.defensePenalty}} dé(s) à l'attaque{{/if}}</span>
+      <span class="stat-btns">
+        {{#if system.speed.celerity}}<a data-action="celerity" data-tooltip="Activer la Vélocité (1 sang = 1 action)"><i class="fa-solid fa-bolt"></i></a>{{/if}}
+        <a data-action="resetActions" data-tooltip="Remettre les actions du tour"><i class="fa-solid fa-rotate"></i></a>
+      </span>
+    </div>
+    <div class="stat-card speed-card" data-tooltip="Mètres par tour : marche 7, trot 12 + Dex, course 20 + 3 × Dex, + Vélocité.{{#if system.speed.celerity}} Pour 1 sang, vitesse × {{system.speed.burst}} pendant un tour.{{/if}}">
+      <span class="stat-label">Vitesse</span><span class="stat-value">{{system.speed.run}}<small> m</small></span>
+      <span class="stat-sub">marche {{system.speed.walk}} · trot {{system.speed.trot}}</span>
+    </div>
+    <div class="stat-card" data-action="rollInitiative" data-tooltip="Lancer l'initiative (Dextérité + Astuce + Vélocité + 1d10)">
+      <span class="stat-label">Initiative</span><span class="stat-value">{{system.initiative.value}}</span><span class="stat-sub"><i class="fa-solid fa-dice-d10"></i> + 1d10</span>
+    </div>
+    <div class="stat-card soak" data-action="rollSoak" data-type="bashing" data-tooltip="Jet d'absorption contre les dégâts contondants">
+      <span class="stat-label">Absorption C</span><span class="stat-value">{{system.soak.bashing}}</span><span class="stat-sub">contondants</span>
+    </div>
+    <div class="stat-card soak" data-action="rollSoak" data-type="lethal" data-tooltip="Jet d'absorption contre les dégâts létaux">
+      <span class="stat-label">Absorption L</span><span class="stat-value">{{system.soak.lethal}}</span><span class="stat-sub">létaux</span>
+    </div>
+    <div class="stat-card soak" data-action="rollSoak" data-type="aggravated" data-tooltip="Jet d'absorption contre les dégâts aggravés (Résilience + armure)">
+      <span class="stat-label">Absorption A</span><span class="stat-value">{{system.soak.aggravated}}</span><span class="stat-sub">aggravés</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Armure</span><span class="stat-value">{{system.armorRating}}</span><span class="stat-sub">pénalité −{{system.armorPenalty}}</span>
+    </div>
+  </div>
+
+  <h2 class="noctis-section"><span>Santé</span></h2>
+  <div class="health-panel">
+    <table class="health-table">
+      {{#each system.health.track}}
+        <tr class="{{state}}"><td class="hl-label">{{label}}</td><td class="hl-pen">{{#if penalty}}{{penalty}}{{/if}}</td><td><span class="hbox {{state}}" data-action="healthClick" data-health-index="{{index}}"></span></td></tr>
+      {{/each}}
+    </table>
+    <div class="health-actions">
+      <p class="counts">
+        <span class="c">/ {{system.health.bashing}} contondant(s)</span>
+        <span class="l">X {{system.health.lethal}} létal(aux)</span>
+        <span class="a">✱ {{system.health.aggravated}} aggravé(s)</span>
+      </p>
+      <button type="button" data-action="takeDamage"><i class="fa-solid fa-heart-crack"></i> Subir des dégâts (avec absorption)</button>
+      <div class="btn-row">
+        <button type="button" data-action="healthClear" data-type="bashing" data-tooltip="Retirer un niveau contondant"><i class="fa-solid fa-minus"></i> C</button>
+        <button type="button" data-action="healthClear" data-type="lethal" data-tooltip="Retirer un niveau létal"><i class="fa-solid fa-minus"></i> L</button>
+        <button type="button" data-action="healthClear" data-type="aggravated" data-tooltip="Retirer un niveau aggravé"><i class="fa-solid fa-minus"></i> A</button>
+      </div>
+      {{#if usesBlood}}
+        <h4>Le sang</h4>
+        <div class="btn-row">
+          <button type="button" data-action="bloodHeal" data-tooltip="1 point de sang : soigne un niveau létal ou contondant"><i class="fa-solid fa-droplet"></i> Soigner (1)</button>
+          {{#if isVampire}}<button type="button" data-action="bloodHealAgg" data-tooltip="5 points de sang et un jour de repos : soigne un niveau aggravé"><i class="fa-solid fa-droplet"></i> Aggravé (5)</button>{{/if}}
+        </div>
+        <div class="btn-row">
+          {{#each boostList}}<button type="button" data-action="bloodBoost" data-attr="{{key}}" data-tooltip="1 point de sang : +1 en {{label}} pour la scène">+1 {{label}}{{#if boost}} <b>(+{{boost}})</b>{{/if}}</button>{{/each}}
+        </div>
+        <div class="btn-row">
+          <button type="button" data-action="endScene" data-tooltip="Retire les amplifications de sang"><i class="fa-solid fa-hourglass-end"></i> Fin de scène</button>
+          {{#if isVampire}}<button type="button" data-action="nightfall" data-tooltip="Réveil : −1 sang, +1 Volonté"><i class="fa-solid fa-moon"></i> Réveil</button>{{/if}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <h2 class="noctis-section"><span>États et Bête</span></h2>
+  <div class="state-panel">
+    <div class="state-chips">
+      {{#each statusChoices}}
+        <a class="state-chip {{#if active}}on{{/if}} {{#if auto}}auto{{/if}}" {{#unless auto}}data-action="toggleStatus" data-status="{{id}}"{{/unless}} data-tooltip="{{name}} — {{tip}}{{#if auto}} (automatique){{/if}}"><img src="{{img}}" alt=""><span>{{name}}</span></a>
+      {{/each}}
+    </div>
+    {{#if isVampire}}
+    <div class="beast-box {{#if beastActive}}raging{{/if}}">
+      {{#if beastActive}}
+        <p><i class="fa-solid fa-face-angry"></i> <b>{{beastActive}}</b> : la Bête tient les rênes.{{#if system.health.frenzyIgnores}} Les pénalités de blessures sont ignorées.{{/if}}</p>
+        <div class="btn-row">
+          <button type="button" data-action="beastLucid" data-tooltip="1 point de Volonté : un tour de contrôle, sans mettre fin à la crise"><i class="fa-solid fa-shield-heart"></i> Un tour de lucidité (1 Volonté)</button>
+          <button type="button" data-action="beastEnd" data-tooltip="La crise passe (en général au bout d'une scène)"><i class="fa-solid fa-dove"></i> Fin de la crise</button>
+        </div>
+      {{else}}
+        <p class="hint">Maîtrise de soi {{system.virtues.selfcontrol.value}}{{#if (noctisGt system.virtues.selfcontrol.value system.blood.value)}} (limitée à {{system.blood.value}} par le sang){{/if}} · Courage {{system.virtues.courage.value}}{{#if hungry}} · <b class="warn-text">assoiffé</b>{{/if}}</p>
+        <div class="btn-row">
+          <button type="button" data-action="beastTest" data-kind="frenzy"><i class="fa-solid fa-face-angry"></i> Test de frénésie…</button>
+          <button type="button" data-action="beastTest" data-kind="panic"><i class="fa-solid fa-fire"></i> Test de panique…</button>
+        </div>
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+
+  <h2 class="noctis-section"><span>Armes</span></h2>
+  <table class="weapon-table">
+    <thead><tr><th></th><th>Arme</th><th>Jet</th><th>Diff.</th><th>Dégâts</th><th>Portée</th><th>Dissim.</th><th></th></tr></thead>
+    <tbody>
+      <tr class="unarmed">
+        <td></td><td>Coup de poing</td><td>Dex + Bagarre</td><td>6</td><td>For (C)</td><td>—</td><td>—</td>
+        <td class="ctrl"><a class="attack-btn" data-action="rollUnarmed" data-tooltip="Attaquer à mains nues"><i class="fa-solid fa-hand-fist"></i></a></td>
+      </tr>
+      {{#each weapons}}
+        <tr class="draggable {{#unless sys.equipped}}unequipped{{/unless}}" data-item-id="{{id}}">
+          <td><img class="item-img" src="{{img}}" alt=""></td>
+          <td><a class="item-name" data-action="select" data-kind="item">{{name}}</a>{{#if sys.armorPiercing}} <span class="tag" data-tooltip="Perforation d'armure">PA {{sys.armorPiercing}}</span>{{/if}}</td>
+          <td>{{attackPool}} <small>({{abilityLabel}})</small></td>
+          <td>{{sys.difficulty}}</td>
+          <td>{{damagePool}} <small>{{damageType}}</small></td>
+          <td>{{#if sys.range}}{{sys.range}} m{{else}}—{{/if}}</td>
+          <td>{{sys.conceal}}</td>
+          <td class="ctrl">
+            <a class="attack-btn" data-action="rollAttack" data-tooltip="Attaquer"><i class="fa-solid fa-khanda"></i></a>
+            <a data-action="itemToggle" data-tooltip="Équiper / ranger"><i class="fa-solid {{#if sys.equipped}}fa-hand-fist{{else}}fa-box-archive{{/if}}"></i></a>
+            <a data-action="itemDelete"><i class="fa-solid fa-trash"></i></a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="list-footer"><span class="hint">Glissez des armes depuis le compendium « Armes et armures ».</span><a class="add-row" data-action="itemCreate" data-type="weapon"><i class="fa-solid fa-plus"></i> arme</a></div>
+
+  <h2 class="noctis-section"><span>Armures et boucliers</span></h2>
+  <ul class="item-list">
+    {{#each armors}}
+      <li class="item-row draggable {{#unless system.equipped}}unequipped{{/unless}}" data-item-id="{{id}}">
+        <img class="item-img" src="{{img}}" alt="">
+        <a class="item-name" data-action="select" data-kind="item">{{name}}</a>
+        <span class="item-cost">{{#if (noctisEq system.kind "shield")}}parade diff. {{system.parryDifficulty}}{{else}}niveau {{system.rating}} · pénalité −{{system.penalty}}{{/if}}</span>
+        <span class="item-controls">
+          <a data-action="itemToggle" data-tooltip="Porter / retirer"><i class="fa-solid {{#if system.equipped}}fa-shirt{{else}}fa-box-archive{{/if}}"></i></a>
+          <a data-action="itemDelete"><i class="fa-solid fa-trash"></i></a>
+        </span>
+      </li>
+    {{/each}}
+  </ul>
+  <div class="list-footer"><span></span><a class="add-row" data-action="itemCreate" data-type="armor"><i class="fa-solid fa-plus"></i> armure</a></div>
+</section>

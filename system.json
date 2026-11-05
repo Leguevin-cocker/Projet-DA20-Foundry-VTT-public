@@ -1,0 +1,125 @@
+{
+  "id": "noctis",
+  "title": "Noctis — chroniques de vampires médiévales",
+  "description": "Système générique pour Foundry VTT : une chronique de vampires dans un Moyen Âge sombre, sur un moteur à d10 (groupements de dés, difficultés, santé à 7 niveaux, sang, Volonté, vertus). Fiches modernes, créateur de personnage guidé, combat automatisé avec manœuvres, la Bête, calendrier et temps de la chronique, expérience, variantes de règles. Aucun contenu d'univers : créez vos lignées, disciplines, Voies et atouts avec les éditeurs intégrés.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.370"
+  },
+  "authors": [
+    {
+      "name": "Leguevin-cocker"
+    }
+  ],
+  "esmodules": [
+    "noctis.mjs"
+  ],
+  "styles": [
+    "styles/noctis.css"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "vampire": {
+        "htmlFields": [
+          "biography",
+          "notes"
+        ]
+      },
+      "ghoul": {
+        "htmlFields": [
+          "biography",
+          "notes"
+        ]
+      },
+      "mortal": {
+        "htmlFields": [
+          "biography",
+          "notes"
+        ]
+      },
+      "npc": {
+        "htmlFields": [
+          "biography",
+          "notes"
+        ]
+      }
+    },
+    "Item": {
+      "clan": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "discipline": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "merit": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "flaw": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "ability": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "road": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "weapon": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "gear": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "ritual": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "derangement": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    }
+  },
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  },
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "blood",
+  "socket": true,
+  "url": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public",
+  "manifest": "https://raw.githubusercontent.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/main/system.json",
+  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/archive/refs/heads/main.zip",
+  "license": "LICENSE.txt",
+  "readme": "README.md"
+}

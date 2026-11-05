@@ -1,0 +1,331 @@
+[
+ {
+  "name": "Couteau",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 0,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "P",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Épée",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Hache",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Masse",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "bashing",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Lance",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Bâton",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 1,
+   "damageType": "bashing",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Pieu de bois",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 1,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "A",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Torche",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes de mêlée",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 1,
+   "damageType": "aggravated",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": true,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Arc",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes à distance",
+  "system": {
+   "ability": "archery",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 60,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Arbalète",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes à distance",
+  "system": {
+   "ability": "archery",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 3,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 80,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 1,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Couteau de lancer",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Armes à distance",
+  "system": {
+   "ability": "athletics",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 0,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 15,
+   "conceal": "P",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": true,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Vêtements épais",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armures",
+  "system": {
+   "kind": "armor",
+   "rating": 1,
+   "penalty": 0,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Cuir bouilli",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armures",
+  "system": {
+   "kind": "armor",
+   "rating": 2,
+   "penalty": 1,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Maille",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armures",
+  "system": {
+   "kind": "armor",
+   "rating": 3,
+   "penalty": 1,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Plaques",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armures",
+  "system": {
+   "kind": "armor",
+   "rating": 4,
+   "penalty": 2,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Bouclier",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armures",
+  "system": {
+   "kind": "shield",
+   "rating": 0,
+   "penalty": 0,
+   "equipped": true,
+   "description": "<p>Bouclier rond : sert aux parades.</p>"
+  }
+ }
+]

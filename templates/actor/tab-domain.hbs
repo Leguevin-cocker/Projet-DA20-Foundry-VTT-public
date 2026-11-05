@@ -1,0 +1,56 @@
+<section class="tab tab-domain {{tab.cssClass}}" data-tab="domain">
+  <h2 class="noctis-section"><span>Domaine</span></h2>
+  <div class="domain-head">
+    <label class="dfield wide"><span>Nom du domaine</span><input type="text" name="system.domain.name" value="{{system.domain.name}}" placeholder="ex. la paroisse Saint-Gall"></label>
+    <label class="dfield"><span>Lieu</span><input type="text" name="system.domain.location" value="{{system.domain.location}}" placeholder="Cité, quartier…"></label>
+    <label class="dfield"><span>Reconnu par</span><input type="text" name="system.domain.grantedBy" value="{{system.domain.grantedBy}}" placeholder="Prince, seigneur vampire…"></label>
+  </div>
+
+  <div class="domain-grid">
+    <div class="domain-card">
+      <h3>Points de Domaine</h3>
+      <p class="domain-total">Historique <b>{{dom.background}}</b>{{#if system.domain.pooled}} · mis en commun : <b>{{system.domain.poolTotal}}</b>{{/if}} → <b>{{dom.total}}</b> point(s) à répartir</p>
+      <div class="split">
+        <label><span>Taille</span><input type="number" min="0" max="10" name="system.domain.size" value="{{system.domain.size}}"></label>
+        <label><span>Sécurité</span><input type="number" min="0" max="10" name="system.domain.security" value="{{system.domain.security}}"></label>
+      </div>
+      {{#if dom.mismatch}}<p class="warn">Taille + sécurité = {{dom.spent}}, pour {{dom.total}} point(s) disponibles.</p>{{/if}}
+      <ul class="domain-effects">
+        <li><b>Taille {{system.domain.size}}</b> : −{{system.domain.size}} à la difficulté de chasse pour ceux qui y sont autorisés, +{{system.domain.size}} à la réserve de sang de départ.</li>
+        <li><b>Sécurité {{system.domain.security}}</b> : +{{system.domain.security}} à la difficulté pour s'y introduire, −{{system.domain.security}} à la vôtre pour identifier et pister les intrus.</li>
+      </ul>
+      <label class="pool"><input type="checkbox" name="system.domain.pooled" {{#if system.domain.pooled}}checked{{/if}}> Domaine mis en commun avec la coterie</label>
+      {{#if system.domain.pooled}}
+        <div class="split">
+          <label><span>Total commun</span><input type="number" min="0" max="20" name="system.domain.poolTotal" value="{{system.domain.poolTotal}}"></label>
+          <label><span>Ancrage</span><input type="text" name="system.domain.anchor" value="{{system.domain.anchor}}" placeholder="Historique d'ancrage"></label>
+        </div>
+        <p class="hint">Mise en commun : aucun historique commun ne peut dépasser l'ancrage ; un membre qui reprend sa part récupère 1 point de moins.</p>
+      {{/if}}
+    </div>
+
+    <div class="domain-card">
+      <h3>Étendue</h3>
+      <ol class="domain-levels">
+        {{#each dom.levels}}<li class="{{#if current}}current{{/if}}"><b>{{dots}}</b> {{text}}</li>{{/each}}
+      </ol>
+    </div>
+
+    <div class="domain-card hunt">
+      <h3>Chasser</h3>
+      <label class="dfield"><span>Zone</span><select name="system.domain.zone">{{noctisOptions dom.zoneChoices system.domain.zone}}</select></label>
+      <label class="dfield"><span>Technique</span><select class="hunt-method">{{noctisOptions dom.methodChoices "seduce"}}</select></label>
+      <p class="hunt-calc">Difficulté <b>{{dom.huntDiff}}</b> <em>({{dom.zoneDiff}} − Domaine {{system.domain.size}} − Renommée {{dom.fame}}, minimum 3)</em>{{#if dom.herd}} · Troupeau : <b>+{{dom.herd}} dé(s)</b>{{/if}}</p>
+      <button type="button" data-action="hunt"><i class="fa-solid fa-droplet"></i> Chasser (un jet par heure)</button>
+      <p class="hint">Une réussite : le vampire attrape sa proie et peut se nourrir.</p>
+    </div>
+  </div>
+
+  <div class="domain-notes">
+    <label class="dfield"><span>Refuge</span><textarea name="system.domain.haven" rows="2" placeholder="Où dormez-vous le jour ? Qui le sait ?">{{system.domain.haven}}</textarea></label>
+    <label class="dfield"><span>Habitants et ressources</span><textarea name="system.domain.residents" rows="2" placeholder="Qui y vit, ce qu'on y trouve…">{{system.domain.residents}}</textarea></label>
+    <label class="dfield"><span>Défenses</span><textarea name="system.domain.defenses" rows="2" placeholder="Gardes, portes, accès restreints…">{{system.domain.defenses}}</textarea></label>
+    <label class="dfield"><span>Menaces et rivaux</span><textarea name="system.domain.threats" rows="2" placeholder="Qui convoite ce domaine ?">{{system.domain.threats}}</textarea></label>
+    <label class="dfield wide"><span>Notes</span><textarea name="system.domain.notes" rows="3">{{system.domain.notes}}</textarea></label>
+  </div>
+</section>

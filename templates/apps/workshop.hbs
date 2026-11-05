@@ -1,0 +1,38 @@
+<div class="ws">
+  <nav class="ws-kinds">
+    {{#each kinds}}
+      <a class="{{#if active}}active{{/if}}" data-action="kind" data-kind="{{key}}"><i class="{{icon}}"></i> <span>{{label}}</span> <b>{{count}}</b></a>
+    {{/each}}
+    <div class="ws-export">
+      <button type="button" data-action="exportAll" data-tooltip="Copie tout le contenu du monde dans un compendium, pour le réutiliser ou le partager"><i class="fa-solid fa-box-archive"></i> Ranger dans un compendium ({{worldCount}})</button>
+    </div>
+  </nav>
+  <section class="ws-main">
+    <header class="ws-head">
+      <h2><i class="{{current.icon}}"></i> {{current.label}}</h2>
+      <p>{{current.help}}</p>
+      <div class="ws-create">
+        {{#each createTypes}}<button type="button" data-action="create" data-type="{{type}}"><i class="fa-solid fa-plus"></i> {{label}}</button>{{/each}}
+      </div>
+    </header>
+    <ul class="ws-list">
+      {{#each list}}
+        <li data-uuid="{{uuid}}" class="{{#if world}}world{{else}}pack{{/if}}">
+          <img src="{{img}}" alt="">
+          <a class="ws-name" data-action="open">{{name}}</a>
+          <span class="ws-type">{{typeLabel}}</span>
+          <small class="ws-info">{{info}}</small>
+          <span class="ws-src" data-tooltip="{{#if world}}Objet du monde : modifiable{{else}}Compendium : copiez-le dans le monde pour le modifier{{/if}}">{{source}}</span>
+          <span class="ws-ctrl">
+            <a data-action="open" data-tooltip="Ouvrir"><i class="fa-solid fa-pen-to-square"></i></a>
+            {{#unless world}}<a data-action="copy" data-tooltip="Copier dans le monde"><i class="fa-solid fa-copy"></i></a>{{/unless}}
+            {{#if world}}<a data-action="remove" data-tooltip="Supprimer"><i class="fa-solid fa-trash"></i></a>{{/if}}
+          </span>
+        </li>
+      {{else}}
+        <li class="empty">Rien pour l'instant. Créez votre premier élément avec les boutons ci-dessus.</li>
+      {{/each}}
+    </ul>
+    <p class="ws-foot">Le créateur de personnage et les fiches lisent tout ce qui se trouve ici : objets du monde et compendiums. Les liens entre lignées, disciplines et voies se font par la <b>clé</b> de chaque discipline (tirée de son nom si vous ne la changez pas).</p>
+  </section>
+</div>
