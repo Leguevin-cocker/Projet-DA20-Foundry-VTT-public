@@ -25,7 +25,7 @@ jobs:
           mv system.tmp system.json
 
       - name: Archive
-        run: zip -r noctis.zip system.json noctis.mjs module templates styles lang assets data LICENSE.txt README.md -x "*/_preview*"
+        run: zip -r noctis.zip system.json noctis.mjs module templates styles lang assets data LICENSE.txt README.md README.fr.md -x "*/_preview*"
 
       - name: Joindre à la release
         uses: softprops/action-gh-release@v2

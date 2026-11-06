@@ -1,94 +1,95 @@
-# Noctis — chroniques de vampires médiévales pour Foundry VTT
+# Noctis — Vampire: The Dark Ages for Foundry VTT
 
-Système pour Foundry VTT (v14) pour **Vampire : l'Âge des Ténèbres** (édition 20e anniversaire), avec le vocabulaire du
-jeu : clans, disciplines (Célérité, Force d'âme, Puissance…), Voies, vertus, Rötschreck. Moteur à d10 complet
-(groupements, difficultés, réussites annulées par les 1, santé à 7 niveaux, sang, Volonté).
+🇫🇷 [Version française](README.fr.md)
 
-**Bilingue : français et anglais / French and English.** L'interface suit la langue choisie dans Foundry, et les
-compendiums sont construits dans cette langue. *The interface follows Foundry's language setting; compendiums are built
-in that language (English for any language other than French).*
+A Foundry VTT (v14) system for **Vampire: The Dark Ages** (20th Anniversary Edition), using the game's own vocabulary:
+clans, disciplines (Celerity, Fortitude, Potence…), Roads, Virtues, Rötschreck. Full d10 engine (dice pools,
+difficulties, 1s cancelling successes, 7 health levels, blood, Willpower).
 
-**Ce qui est fourni :** les 13 clans (noms, disciplines de clan, faiblesse résumée), des atouts et handicaps d'exemple,
-des armes et armures génériques.
+**Bilingual: English and French.** The interface follows Foundry's language setting, and compendiums are built in that
+language (English for any language other than French).
 
-**Ce qui n'est pas fourni :** aucun texte des livres, **aucune fiche de discipline** (les pouvoirs sont à saisir par chaque
-table dans l'atelier) et **aucune Voie** (Humanité comprise : chaque table crée les siennes avec leur hiérarchie des
-péchés). Il vous faut le livre de base pour jouer.
+**Included:** the 13 clans (names, clan disciplines, a short summary of each weakness), example Merits and Flaws,
+generic weapons and armor.
 
-Célérité, Force d'âme et Puissance sont reconnues d'office par le moteur (actions supplémentaires, absorption, réussites
-automatiques de Force), même sur une discipline créée à la main.
+**Not included:** no text from the books, **no discipline sheets** (each table enters the powers in the workshop) and
+**no Roads** (Humanity included: each table creates its own with their Hierarchy of Sins). You need the core rulebook
+to play.
+
+Celerity, Fortitude and Potence are recognized by the engine out of the box (extra actions, soak, automatic Strength
+successes), even on a discipline created by hand.
 
 ## Dark Pack
 
-Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
+This project is free fan content published under the
+[Dark Pack](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
 
 > Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission.
 > All rights reserved. For more information please visit worldofdarkness.com.
 >
-> Ce contenu n'est pas un produit officiel du World of Darkness. *This material is not official World of Darkness material.*
+> This material is not official World of Darkness material.
 
-## Ce que fait le système
+## Features
 
-- **Fiches** modernes : traits à points cliquables, panneau contextuel, onglets Traits, Disciplines, Combat, Avantages,
-  Expérience, Relations, Domaine, Chronique, Variantes.
-- **Créateur de personnage** guidé (pas à pas, points comptés, étapes validées) ou libre. Il lit tout le contenu du monde
-  et des compendiums.
-- **Jets** : fenêtre de jet complète (spécialité, Volonté, amplification par le sang, actions multiples, bonus et malus
-  automatiques des atouts et handicaps).
-- **Combat automatisé** : jet opposé avec cibles triées par portée, défense, dégâts, absorption, carte récapitulative.
-  - Manœuvres (coup puissant, balayage, désarmement, empoignade, saisie, placage, morsure, pieu, riposte, tir de
-    suppression…), ciblage, position, couvert, visée.
-  - Actions par tour, vitesse surnaturelle (actions supplémentaires contre du sang), états des jetons (à terre, empoigné,
-    étourdi, aveuglé, pieu au cœur, torpeur…).
-- **La Bête** : tests de frénésie et de panique (feu, soleil) avec cumul de réussites, déclencheurs automatiques (sang à
-  zéro, vue du sang quand on est assoiffé, feu et brûlures en combat).
-- **Temps de la chronique** : calendrier julien avec lune, lever et coucher du soleil, fêtes ; nuits, aube, réveil des
-  vampires, ellipses, torpeur. Deux vues (joueurs et MJ), événements révélés au fil du jeu, vues Mois, Année, Siècle,
-  Chronologie. Barre d'accès sur le bord gauche de l'écran.
-- **Expérience** : achat de traits sur la fiche, journal, tableau de bord MJ (attribution groupée, sang des PJ).
-- **Variantes de règles** réglables (défense réflexe, dégâts minimum, PNJ au résultat moyen, initiative, 10 doubles,
-  variante des 1, armure contre le feu, Volonté sur l'absorption…).
+- **Modern sheets**: clickable dots, context panel, tabs for Traits, Disciplines, Combat, Advantages, Experience,
+  Relations, Domain, Chronicle and Variants.
+- **Character creator**, guided (step by step, points counted, steps validated) or free. It reads all the content from
+  the world and the compendiums.
+- **Rolls**: a full roll window (specialty, Willpower, blood boosts, multiple actions, automatic bonuses and penalties
+  from Merits and Flaws).
+- **Automated combat**: opposed rolls with targets sorted by range, then defense, damage and soak, ending in a summary
+  card.
+  - Maneuvers (great blow, sweep, disarm, clinch, hold, tackle, bite, stake, riposte, suppressive fire…), targeting,
+    position, cover, aiming.
+  - Actions per turn, Celerity (extra actions for blood), token conditions (prone, grappled, stunned, blinded, staked,
+    torpor…).
+- **The Beast**: frenzy and Rötschreck tests (fire, sunlight) with accumulated successes, plus automatic triggers (blood
+  at zero, sight of blood while hungry, fire and burns in combat).
+- **Chronicle time**: a Julian calendar with moon phases, sunrise and sunset, and feast days; nights, dawn, vampires
+  awakening, time skips, torpor. Two views (players and GM), events revealed as play goes on, and Month, Year, Century
+  and Timeline views. Quick-access bar on the left edge of the screen.
+- **Experience**: buy traits from the sheet, a log, and a GM dashboard (group awards, PCs' blood).
+- **Rule variants** you can toggle (reflexive defense, minimum damage, NPCs use the average result, initiative, 10s
+  always double, 1s variant, armor against fire, Willpower on soak…).
 
-## Créer son contenu : l'atelier du conteur
+## Creating content: the storyteller's workshop
 
-Ouvrez l'**Atelier du conteur** (bouton marteau dans la barre de gauche, ou onglet Objets, ou Paramètres du jeu). Il
-rassemble les objets du monde et des compendiums et permet de :
+Open the **Storyteller's workshop** (hammer button in the left bar, the Items tab, or the game settings). It gathers
+world and compendium items and lets you:
 
-- créer ou modifier des **clans et lignées** : disciplines de clan, faiblesse en texte et en effets (Apparence à 0, XP de morale doublée,
-  bonus ou malus de jet automatiques), blason ;
-- créer des **disciplines** : pouvoirs par niveau (groupement, difficulté, coût, durée, description). Une discipline peut
-  tenir un **rôle mécanique**, appliqué automatiquement :
-  - *Célérité* : bonus de Dextérité et d'initiative, actions supplémentaires contre du sang ;
-  - *Force d'âme* : dés d'absorption, y compris contre les dégâts aggravés ;
-  - *Puissance* : réussites automatiques aux jets de Force et aux dégâts fondés sur la Force ;
-- créer des **voies de sorcellerie** (disciplines cochées « voie », rattachées à une discipline mère) et des **rituels** ;
-- créer des **Voies morales** avec leur hiérarchie des péchés ;
-- créer des **atouts et handicaps**, à plusieurs niveaux si besoin ;
-- **ranger** tout le contenu du monde dans un compendium pour le réutiliser ailleurs.
+- create or edit **clans and bloodlines**: clan disciplines, weakness as text and as effects (Appearance 0, doubled
+  morality XP, automatic roll bonuses or penalties), emblem;
+- create **disciplines**: powers by level (pool, difficulty, cost, duration, description). A discipline can fill a
+  **mechanical role**, applied automatically:
+  - *Celerity*: Dexterity and initiative bonus, extra actions for blood;
+  - *Fortitude*: soak dice, including against aggravated damage;
+  - *Potence*: automatic successes on Strength rolls and on Strength-based damage;
+- create **sorcery paths** (disciplines ticked as “path”, tied to a parent discipline) and **rituals**;
+- create **Roads** with their Hierarchy of Sins;
+- create **Merits and Flaws**, with several levels if needed;
+- **store** all the world's content in a compendium to reuse it elsewhere.
 
-Les clans, disciplines et voies se relient par la **clé** de chaque discipline. Pour les disciplines du jeu, utilisez les clés
+Clans, disciplines and paths are linked through each discipline's **key**. For the game's disciplines, use the keys
 `celerity`, `fortitude`, `potence`, `auspex`, `dominate`, `presence`, `obfuscate`, `animalism`, `protean`, `dementation`,
-`chimerstry`, `necromancy`, `obtenebration`, `quietus`, `serpentis`, `thaumaturgy`, `vicissitude` : les clans fournis y renvoient.
+`chimerstry`, `necromancy`, `obtenebration`, `quietus`, `serpentis`, `thaumaturgy`, `vicissitude`: the provided clans
+point to them.
 
 ## Installation
 
-Dans Foundry VTT, *Installer un système* → coller l'adresse du manifeste :
+In Foundry VTT, *Install System* → paste the manifest URL:
 
 ```
 https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json
 ```
 
-Au premier chargement d'un monde, le MJ construit les compendiums (« Noctis — Clans », atouts et handicaps, armes et armures).
+The first time a world loads, the GM builds the compendiums (“Noctis — Clans”, Merits and Flaws, weapons and armor).
 
-## Licence
+## License
 
-Code sous licence MIT (voir `LICENSE.txt`). Polices sous SIL Open Font License 1.1.
+Code under the MIT license (see `LICENSE.txt`). Fonts under the SIL Open Font License 1.1.
 
-## Traductions / Translations
+## Translations
 
-Les textes sont dans `lang/fr.json` et `lang/en.json` (clés `NOCTIS.ui.*` pour les gabarits, `NOCTIS.js.*` pour le
-code). Les exemples de compendium sont dans `data/` (français) et `data/en/` (anglais). Pour ajouter une langue :
-copier `lang/en.json`, le traduire et le déclarer dans `system.json`.
-
-*All strings live in `lang/fr.json` and `lang/en.json`. To add a language, copy `lang/en.json`, translate it and declare
-it in `system.json`.*
+Strings live in `lang/en.json` and `lang/fr.json` (`NOCTIS.ui.*` keys for templates, `NOCTIS.js.*` for code).
+Compendium content is in `data/en/` (English) and `data/` (French). To add a language, copy `lang/en.json`, translate
+it and declare it in `system.json`.
