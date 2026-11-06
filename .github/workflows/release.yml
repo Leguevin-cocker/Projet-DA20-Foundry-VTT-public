@@ -1,6 +1,11 @@
 name: Publier une version
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version à publier (ex. v1.2.0)"
+        required: true
   push:
     tags: ["v*"]
   release:
@@ -17,7 +22,7 @@ jobs:
 
       - name: Version et URLs du manifeste
         run: |
-          TAG="${GITHUB_REF_NAME}"
+          TAG="${{ inputs.version || github.ref_name }}"
           VERSION="${TAG#v}"
           REPO="https://github.com/${GITHUB_REPOSITORY}"
           jq --arg v "$VERSION" \
@@ -32,7 +37,8 @@ jobs:
       - name: Créer ou compléter la release
         uses: softprops/action-gh-release@v2
         with:
-          name: Noctis ${{ github.ref_name }}
+          name: Noctis ${{ inputs.version || github.ref_name }}
+          tag_name: ${{ inputs.version || github.ref_name }}
           make_latest: true
           body: |
             Manifest: https://github.com/${{ github.repository }}/releases/latest/download/system.json
