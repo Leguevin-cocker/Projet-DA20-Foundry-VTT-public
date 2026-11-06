@@ -1,3 +1,4 @@
+import { loc, registerLocalizable } from "./i18n.mjs";
 /**
  * Infobulles des traits : descriptions courtes, écrites pour ce système (aucun texte repris d'un livre).
  * Chaque entrée : { desc, levels: ["• Nom. texte", …], spec, poss }.
@@ -5,130 +6,130 @@
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-const SCALE_ATTR = ["Faible", "Moyen", "Bon", "Exceptionnel", "Hors du commun"];
-const SCALE_ABIL = ["Novice", "Praticien", "Confirmé", "Expert", "Maître"];
+const SCALE_ATTR = ["NOCTIS.js.Faible", "NOCTIS.js.Moyen", "NOCTIS.js.Bon", "NOCTIS.js.Exceptionnel", "NOCTIS.js.HorsDuCommun"];
+const SCALE_ABIL = ["NOCTIS.js.Novice", "NOCTIS.js.Praticien", "NOCTIS.js.Confirme", "NOCTIS.js.Expert", "NOCTIS.js.Maitre"];
 const mk = (desc, texts, scale, spec = "") => ({ desc, levels: texts.map((t, i) => `${"•".repeat(i + 1)} ${scale[i]}. ${t}`), spec, poss: "" });
 
 export const ATTRIBUTE_HELP = {
-  strength: mk("Puissance musculaire : soulever, porter, briser, frapper. Sert aux dégâts à mains nues et à la plupart des armes de mêlée.",
-    ["Un fardeau ordinaire vous épuise.", "La force d'un adulte en bonne santé.", "Vous portez sans peine ce que d'autres traînent.", "Vous soulevez un homme à bout de bras.", "Une force dont on parle dans les veillées."], SCALE_ATTR, "Poigne, prise, soulever, coups puissants"),
-  dexterity: mk("Agilité, rapidité des gestes et précision. Base des attaques, des esquives et de la plupart des actions physiques fines.",
-    ["Maladroit, vous trébuchez souvent.", "Des gestes sûrs, sans éclat.", "Vif et précis.", "D'une grâce de félin.", "Vos gestes semblent défier le regard."], SCALE_ATTR, "Réflexes, équilibre, mains agiles"),
-  stamina: mk("Endurance et résistance du corps. Ajoute des dés pour absorber les blessures et tenir sur la durée.",
-    ["Fragile, vite à bout de souffle.", "Une constitution ordinaire.", "Vous encaissez mieux que la moyenne.", "Dur au mal, infatigable.", "Presque impossible à abattre."], SCALE_ATTR, "Résistance à la douleur, ténacité"),
-  charisma: mk("Capacité à attirer, entraîner et convaincre par sa seule présence.",
-    ["On vous oublie dès que vous quittez la pièce.", "Vous plaisez à ceux qui vous connaissent.", "On aime vous écouter.", "Les foules se tournent vers vous.", "Une aura que peu savent ignorer."], SCALE_ATTR, "Éloquence, autorité naturelle, chaleur"),
-  manipulation: mk("Art d'amener les autres à agir comme vous le souhaitez, par la ruse, le mensonge ou la persuasion.",
-    ["Vos intentions se lisent sur votre visage.", "Vous obtenez de petites faveurs.", "Vous savez quel levier actionner.", "Vous retournez un adversaire en une conversation.", "Les gens vous servent en croyant agir pour eux-mêmes."], SCALE_ATTR, "Persuasion, mensonge, flatterie"),
-  appearance: mk("Beauté, allure et impression produite au premier regard.",
-    ["Repoussant ou terne.", "Banal.", "Agréable à regarder.", "Remarquable.", "D'une beauté qui trouble."], SCALE_ATTR, "Prestance, regard, élégance"),
-  perception: mk("Acuité des sens et attention aux détails : remarquer, repérer, flairer le piège.",
-    ["Distrait, perdu dans vos pensées.", "Vous voyez ce qui est évident.", "Rien de notable ne vous échappe.", "Vous lisez les détails comme un livre.", "Vos sens frôlent le surnaturel."], SCALE_ATTR, "Vue perçante, ouïe fine, intuition"),
-  intelligence: mk("Mémoire, raisonnement et savoir. Sert à comprendre, déduire et apprendre.",
-    ["Lent à comprendre.", "Un esprit ordinaire.", "Vif et curieux.", "Brillant.", "Un génie de son temps."], SCALE_ATTR, "Logique, mémoire, érudition"),
-  wits: mk("Présence d'esprit et rapidité de réaction. Entre dans l'initiative.",
-    ["Toujours un temps de retard.", "Vous réagissez à peu près à temps.", "Vous avez la répartie facile.", "Rarement pris au dépourvu.", "Vous semblez avoir prévu chaque surprise."], SCALE_ATTR, "Réflexes, répartie, sang-froid")
+  strength: mk("NOCTIS.js.PuissanceMusculaireSouleverPorterBriserF",
+    ["NOCTIS.js.UnFardeauOrdinaireVousEpuise", "NOCTIS.js.LaForceDUnAdulteEn", "NOCTIS.js.VousPortezSansPeineCeQue", "NOCTIS.js.VousSoulevezUnHommeABout", "NOCTIS.js.UneForceDontOnParleDans"], SCALE_ATTR, "NOCTIS.js.PoignePriseSouleverCoupsPuissants"),
+  dexterity: mk("NOCTIS.js.AgiliteRapiditeDesGestesEtPrecision",
+    ["NOCTIS.js.MaladroitVousTrebuchezSouvent", "NOCTIS.js.DesGestesSursSansEclat", "NOCTIS.js.VifEtPrecis", "NOCTIS.js.DUneGraceDeFelin", "NOCTIS.js.VosGestesSemblentDefierLeRegard"], SCALE_ATTR, "NOCTIS.js.ReflexesEquilibreMainsAgiles"),
+  stamina: mk("NOCTIS.js.EnduranceEtResistanceDuCorpsAjoute",
+    ["NOCTIS.js.FragileViteABoutDeSouffle", "NOCTIS.js.UneConstitutionOrdinaire", "NOCTIS.js.VousEncaissezMieuxQueLaMoyenne", "NOCTIS.js.DurAuMalInfatigable", "NOCTIS.js.PresqueImpossibleAAbattre"], SCALE_ATTR, "NOCTIS.js.ResistanceALaDouleurTenacite"),
+  charisma: mk("NOCTIS.js.CapaciteAAttirerEntrainerEtConvaincre",
+    ["NOCTIS.js.OnVousOublieDesQueVous", "NOCTIS.js.VousPlaisezACeuxQuiVous", "NOCTIS.js.OnAimeVousEcouter", "NOCTIS.js.LesFoulesSeTournentVersVous", "NOCTIS.js.UneAuraQuePeuSaventIgnorer"], SCALE_ATTR, "NOCTIS.js.EloquenceAutoriteNaturelleChaleur"),
+  manipulation: mk("NOCTIS.js.ArtDAmenerLesAutresA",
+    ["NOCTIS.js.VosIntentionsSeLisentSurVotre", "NOCTIS.js.VousObtenezDePetitesFaveurs", "NOCTIS.js.VousSavezQuelLevierActionner", "NOCTIS.js.VousRetournezUnAdversaireEnUne", "NOCTIS.js.LesGensVousServentEnCroyant"], SCALE_ATTR, "NOCTIS.js.PersuasionMensongeFlatterie"),
+  appearance: mk("NOCTIS.js.BeauteAllureEtImpressionProduiteAu",
+    ["NOCTIS.js.RepoussantOuTerne", "NOCTIS.js.Banal", "NOCTIS.js.AgreableARegarder", "NOCTIS.js.Remarquable", "NOCTIS.js.DUneBeauteQuiTrouble"], SCALE_ATTR, "NOCTIS.js.PrestanceRegardElegance"),
+  perception: mk("NOCTIS.js.AcuiteDesSensEtAttentionAux",
+    ["NOCTIS.js.DistraitPerduDansVosPensees", "NOCTIS.js.VousVoyezCeQuiEstEvident", "NOCTIS.js.RienDeNotableNeVousEchappe", "NOCTIS.js.VousLisezLesDetailsCommeUn", "NOCTIS.js.VosSensFrolentLeSurnaturel"], SCALE_ATTR, "NOCTIS.js.VuePercanteOuieFineIntuition"),
+  intelligence: mk("NOCTIS.js.MemoireRaisonnementEtSavoirSertA",
+    ["NOCTIS.js.LentAComprendre", "NOCTIS.js.UnEspritOrdinaire", "NOCTIS.js.VifEtCurieux", "NOCTIS.js.Brillant", "NOCTIS.js.UnGenieDeSonTemps"], SCALE_ATTR, "NOCTIS.js.LogiqueMemoireErudition"),
+  wits: mk("NOCTIS.js.PresenceDEspritEtRapiditeDe",
+    ["NOCTIS.js.ToujoursUnTempsDeRetard", "NOCTIS.js.VousReagissezAPeuPresA", "NOCTIS.js.VousAvezLaRepartieFacile", "NOCTIS.js.RarementPrisAuDepourvu", "NOCTIS.js.VousSemblezAvoirPrevuChaqueSurprise"], SCALE_ATTR, "NOCTIS.js.ReflexesRepartieSangFroid")
 };
 
-const ab = (desc, spec) => mk(desc, ["Quelques notions.", "Une pratique régulière.", "Un savoir-faire solide, reconnu.", "Parmi les meilleurs de la région.", "Une référence que l'on vient consulter de loin."], SCALE_ABIL, spec);
+const ab = (desc, spec) => mk(desc, ["NOCTIS.js.QuelquesNotions", "NOCTIS.js.UnePratiqueReguliere", "NOCTIS.js.UnSavoirFaireSolideReconnu", "NOCTIS.js.ParmiLesMeilleursDeLaRegion", "NOCTIS.js.UneReferenceQueLOnVient"], SCALE_ABIL, spec);
 
 export const ABILITY_HELP = {
-  legerdemain: ab("Vol à la tire, tours de passe-passe, crochetage et dissimulation d'objets.", "Bourses, serrures, escamotage"),
-  athletics: ab("Courir, sauter, grimper, nager, lancer. Sert aussi à l'esquive et aux armes de jet.", "Course, escalade, esquive"),
-  brawl: ab("Combat sans arme : coups, prises, lutte et morsures.", "Lutte, coups de poing, morsure"),
-  leadership: ab("Donner des ordres, inspirer, tenir une troupe dans l'adversité.", "Harangue, commandement militaire"),
-  empathy: ab("Comprendre les émotions d'autrui et deviner ses intentions.", "Mensonges, humeurs, chagrins"),
-  expression: ab("S'exprimer avec force et justesse, à l'écrit comme à l'oral.", "Poésie, sermons, lettres"),
-  intimidation: ab("Faire plier par la menace, la présence ou la peur.", "Menace voilée, violence physique"),
-  awareness: ab("Pressentir le danger et sentir l'étrange, le surnaturel.", "Pièges, présences, embuscades"),
-  subterfuge: ab("Mentir, tromper, cacher ses buts et percer ceux des autres.", "Fausses pistes, flatterie, séduction"),
-  alertness: ab("Rester sur ses gardes, remarquer ce qui cloche.", "Embuscades, bruits, mouvements"),
-  animalken: ab("Comprendre, dresser et apaiser les animaux.", "Chevaux, chiens, faucons"),
-  crafts: ab("Fabriquer et réparer : forge, menuiserie, couture, maçonnerie…", "Forge, ébénisterie, orfèvrerie"),
-  commerce: ab("Acheter, vendre, marchander et évaluer.", "Marchandage, change, évaluation"),
-  ride: ab("Monter, diriger et combattre à cheval.", "Charge, longs trajets, terrains difficiles"),
-  etiquette: ab("Connaître les usages des cours et des milieux, s'y conduire sans faute.", "Cour, clergé, guildes"),
-  stealth: ab("Se déplacer sans être vu ni entendu.", "Ombres, filature, silence"),
-  melee: ab("Combat avec armes blanches : épées, haches, lances, bâtons.", "Épée, hache, parade"),
-  performance: ab("Chanter, jouer, danser, conter devant un public.", "Chant, luth, conte"),
-  survival: ab("Vivre et se diriger en pleine nature, pister, chasser.", "Pistage, abris, forêts"),
-  archery: ab("Tirer à l'arc et à l'arbalète.", "Arc long, arbalète, tir rapide"),
-  law: ab("Connaître lois, coutumes et procédures, et s'en servir.", "Droit canon, coutume, procès"),
-  enigmas: ab("Résoudre énigmes, chiffres et casse-tête.", "Codes, énigmes, jeux"),
-  academics: ab("Savoir des lettres : histoire, philosophie, langues savantes.", "Histoire, rhétorique, latin"),
-  investigation: ab("Chercher des indices, interroger, reconstituer les faits.", "Fouille, interrogatoire, déduction"),
-  medicine: ab("Soigner les blessures et les maladies, connaître le corps.", "Chirurgie, herbes, diagnostic"),
-  occult: ab("Savoir ce qu'on raconte du surnaturel, distinguer la légende du vrai.", "Rituels, démons, superstitions"),
-  politics: ab("Comprendre les jeux de pouvoir et y prendre part.", "Intrigues, alliances, factions"),
-  hearthwisdom: ab("Le savoir des gens simples : remèdes, présages, coutumes et superstitions.", "Remèdes, présages, protections"),
-  seneschal: ab("Gérer un domaine, une maison, des gens et des revenus.", "Intendance, comptes, personnel"),
-  theology: ab("Connaître les dogmes, les textes et les hommes de la foi.", "Écritures, hérésies, clergé")
+  legerdemain: ab("NOCTIS.js.VolALaTireToursDe", "NOCTIS.js.BoursesSerruresEscamotage"),
+  athletics: ab("NOCTIS.js.CourirSauterGrimperNagerLancerSert", "NOCTIS.js.CourseEscaladeEsquive"),
+  brawl: ab("NOCTIS.js.CombatSansArmeCoupsPrisesLutte", "NOCTIS.js.LutteCoupsDePoingMorsure"),
+  leadership: ab("NOCTIS.js.DonnerDesOrdresInspirerTenirUne", "NOCTIS.js.HarangueCommandementMilitaire"),
+  empathy: ab("NOCTIS.js.ComprendreLesEmotionsDAutruiEt", "NOCTIS.js.MensongesHumeursChagrins"),
+  expression: ab("NOCTIS.js.SExprimerAvecForceEtJustesse", "NOCTIS.js.PoesieSermonsLettres"),
+  intimidation: ab("NOCTIS.js.FairePlierParLaMenaceLa", "NOCTIS.js.MenaceVoileeViolencePhysique"),
+  awareness: ab("NOCTIS.js.PressentirLeDangerEtSentirL", "NOCTIS.js.PiegesPresencesEmbuscades"),
+  subterfuge: ab("NOCTIS.js.MentirTromperCacherSesButsEt", "NOCTIS.js.FaussesPistesFlatterieSeduction"),
+  alertness: ab("NOCTIS.js.ResterSurSesGardesRemarquerCe", "NOCTIS.js.EmbuscadesBruitsMouvements"),
+  animalken: ab("NOCTIS.js.ComprendreDresserEtApaiserLesAnimaux", "NOCTIS.js.ChevauxChiensFaucons"),
+  crafts: ab("NOCTIS.js.FabriquerEtReparerForgeMenuiserieCouture", "NOCTIS.js.ForgeEbenisterieOrfevrerie"),
+  commerce: ab("NOCTIS.js.AcheterVendreMarchanderEtEvaluer", "NOCTIS.js.MarchandageChangeEvaluation"),
+  ride: ab("NOCTIS.js.MonterDirigerEtCombattreACheval", "NOCTIS.js.ChargeLongsTrajetsTerrainsDifficiles"),
+  etiquette: ab("NOCTIS.js.ConnaitreLesUsagesDesCoursEt", "NOCTIS.js.CourClergeGuildes"),
+  stealth: ab("NOCTIS.js.SeDeplacerSansEtreVuNi", "NOCTIS.js.OmbresFilatureSilence"),
+  melee: ab("NOCTIS.js.CombatAvecArmesBlanchesEpeesHaches", "NOCTIS.js.EpeeHacheParade"),
+  performance: ab("NOCTIS.js.ChanterJouerDanserConterDevantUn", "NOCTIS.js.ChantLuthConte"),
+  survival: ab("NOCTIS.js.VivreEtSeDirigerEnPleine", "NOCTIS.js.PistageAbrisForets"),
+  archery: ab("NOCTIS.js.TirerALArcEtA", "NOCTIS.js.ArcLongArbaleteTirRapide"),
+  law: ab("NOCTIS.js.ConnaitreLoisCoutumesEtProceduresEt", "NOCTIS.js.DroitCanonCoutumeProces"),
+  enigmas: ab("NOCTIS.js.ResoudreEnigmesChiffresEtCasseTete", "NOCTIS.js.CodesEnigmesJeux"),
+  academics: ab("NOCTIS.js.SavoirDesLettresHistoirePhilosophieLangu", "NOCTIS.js.HistoireRhetoriqueLatin"),
+  investigation: ab("NOCTIS.js.ChercherDesIndicesInterrogerReconstituer", "NOCTIS.js.FouilleInterrogatoireDeduction"),
+  medicine: ab("NOCTIS.js.SoignerLesBlessuresEtLesMaladies", "NOCTIS.js.ChirurgieHerbesDiagnostic"),
+  occult: ab("NOCTIS.js.SavoirCeQuOnRaconteDu", "NOCTIS.js.RituelsDemonsSuperstitions"),
+  politics: ab("NOCTIS.js.ComprendreLesJeuxDePouvoirEt", "NOCTIS.js.IntriguesAlliancesFactions"),
+  hearthwisdom: ab("NOCTIS.js.LeSavoirDesGensSimplesRemedes", "NOCTIS.js.RemedesPresagesProtections"),
+  seneschal: ab("NOCTIS.js.GererUnDomaineUneMaisonDes", "NOCTIS.js.IntendanceComptesPersonnel"),
+  theology: ab("NOCTIS.js.ConnaitreLesDogmesLesTextesEt", "NOCTIS.js.EcrituresHeresiesClerge")
 };
 
 const bg = (desc, texts) => ({ desc, levels: texts.map((t, i) => `${"•".repeat(i + 1)} ${t}`), spec: "", poss: "" });
 
 export const BACKGROUND_HELP = {
-  allies: bg("Des mortels qui vous aident de leur plein gré. Ils ont leur propre vie et attendent parfois un retour.",
-    ["Un allié d'influence modeste.", "Deux alliés.", "Trois alliés, dont un influent.", "Quatre alliés, dont un très influent.", "Cinq alliés, dont un puissant personnage."]),
-  contacts: bg("Des sources d'information dans divers milieux. Chaque point donne un contact majeur, fiable et bien placé.",
-    ["Un contact majeur.", "Deux contacts majeurs.", "Trois contacts majeurs.", "Quatre contacts majeurs.", "Cinq contacts majeurs."]),
-  domain: bg("Un territoire reconnu où vous chassez et régnez. Ses points se répartissent entre taille et sécurité.",
-    ["Quelques ruelles ou un hameau.", "Un quartier ou un village.", "Plusieurs quartiers, un bourg.", "Une bonne part d'une ville.", "Une ville entière ou une contrée."]),
-  falseidentity: bg("Une identité d'emprunt, avec papiers, témoins et histoire crédible.",
-    ["Une couverture fragile.", "Une identité qui tient une enquête rapide.", "Une identité solide, connue dans la région.", "Une vie entière inventée et attestée.", "Plusieurs identités irréprochables."]),
-  generation: bg("La distance qui vous sépare des premiers de votre espèce. Chaque point abaisse votre génération d'un cran : réserve de sang plus grande, traits pouvant aller plus haut.",
-    ["Onzième génération.", "Dixième génération.", "Neuvième génération.", "Huitième génération.", "Septième génération."]),
-  influence: bg("Votre poids sur les affaires des mortels : conseils, autorités, guildes, clergé.",
-    ["Une voix qu'on écoute parfois.", "Un notable d'une petite ville.", "Une influence réelle dans une cité.", "Un pouvoir qui compte dans la région.", "On ne décide rien d'important sans vous."]),
-  mentor: bg("Un aîné qui vous guide, vous conseille et parfois vous protège.",
-    ["Un mentor de peu de poids.", "Un mentor respecté.", "Un mentor influent.", "Un mentor puissant.", "Un mentor d'une puissance rare."]),
-  fame: bg("Votre réputation parmi les mortels.",
-    ["Connu dans votre quartier.", "Connu dans la ville.", "Un nom qu'on cite dans la région.", "Célèbre dans le royaume.", "Une légende de votre vivant."]),
-  resources: bg("Richesses, biens et revenus.",
-    ["De quoi vivre modestement.", "L'aisance d'un artisan prospère.", "La fortune d'un marchand.", "La richesse d'un seigneur.", "Une fortune princière."]),
-  retainers: bg("Des serviteurs fidèles, souvent liés par le sang : gardes, valets, espions.",
-    ["Un serviteur.", "Deux serviteurs.", "Trois serviteurs.", "Quatre serviteurs.", "Cinq serviteurs."]),
-  status: bg("Votre rang dans la société des vampires de votre domaine.",
-    ["Connu de quelques-uns.", "Respecté.", "Influent.", "Puissant.", "Parmi les plus éminents."]),
-  herd: bg("Des mortels dont vous pouvez boire le sang sans chasser. Ajoute des dés pour se nourrir.",
-    ["Trois calices.", "Sept calices.", "Quinze calices.", "Trente calices.", "Soixante calices."])
+  allies: bg("NOCTIS.js.DesMortelsQuiVousAidentDe",
+    ["NOCTIS.js.UnAllieDInfluenceModeste", "NOCTIS.js.DeuxAllies", "NOCTIS.js.TroisAlliesDontUnInfluent", "NOCTIS.js.QuatreAlliesDontUnTresInfluent", "NOCTIS.js.CinqAlliesDontUnPuissantPersonnage"]),
+  contacts: bg("NOCTIS.js.DesSourcesDInformationDansDivers",
+    ["NOCTIS.js.UnContactMajeur", "NOCTIS.js.DeuxContactsMajeurs", "NOCTIS.js.TroisContactsMajeurs", "NOCTIS.js.QuatreContactsMajeurs", "NOCTIS.js.CinqContactsMajeurs"]),
+  domain: bg("NOCTIS.js.UnTerritoireReconnuOuVousChassez",
+    ["NOCTIS.js.QuelquesRuellesOuUnHameau", "NOCTIS.js.UnQuartierOuUnVillage", "NOCTIS.js.PlusieursQuartiersUnBourg", "NOCTIS.js.UneBonnePartDUneVille", "NOCTIS.js.UneVilleEntiereOuUneContree"]),
+  falseidentity: bg("NOCTIS.js.UneIdentiteDEmpruntAvecPapiers",
+    ["NOCTIS.js.UneCouvertureFragile", "NOCTIS.js.UneIdentiteQuiTientUneEnquete", "NOCTIS.js.UneIdentiteSolideConnueDansLa", "NOCTIS.js.UneVieEntiereInventeeEtAttestee", "NOCTIS.js.PlusieursIdentitesIrreprochables"]),
+  generation: bg("NOCTIS.js.LaDistanceQuiVousSepareDes",
+    ["NOCTIS.js.OnziemeGeneration", "NOCTIS.js.DixiemeGeneration", "NOCTIS.js.NeuviemeGeneration", "NOCTIS.js.HuitiemeGeneration", "NOCTIS.js.SeptiemeGeneration"]),
+  influence: bg("NOCTIS.js.VotrePoidsSurLesAffairesDes",
+    ["NOCTIS.js.UneVoixQuOnEcouteParfois", "NOCTIS.js.UnNotableDUnePetiteVille", "NOCTIS.js.UneInfluenceReelleDansUneCite", "NOCTIS.js.UnPouvoirQuiCompteDansLa", "NOCTIS.js.OnNeDecideRienDImportant"]),
+  mentor: bg("NOCTIS.js.UnAineQuiVousGuideVous",
+    ["NOCTIS.js.UnMentorDePeuDePoids", "NOCTIS.js.UnMentorRespecte", "NOCTIS.js.UnMentorInfluent", "NOCTIS.js.UnMentorPuissant", "NOCTIS.js.UnMentorDUnePuissanceRare"]),
+  fame: bg("NOCTIS.js.VotreReputationParmiLesMortels",
+    ["NOCTIS.js.ConnuDansVotreQuartier", "NOCTIS.js.ConnuDansLaVille", "NOCTIS.js.UnNomQuOnCiteDans", "NOCTIS.js.CelebreDansLeRoyaume", "NOCTIS.js.UneLegendeDeVotreVivant"]),
+  resources: bg("NOCTIS.js.RichessesBiensEtRevenus",
+    ["NOCTIS.js.DeQuoiVivreModestement", "NOCTIS.js.LAisanceDUnArtisanProspere", "NOCTIS.js.LaFortuneDUnMarchand", "NOCTIS.js.LaRichesseDUnSeigneur", "NOCTIS.js.UneFortunePrinciere"]),
+  retainers: bg("NOCTIS.js.DesServiteursFidelesSouventLiesPar",
+    ["NOCTIS.js.UnServiteur", "NOCTIS.js.DeuxServiteurs", "NOCTIS.js.TroisServiteurs", "NOCTIS.js.QuatreServiteurs", "NOCTIS.js.CinqServiteurs"]),
+  status: bg("NOCTIS.js.VotreRangDansLaSocieteDes",
+    ["NOCTIS.js.ConnuDeQuelquesUns", "NOCTIS.js.Respecte", "NOCTIS.js.Influent", "NOCTIS.js.Puissant", "NOCTIS.js.ParmiLesPlusEminents"]),
+  herd: bg("NOCTIS.js.DesMortelsDontVousPouvezBoire",
+    ["NOCTIS.js.TroisCalices", "NOCTIS.js.SeptCalices", "NOCTIS.js.QuinzeCalices", "NOCTIS.js.TrenteCalices", "NOCTIS.js.SoixanteCalices"])
 };
 
 const vt = (desc, texts) => ({ desc, levels: texts.map((t, i) => `${"•".repeat(i + 1)} ${t}`), spec: "", poss: "" });
 
 export const VIRTUE_HELP = {
-  conscience: vt("Le sens moral : distinguer le bien du mal et en éprouver du remords. Sert à résister à la dégénérescence.",
-    ["Un vague malaise après les pires actes.", "Une morale ordinaire.", "Des principes solides.", "Une conscience exigeante.", "Une droiture presque sainte."]),
-  conviction: vt("La fermeté d'une philosophie qui ne passe pas par la compassion : on agit selon ses principes, quoi qu'il en coûte.",
-    ["Des principes flottants.", "Des convictions ordinaires.", "Une ligne de conduite claire.", "Une volonté de fer.", "Une foi absolue en sa Voie."]),
-  selfcontrol: vt("La maîtrise de la Bête : résister à la faim, à la rage et à la frénésie.",
-    ["La moindre provocation vous emporte.", "Vous tenez la plupart du temps.", "Vous gardez votre calme.", "Il en faut beaucoup pour vous faire perdre pied.", "Une maîtrise presque parfaite."]),
-  instinct: vt("Accepter la Bête et chevaucher la frénésie plutôt que la combattre.",
-    ["La Bête vous mène.", "Vous l'écoutez sans la comprendre.", "Vous la guidez parfois.", "Vous chevauchez sa rage.", "Bête et esprit ne font plus qu'un."]),
-  courage: vt("Faire face à la peur, au feu, au soleil et à l'inconnu. Donne la Volonté de départ.",
-    ["Prompt à fuir.", "Ordinaire.", "Brave.", "Intrépide.", "Rien ne vous fait reculer."])
+  conscience: vt("NOCTIS.js.LeSensMoralDistinguerLeBien",
+    ["NOCTIS.js.UnVagueMalaiseApresLesPires", "NOCTIS.js.UneMoraleOrdinaire", "NOCTIS.js.DesPrincipesSolides", "NOCTIS.js.UneConscienceExigeante", "NOCTIS.js.UneDroiturePresqueSainte"]),
+  conviction: vt("NOCTIS.js.LaFermeteDUnePhilosophieQui",
+    ["NOCTIS.js.DesPrincipesFlottants", "NOCTIS.js.DesConvictionsOrdinaires", "NOCTIS.js.UneLigneDeConduiteClaire", "NOCTIS.js.UneVolonteDeFer", "NOCTIS.js.UneFoiAbsolueEnSaVoie"]),
+  selfcontrol: vt("NOCTIS.js.LaMaitriseDeLaBeteResister",
+    ["NOCTIS.js.LaMoindreProvocationVousEmporte", "NOCTIS.js.VousTenezLaPlupartDuTemps", "NOCTIS.js.VousGardezVotreCalme", "NOCTIS.js.IlEnFautBeaucoupPourVous", "NOCTIS.js.UneMaitrisePresqueParfaite"]),
+  instinct: vt("NOCTIS.js.AccepterLaBeteEtChevaucherLa",
+    ["NOCTIS.js.LaBeteVousMene", "NOCTIS.js.VousLEcoutezSansLaComprendre", "NOCTIS.js.VousLaGuidezParfois", "NOCTIS.js.VousChevauchezSaRage", "NOCTIS.js.BeteEtEspritNeFontPlus"]),
+  courage: vt("NOCTIS.js.FaireFaceALaPeurAu",
+    ["NOCTIS.js.PromptAFuir", "NOCTIS.js.Ordinaire", "NOCTIS.js.Brave", "NOCTIS.js.Intrepide", "NOCTIS.js.RienNeVousFaitReculer"])
 };
 
 /** Pouvoirs listés dans les infobulles de disciplines : vide (chaque table crée ses disciplines). */
 export const DISCIPLINE_POWERS = {};
 
 export const LEVELS = {
-  road: ["Au bord de l'abîme.", "Très compromis.", "Fragile.", "Vacillant.", "Ordinaire.", "Ferme.", "Solide.", "Exemplaire.", "Rare.", "Proche de l'idéal."],
-  willpower: ["Sans ressort.", "Faible.", "Hésitant.", "Ordinaire.", "Déterminé.", "Résolu.", "Tenace.", "Inébranlable.", "Indomptable.", "Absolue."]
+  road: ["NOCTIS.js.AuBordDeLAbime", "NOCTIS.js.TresCompromis", "NOCTIS.js.Fragile", "NOCTIS.js.Vacillant", "NOCTIS.js.Ordinaire", "NOCTIS.js.Ferme", "NOCTIS.js.Solide", "NOCTIS.js.Exemplaire", "NOCTIS.js.Rare", "NOCTIS.js.ProcheDeLIdeal"],
+  willpower: ["NOCTIS.js.SansRessort", "NOCTIS.js.Faible2", "NOCTIS.js.Hesitant", "NOCTIS.js.Ordinaire", "NOCTIS.js.Determine", "NOCTIS.js.Resolu", "NOCTIS.js.Tenace", "NOCTIS.js.Inebranlable", "NOCTIS.js.Indomptable", "NOCTIS.js.Absolue"]
 };
 
 export function traitTooltip(kind, key, label, cost) {
   const EXTRA = {
-    road: "Votre morale (Humanité ou autre Voie). Plus elle est haute, mieux vous résistez à la Bête ; elle baisse quand vous péchez contre sa hiérarchie.",
-    willpower: "Force de caractère. Dépenser 1 point de Volonté donne une réussite automatique ou permet d'ignorer un instant les blessures.",
-    discipline: "Pouvoir surnaturel de votre sang. Ouvrez la fiche de la discipline pour lire ses pouvoirs."
+    road: loc("NOCTIS.js.VotreMoraleHumaniteOuAutreVoie"),
+    willpower: loc("NOCTIS.js.ForceDeCaractereDepenser1Point"),
+    discipline: loc("NOCTIS.js.PouvoirSurnaturelDeVotreSangOuvrez")
   };
   const desc = { attribute: ATTRIBUTE_HELP, ability: ABILITY_HELP, background: BACKGROUND_HELP, virtue: VIRTUE_HELP }[kind]?.[key] ?? EXTRA[kind];
   let h = `<div class="noctis-tip"><h4>${esc(label)}</h4>`;
   if (desc && typeof desc === "object") {
     h += `<p>${esc(desc.desc)}</p>`;
     h += `<ul class="levels">${desc.levels.map(l => { const m = l.match(/^(•+)\s*([^.]+\.)?\s*(.*)$/); const nm = m[2] && m[2].length <= 28 ? m[2] : ""; const tx = nm ? m[3] : (m[2] ?? "") + " " + m[3]; return `<li><b>${m[1].replace(/•/g, "●")}</b> ${nm ? `<strong>${esc(nm)}</strong> ` : ""}${esc(tx.trim())}</li>`; }).join("")}</ul>`;
-    if (desc.spec) h += `<p class="meta"><strong>Spécialités :</strong> ${esc(desc.spec)}</p>`;
+    if (desc.spec) h += loc("NOCTIS.js.Specialites", { p0: esc(desc.spec) });
     if (cost) h += `<p class="cost">${esc(cost)}</p>`;
     return h + "</div>";
   }
@@ -137,3 +138,5 @@ export function traitTooltip(kind, key, label, cost) {
   if (cost) h += `<p class="cost">${esc(cost)}</p>`;
   return h + "</div>";
 }
+
+registerLocalizable(ATTRIBUTE_HELP, ABILITY_HELP, BACKGROUND_HELP, VIRTUE_HELP, LEVELS);

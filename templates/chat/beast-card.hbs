@@ -3,35 +3,35 @@
     <header class="beast-head">
       <img src="{{img}}" alt="">
       <div>
-        <h3>{{#if isFrenzy}}La Bête s'éveille{{else}}La Panique{{/if}}</h3>
+        <h3>{{#if isFrenzy}}{{localize "NOCTIS.ui.LaBeteSEveille"}}{{else}}{{localize "NOCTIS.ui.LaPanique"}}{{/if}}</h3>
         <p><b>{{name}}</b> · {{kindLabel}}{{#if reason}} — {{reason}}{{/if}}</p>
       </div>
       <i class="beast-icon fa-solid {{#if isFrenzy}}fa-face-angry{{else}}fa-fire{{/if}}"></i>
     </header>
 
-    <p class="beast-pool">{{poolLabel}} · difficulté <b>{{difficulty}}</b>{{#if accumulated}} · réussites cumulées <b>{{accumulated}}/5</b>{{/if}}
-      <span class="beast-gm" data-beast-gm>{{#if open}}<a data-beast-step="diffDown" data-tooltip="Baisser la difficulté">−</a><a data-beast-step="diffUp" data-tooltip="Monter la difficulté">+</a>{{/if}}</span>
+    <p class="beast-pool">{{{localize "NOCTIS.ui.Difficulte" poolLabel=poolLabel difficulty=difficulty}}}{{#if accumulated}} {{{localize "NOCTIS.ui.ReussitesCumulees5" accumulated=accumulated}}}{{/if}}
+      <span class="beast-gm" data-beast-gm>{{#if open}}<a data-beast-step="diffDown" data-tooltip="{{localize "NOCTIS.ui.BaisserLaDifficulte"}}">−</a><a data-beast-step="diffUp" data-tooltip="{{localize "NOCTIS.ui.MonterLaDifficulte"}}">+</a>{{/if}}</span>
     </p>
     {{#if accumulated}}<div class="beast-meter"><span style="width: {{noctisPct accumulated 5}}%"></span></div>{{/if}}
 
     {{#each rolls}}
       <div class="beast-roll">
         <div class="dice">{{#each faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div>
-        <small>{{pool}} dés, diff. {{difficulty}}{{#if evil}} (acte maléfique){{/if}} → {{#if botch}}échec critique{{else}}{{successes}} réussite(s){{/if}}</small>
+        {{{localize "NOCTIS.ui.DesDiff" pool=pool difficulty=difficulty}}}{{#if evil}} {{localize "NOCTIS.ui.ActeMalefique"}}{{/if}} → {{#if botch}}{{localize "NOCTIS.ui.EchecCritique"}}{{else}}{{localize "NOCTIS.ui.ReussiteS" successes=successes}}{{/if}}</small>
       </div>
     {{/each}}
 
-    {{#if instinct}}{{#if open}}<p class="beast-note">Instinct : un vampire qui suit l'Instinct succombe toujours à la frénésie.</p>{{/if}}{{/if}}
+    {{#if instinct}}{{#if open}}<p class="beast-note">{{localize "NOCTIS.ui.InstinctUnVampireQuiSuitL"}}</p>{{/if}}{{/if}}
 
     {{#if open}}
       <div class="card-buttons" data-beast-owner>
         {{#unless instinct}}
-          <button type="button" data-beast-step="roll"><i class="fa-solid fa-dice-d10"></i> {{#if accumulated}}Nouveau jet{{else}}Résister{{/if}} ({{pool}} dés)</button>
-          {{#if evilDifficulty}}<button type="button" data-beast-step="evil" data-tooltip="Pour empêcher un acte authentiquement maléfique : difficulté 9 − Conscience/Conviction"><i class="fa-solid fa-cross"></i> Contre un acte maléfique (diff. {{evilDifficulty}})</button>{{/if}}
+          <button type="button" data-beast-step="roll"><i class="fa-solid fa-dice-d10"></i> {{#if accumulated}}{{localize "NOCTIS.ui.NouveauJet"}}{{else}}{{localize "NOCTIS.ui.Resister"}}{{/if}} {{localize "NOCTIS.ui.Des2" pool=pool}}</button>
+          {{#if evilDifficulty}}<button type="button" data-beast-step="evil" data-tooltip="{{localize "NOCTIS.ui.PourEmpecherUnActeAuthentiquementMalefiq"}}"><i class="fa-solid fa-cross"></i> {{localize "NOCTIS.ui.ContreUnActeMalefiqueDiff" evilDifficulty=evilDifficulty}}</button>{{/if}}
         {{/unless}}
-        <button type="button" data-beast-step="succumb" class="succumb"><i class="fa-solid fa-skull"></i> Céder à la Bête</button>
+        <button type="button" data-beast-step="succumb" class="succumb"><i class="fa-solid fa-skull"></i> {{localize "NOCTIS.ui.CederALaBete"}}</button>
       </div>
-      <p class="clash-pending" data-beast-pending>En attente de {{name}}…</p>
+      <p class="clash-pending" data-beast-pending>{{localize "NOCTIS.ui.EnAttenteDe" name=name}}</p>
     {{/if}}
 
     {{#if outcome}}

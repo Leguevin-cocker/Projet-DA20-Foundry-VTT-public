@@ -1,5 +1,6 @@
 import { NOCTIS, generationStats } from "../config.mjs";
 import { slugKey } from "../registry.mjs";
+import { loc } from "../i18n.mjs";
 
 const fields = foundry.data.fields;
 
@@ -70,7 +71,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
         courage: new fields.SchemaField({ value: dots(1, 10) })
       }),
       road: new fields.SchemaField({
-        name: new fields.StringField({ blank: true, initial: "Voie de l'Humanité" }),
+        name: new fields.StringField({ blank: true, initial: loc("NOCTIS.js.VoieDeLHumanite") }),
         value: dots(5, 10),
         aura: new fields.StringField({ blank: true, initial: "" })
       }),
@@ -272,7 +273,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
     h.max = levels;
     h.value = levels - h.damage;
     const current = h.damage > 0 ? track[h.damage - 1] : null;
-    h.status = current ? current.label : "Indemne";
+    h.status = current ? current.label : loc("NOCTIS.js.Indemne");
     h.incapacitated = h.damage >= levels;
     h.penalty = h.incapacitated ? 0 : (current?.penalty ?? 0);
     // Frénésie : les pénalités de blessures sont ignorées
@@ -338,7 +339,7 @@ export class MortalModel extends BaseActorModel {
   static defineSchema() {
     const s = super.defineSchema();
     s.blood.fields.value.initial = 10;
-    s.road.fields.name.initial = "Voie de l'Humanité";
+    s.road.fields.name.initial = loc("NOCTIS.js.VoieDeLHumanite");
     s.road.fields.value.initial = 7;
     return s;
   }

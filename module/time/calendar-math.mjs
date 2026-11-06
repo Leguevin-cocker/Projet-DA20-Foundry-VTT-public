@@ -1,11 +1,13 @@
+import { loc, registerLocalizable } from "../i18n.mjs";
 /**
  * Calendrier julien (en usage en Europe au Moyen Âge), lune, soleil et fêtes.
  * Le temps absolu est compté en minutes depuis le jour julien 0.
  */
 
-export const MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-export const WEEKDAYS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-export const WEEKDAYS_SHORT = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+export const MONTHS = ["NOCTIS.js.Month1", "NOCTIS.js.Month2", "NOCTIS.js.Month3", "NOCTIS.js.Month4", "NOCTIS.js.Month5", "NOCTIS.js.Month6", "NOCTIS.js.Month7", "NOCTIS.js.Month8", "NOCTIS.js.Month9", "NOCTIS.js.Month10", "NOCTIS.js.Month11", "NOCTIS.js.Month12"];
+export const MONTHS_SHORT = ["NOCTIS.js.MonthShort1", "NOCTIS.js.MonthShort2", "NOCTIS.js.MonthShort3", "NOCTIS.js.MonthShort4", "NOCTIS.js.MonthShort5", "NOCTIS.js.MonthShort6", "NOCTIS.js.MonthShort7", "NOCTIS.js.MonthShort8", "NOCTIS.js.MonthShort9", "NOCTIS.js.MonthShort10", "NOCTIS.js.MonthShort11", "NOCTIS.js.MonthShort12"];
+export const WEEKDAYS = ["NOCTIS.js.Weekday0", "NOCTIS.js.Weekday1", "NOCTIS.js.Weekday2", "NOCTIS.js.Weekday3", "NOCTIS.js.Weekday4", "NOCTIS.js.Weekday5", "NOCTIS.js.Weekday6"];
+export const WEEKDAYS_SHORT = ["NOCTIS.js.Lun", "NOCTIS.js.Mar", "NOCTIS.js.Mer", "NOCTIS.js.Jeu", "NOCTIS.js.Ven", "NOCTIS.js.Sam", "NOCTIS.js.Dim"];
 
 export const isLeap = (y) => y % 4 === 0;
 export const monthLength = (y, m) => [31, isLeap(y) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1];
@@ -37,10 +39,10 @@ export function moonAge(jdn) {
 }
 
 const MOON_PHASES = [
-  { icon: "🌑", label: "Nouvelle lune" }, { icon: "🌒", label: "Premier croissant" },
-  { icon: "🌓", label: "Premier quartier" }, { icon: "🌔", label: "Lune gibbeuse croissante" },
-  { icon: "🌕", label: "Pleine lune" }, { icon: "🌖", label: "Lune gibbeuse décroissante" },
-  { icon: "🌗", label: "Dernier quartier" }, { icon: "🌘", label: "Dernier croissant" }
+  { icon: "🌑", label: "NOCTIS.js.NouvelleLune" }, { icon: "🌒", label: "NOCTIS.js.PremierCroissant" },
+  { icon: "🌓", label: "NOCTIS.js.PremierQuartier" }, { icon: "🌔", label: "NOCTIS.js.LuneGibbeuseCroissante" },
+  { icon: "🌕", label: "NOCTIS.js.PleineLune" }, { icon: "🌖", label: "NOCTIS.js.LuneGibbeuseDecroissante" },
+  { icon: "🌗", label: "NOCTIS.js.DernierQuartier" }, { icon: "🌘", label: "NOCTIS.js.DernierCroissant" }
 ];
 export function moonPhase(jdn) {
   const age = moonAge(jdn + 0.5);
@@ -82,10 +84,10 @@ export function easter(y) {
 }
 
 const FIXED_FEASTS = {
-  "1-1": "Circoncision du Seigneur", "1-6": "Épiphanie", "2-2": "Chandeleur", "3-25": "Annonciation",
-  "4-23": "Saint-Georges", "6-24": "Saint-Jean-Baptiste", "6-29": "Saints Pierre et Paul", "8-15": "Assomption",
-  "8-20": "Saint-Étienne de Hongrie", "9-29": "Saint-Michel", "11-1": "Toussaint", "11-2": "Jour des morts",
-  "11-11": "Saint-Martin", "12-6": "Saint-Nicolas", "12-25": "Noël", "12-28": "Saints Innocents"
+  "1-1": "NOCTIS.js.CirconcisionDuSeigneur", "1-6": "NOCTIS.js.Epiphanie", "2-2": "NOCTIS.js.Chandeleur", "3-25": "NOCTIS.js.Annonciation",
+  "4-23": "NOCTIS.js.SaintGeorges", "6-24": "NOCTIS.js.SaintJeanBaptiste", "6-29": "NOCTIS.js.SaintsPierreEtPaul", "8-15": "NOCTIS.js.Assomption",
+  "8-20": "NOCTIS.js.SaintEtienneDeHongrie", "9-29": "NOCTIS.js.SaintMichel", "11-1": "NOCTIS.js.Toussaint", "11-2": "NOCTIS.js.JourDesMorts",
+  "11-11": "NOCTIS.js.SaintMartin", "12-6": "NOCTIS.js.SaintNicolas", "12-25": "NOCTIS.js.Noel", "12-28": "NOCTIS.js.SaintsInnocents"
 };
 
 /** Fêtes du jour (fixes et mobiles). */
@@ -94,7 +96,7 @@ export function feasts(jdn) {
   const out = [];
   if (FIXED_FEASTS[`${month}-${day}`]) out.push(FIXED_FEASTS[`${month}-${day}`]);
   const e = easter(year);
-  const movable = { [e - 46]: "Mercredi des Cendres", [e - 7]: "Rameaux", [e - 2]: "Vendredi saint", [e]: "Pâques", [e + 39]: "Ascension", [e + 49]: "Pentecôte" };
+  const movable = { [e - 46]: loc("NOCTIS.js.MercrediDesCendres"), [e - 7]: loc("NOCTIS.js.Rameaux"), [e - 2]: loc("NOCTIS.js.VendrediSaint"), [e]: loc("NOCTIS.js.Paques"), [e + 39]: loc("NOCTIS.js.Ascension"), [e + 49]: loc("NOCTIS.js.Pentecote") };
   if (movable[jdn]) out.push(movable[jdn]);
   return out;
 }
@@ -112,8 +114,11 @@ export function fromAbs(abs) {
 export function longDate(y, m, d) {
   const j = toJdn(y, m, d);
   const wd = WEEKDAYS[weekday(j)];
-  return `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${d === 1 ? "1er" : d} ${MONTHS[m - 1]} ${y}`;
+  return loc("NOCTIS.js.LongDate", { weekday: `${wd.charAt(0).toUpperCase()}${wd.slice(1)}`, day: dayLabel(d), month: MONTHS[m - 1], year: y });
 }
+
+/** « 1er » en français, « 1 » en anglais. */
+export function dayLabel(d) { return d === 1 ? loc("NOCTIS.js.DayFirst") : String(d); }
 
 /** Ajoute des années, mois et jours à une date (fin de mois bornée). */
 export function addDate({ year, month, day }, { years = 0, months = 0, days = 0 }) {
@@ -133,3 +138,5 @@ export function fmtDuration(minutes) {
   const h = Math.floor(minutes / 60), mn = minutes % 60;
   return h ? `${h} h${mn ? ` ${String(mn).padStart(2, "0")}` : ""}` : `${mn} min`;
 }
+
+registerLocalizable(MONTHS, MONTHS_SHORT, WEEKDAYS, WEEKDAYS_SHORT, MOON_PHASES, FIXED_FEASTS);

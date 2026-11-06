@@ -1,5 +1,5 @@
 <section class="tab tab-traits {{tab.cssClass}}" data-tab="traits">
-  <h2 class="noctis-section"><span>Attributs</span></h2>
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Attributs"}}</span></h2>
   <div class="columns three">
     {{#each attributeGroups}}
       <div class="trait-group">
@@ -9,7 +9,7 @@
     {{/each}}
   </div>
 
-  <h2 class="noctis-section"><span>Capacités</span></h2>
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Capacites"}}</span></h2>
   <div class="columns three">
     {{#each abilityGroups}}
       <div class="trait-group">
@@ -17,22 +17,22 @@
         {{#each traits}}{{> "systems/noctis/templates/actor/parts/trait-row.hbs" trait=this showSpec=true}}{{/each}}
         {{#each secondary}}
           <div class="trait-row secondary" data-item-id="{{id}}">
-            <a class="trait-label" data-action="select" data-kind="trait" data-ref="{{ref}}" data-roll="trait" data-tooltip="Clic : détails · double-clic : lancer">{{label}}</a>
-            <input class="spec" type="text" data-item-field="system.spec" value="{{spec}}" placeholder="spécialité">
+            <a class="trait-label" data-action="select" data-kind="trait" data-ref="{{ref}}" data-roll="trait" data-tooltip="{{localize "NOCTIS.ui.ClicDetailsDoubleClicLancer"}}">{{label}}</a>
+            <input class="spec" type="text" data-item-field="system.spec" value="{{spec}}" placeholder="{{localize "NOCTIS.ui.Specialite"}}">
             {{noctisDots value=value max=max path=path}}
             <span class="mini-controls"><a data-action="itemEdit"><i class="fa-solid fa-pen"></i></a><a data-action="itemDelete"><i class="fa-solid fa-trash"></i></a></span>
           </div>
         {{/each}}
-        <a class="add-row" data-action="itemCreate" data-type="ability" data-group="{{key}}"><i class="fa-solid fa-plus"></i> capacité secondaire</a>
+        <a class="add-row" data-action="itemCreate" data-type="ability" data-group="{{key}}"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.CapaciteSecondaire"}}</a>
       </div>
     {{/each}}
   </div>
 
-  <h2 class="noctis-section"><span>Vertus</span></h2>
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Vertus"}}</span></h2>
   <div class="virtues-row">
     {{#each virtues}}
       <div class="virtue">
-        <a class="virtue-info" data-action="select" data-kind="virtue" data-key="{{key}}" data-tooltip="Détails"><i class="fa-solid fa-circle-info"></i></a>
+        <a class="virtue-info" data-action="select" data-kind="virtue" data-key="{{key}}" data-tooltip="{{localize "NOCTIS.ui.Details"}}"><i class="fa-solid fa-circle-info"></i></a>
         {{#if typePath}}
           <select class="virtue-type" name="{{typePath}}">{{noctisOptions choices type}}</select>
         {{else}}
@@ -45,13 +45,13 @@
   <div class="quick-rolls">
     <button type="button" data-action="rollVirtue" data-kind="conscience"><i class="fa-solid fa-scale-balanced"></i> {{system.virtues.conscience.label}}</button>
     {{#if isVampire}}
-      <button type="button" data-action="rollVirtue" data-kind="frenzy"><i class="fa-solid fa-paw"></i> Frénésie</button>
-      <button type="button" data-action="rollVirtue" data-kind="panic"><i class="fa-solid fa-fire"></i> Panique</button>
+      <button type="button" data-action="rollVirtue" data-kind="frenzy"><i class="fa-solid fa-paw"></i> {{localize "NOCTIS.ui.Frenesie"}}</button>
+      <button type="button" data-action="rollVirtue" data-kind="panic"><i class="fa-solid fa-fire"></i> {{localize "NOCTIS.ui.Panique"}}</button>
     {{else}}
-      <button type="button" data-action="rollVirtue" data-kind="panic"><i class="fa-solid fa-person-running"></i> Courage</button>
+      <button type="button" data-action="rollVirtue" data-kind="panic"><i class="fa-solid fa-person-running"></i> {{localize "NOCTIS.ui.Courage2"}}</button>
     {{/if}}
-    <button type="button" data-action="rollVirtue" data-kind="willpower"><i class="fa-solid fa-shield-heart"></i> Volonté</button>
-    {{#if system.faith}}<button type="button" data-action="rollVirtue" data-kind="faith"><i class="fa-solid fa-cross"></i> Vraie Foi</button>{{/if}}
-    <button type="button" data-action="rollFree"><i class="fa-solid fa-dice-d10"></i> Jet libre</button>
+    <button type="button" data-action="rollVirtue" data-kind="willpower"><i class="fa-solid fa-shield-heart"></i> {{localize "NOCTIS.ui.Volonte"}}</button>
+    {{#if system.faith}}<button type="button" data-action="rollVirtue" data-kind="faith"><i class="fa-solid fa-cross"></i> {{localize "NOCTIS.ui.VraieFoi"}}</button>{{/if}}
+    <button type="button" data-action="rollFree"><i class="fa-solid fa-dice-d10"></i> {{localize "NOCTIS.ui.JetLibre"}}</button>
   </div>
 </section>

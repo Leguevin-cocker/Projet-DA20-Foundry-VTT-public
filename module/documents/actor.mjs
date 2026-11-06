@@ -1,6 +1,7 @@
 import { NOCTIS, xpCost } from "../config.mjs";
 import { rollPool } from "../dice/roll.mjs";
 import { rule } from "../variants.mjs";
+import { loc } from "../i18n.mjs";
 
 /**
  * Acteur NOCTIS : logique de jeu (dégâts, sang, volonté, expérience).
@@ -89,13 +90,13 @@ export class NOCTISActor extends Actor {
         if (!v) return null;
         return { value: v.value, label: v.label, spec: "", tags: [ref, "virtue", key === "selfcontrol" ? "frenzy" : (key === "courage" ? "panic" : "conscience")] };
       }
-      case "willpower": return { value: s.willpower.permanent, label: "Volonté", spec: "", tags: ["willpower"] };
-      case "road": return { value: s.road.value, label: s.road.name || "Voie", spec: "", tags: ["road"] };
+      case "willpower": return { value: s.willpower.permanent, label: loc("NOCTIS.js.Volonte"), spec: "", tags: ["willpower"] };
+      case "road": return { value: s.road.value, label: s.road.name || loc("NOCTIS.js.Voie"), spec: "", tags: ["road"] };
       case "bg": {
         const b = s.backgrounds[key];
         return b ? { value: b.value, label: NOCTIS.backgrounds[key], spec: "", tags: [ref, "background"] } : null;
       }
-      case "faith": return { value: s.faith, label: "Vraie Foi", spec: "", tags: ["faith"] };
+      case "faith": return { value: s.faith, label: loc("NOCTIS.js.VraieFoi"), spec: "", tags: ["faith"] };
       default: return null;
     }
   }
@@ -104,23 +105,23 @@ export class NOCTISActor extends Actor {
   rollableTraits() {
     const s = this.system;
     const groups = [];
-    groups.push({ label: "Attributs", options: Object.keys(NOCTIS.attributes).map(k => ({ value: `attr.${k}`, label: `${NOCTIS.attributes[k]} (${s.attributes[k].total})` })) });
+    groups.push({ label: loc("NOCTIS.js.Attributs"), options: Object.keys(NOCTIS.attributes).map(k => ({ value: `attr.${k}`, label: `${NOCTIS.attributes[k]} (${s.attributes[k].total})` })) });
     for (const g of Object.values(NOCTIS.abilityGroups)) {
       groups.push({ label: g.label, options: g.keys.map(k => ({ value: `abil.${k}`, label: `${NOCTIS.abilities[k]} (${s.abilities[k].total})` })).sort((a, b) => a.label.localeCompare(b.label, "fr")) });
     }
     const sec = this.items.filter(i => i.type === "ability");
-    if (sec.length) groups.push({ label: "Capacités secondaires", options: sec.map(i => ({ value: `item.${i.id}`, label: `${i.name} (${i.system.value})` })) });
+    if (sec.length) groups.push({ label: loc("NOCTIS.js.CapacitesSecondaires"), options: sec.map(i => ({ value: `item.${i.id}`, label: `${i.name} (${i.system.value})` })) });
     const disc = this.items.filter(i => i.type === "discipline");
-    if (disc.length) groups.push({ label: "Disciplines", options: disc.map(i => ({ value: `item.${i.id}`, label: `${i.name} (${i.system.value})` })) });
-    groups.push({ label: "Vertus et autres", options: [
+    if (disc.length) groups.push({ label: loc("NOCTIS.js.Disciplines"), options: disc.map(i => ({ value: `item.${i.id}`, label: `${i.name} (${i.system.value})` })) });
+    groups.push({ label: loc("NOCTIS.js.VertusEtAutres"), options: [
       { value: "virtue.conscience", label: `${s.virtues.conscience.label} (${s.virtues.conscience.value})` },
       { value: "virtue.selfcontrol", label: `${s.virtues.selfcontrol.label} (${s.virtues.selfcontrol.value})` },
-      { value: "virtue.courage", label: `Courage (${s.virtues.courage.value})` },
-      { value: "willpower", label: `Volonté (${s.willpower.permanent})` },
-      { value: "road", label: `${s.road.name || "Voie"} (${s.road.value})` },
-      ...(s.faith ? [{ value: "faith", label: `Vraie Foi (${s.faith})` }] : [])
+      { value: "virtue.courage", label: loc("NOCTIS.js.Courage3", { value: s.virtues.courage.value }) },
+      { value: "willpower", label: loc("NOCTIS.js.Volonte2", { permanent: s.willpower.permanent }) },
+      { value: "road", label: `${s.road.name || loc("NOCTIS.js.Voie")} (${s.road.value})` },
+      ...(s.faith ? [{ value: "faith", label: loc("NOCTIS.js.VraieFoi2", { faith: s.faith }) }] : [])
     ] });
-    groups.push({ label: "Historiques", options: Object.keys(NOCTIS.backgrounds).map(k => ({ value: `bg.${k}`, label: `${NOCTIS.backgrounds[k]} (${s.backgrounds[k].value})` })) });
+    groups.push({ label: loc("NOCTIS.js.Historiques"), options: Object.keys(NOCTIS.backgrounds).map(k => ({ value: `bg.${k}`, label: `${NOCTIS.backgrounds[k]} (${s.backgrounds[k].value})` })) });
     return groups;
   }
 
@@ -180,18 +181,18 @@ export class NOCTISActor extends Actor {
       const parts = [];
       const sta = s.attributes.stamina.total;
       const fort = s.mechanics.resilience ?? 0;
-      if (effType === "bashing" || (effType === "lethal" && s.isVampire)) parts.push(`Vigueur ${sta}`);
-      if (fort) parts.push(`${s.mechanicNames?.resilience ?? "Résilience"} ${fort}`);
-      if (s.armorRating) parts.push(noArmor ? (ignoreArmor ? "Armure ignorée (défaut de la cuirasse)" : "Armure ignorée (feu ou soleil)") : `Armure ${s.armorRating}${ap ? ` − ${ap} (perforation)` : ""}`);
+      if (effType === "bashing" || (effType === "lethal" && s.isVampire)) parts.push(loc("NOCTIS.js.Vigueur2", { sta }));
+      if (fort) parts.push(`${s.mechanicNames?.resilience ?? loc("NOCTIS.js.Resilience")} ${fort}`);
+      if (s.armorRating) parts.push(noArmor ? (ignoreArmor ? loc("NOCTIS.js.ArmureIgnoreeDefautDeLaCuirasse") : loc("NOCTIS.js.ArmureIgnoreeFeuOuSoleil")) : loc("NOCTIS.js.Armure3", { armorRating: s.armorRating, p1: ap ? loc("NOCTIS.js.Perforation", { ap }) : "" }));
       const useWp = willpower && rule("willpowerSoak") && (await this.spendWillpower(1));
-      if (useWp) parts.push("Volonté : +1 réussite");
+      if (useWp) parts.push(loc("NOCTIS.js.Volonte1Reussite"));
       // Variante : un PNJ prend le résultat moyen (moitié du groupement, arrondi au supérieur)
       const average = !this.isPC && rule("npcAverage");
-      if (average) parts.push("Résultat moyen (PNJ, pas de jet)");
+      if (average) parts.push(loc("NOCTIS.js.ResultatMoyenPnjPasDeJet"));
       soakResult = average ? { pool, difficulty: 6, faces: [], successes: Math.ceil(pool / 2) + (useWp ? 1 : 0), botch: false, average: true } : await rollPool({
         actor: this, pool, difficulty: 6, kind: "soak", willpower: !!useWp,
-        label: `Absorption — ${amount} niveau${amount > 1 ? "x" : ""} ${NOCTIS.damageTypes[effType].label.toLowerCase()}`,
-        parts: parts.length ? parts : ["Aucun dé d'absorption"],
+        label: loc("NOCTIS.js.AbsorptionNiveau", { amount, p1: amount > 1 ? "x" : "", p2: NOCTIS.damageTypes[effType].label.toLowerCase() }),
+        parts: parts.length ? parts : [loc("NOCTIS.js.AucunDeDAbsorption")],
         noBotch: true, toChat: !quiet
       });
       soakResult.parts = parts;
@@ -235,7 +236,7 @@ export class NOCTISActor extends Actor {
       "system.combat.defensesUsed": 0, "system.combat.defensePenalty": 0, "system.combat.healsUsed": 0, "system.combat.noDefense": false
     });
     if (st.has("stunned")) {
-      await this.#notify(`<i class="fa-solid fa-face-dizzy"></i> <b>${this.name}</b> est étourdi : il ne peut pas agir ce tour.`);
+      await this.#notify(loc("NOCTIS.js.EstEtourdiIlNePeutPas", { name: this.name }));
       await this.toggleStatusEffect("stunned", { active: false });
     }
   }
@@ -258,9 +259,9 @@ export class NOCTISActor extends Actor {
     if (!this.inActiveCombat) return "";
     const c = this.system.combat;
     const r = rule("defenseRule");
-    if (r === "dicePenalty") return `sans action, −1 dé à la prochaine attaque${c.defensePenalty ? ` (déjà −${c.defensePenalty})` : ""}`;
-    if (r === "firstFree" && !c.defensesUsed) return "défense réflexe gratuite";
-    return `${c.actions} action(s) restante(s)`;
+    if (r === "dicePenalty") return loc("NOCTIS.js.SansAction1DeALa", { p0: c.defensePenalty ? loc("NOCTIS.js.Deja", { defensePenalty: c.defensePenalty }) : "" });
+    if (r === "firstFree" && !c.defensesUsed) return loc("NOCTIS.js.DefenseReflexeGratuite");
+    return loc("NOCTIS.js.ActionSRestanteS", { actions: c.actions });
   }
 
   /** Paie une défense selon la variante. Renvoie { ok, note }. */
@@ -270,15 +271,15 @@ export class NOCTISActor extends Actor {
     const r = rule("defenseRule");
     if (r === "dicePenalty") {
       await this.update({ "system.combat.defensesUsed": c.defensesUsed + 1, "system.combat.defensePenalty": c.defensePenalty + 1 });
-      return { ok: true, note: `Sans action : −1 dé à la prochaine attaque (total −${c.defensePenalty + 1})` };
+      return { ok: true, note: loc("NOCTIS.js.SansAction1DeALa2", { p0: c.defensePenalty + 1 }) };
     }
     if (r === "firstFree" && !c.defensesUsed) {
       await this.update({ "system.combat.defensesUsed": 1 });
-      return { ok: true, note: "Défense réflexe (gratuite)" };
+      return { ok: true, note: loc("NOCTIS.js.DefenseReflexeGratuite2") };
     }
     if (!(await this.useAction({ attack: false }))) return { ok: false, note: "" };
     await this.update({ "system.combat.defensesUsed": c.defensesUsed + 1 });
-    return { ok: true, note: "1 action utilisée" };
+    return { ok: true, note: loc("NOCTIS.js.1ActionUtilisee") };
   }
 
   /** Points de Vélocité activables ce tour : niveau, sang disponible, sang par tour. */
@@ -299,7 +300,7 @@ export class NOCTISActor extends Actor {
       "system.combat.actions": c.actions + n, "system.combat.actionsMax": c.actionsMax + n,
       "system.combat.attacksLeft": c.attacksLeft + Math.ceil(n / 2), "system.combat.celerityActive": n
     });
-    await this.#notify(`<i class="fa-solid fa-bolt"></i> <b>${this.name}</b> active ${this.system.mechanicNames?.speed ?? "la Vélocité"} : ${n} point${n > 1 ? "s" : ""} de sang, ${n} action${n > 1 ? "s" : ""} supplémentaire${n > 1 ? "s" : ""} (dont ${Math.ceil(n / 2)} attaque${Math.ceil(n / 2) > 1 ? "s" : ""} au plus).`);
+    await this.#notify(loc("NOCTIS.js.ActivePointDeSangActionSupplementaire", { name: this.name, p1: this.system.mechanicNames?.speed ?? loc("NOCTIS.js.LaVelocite"), n, p3: n > 1 ? "s" : "", p4: n > 1 ? "s" : "", p5: n > 1 ? "s" : "", p6: Math.ceil(n / 2), p7: Math.ceil(n / 2) > 1 ? "s" : "" }));
     return true;
   }
 
@@ -330,14 +331,14 @@ export class NOCTISActor extends Actor {
     const cel = s.celerityBonus ?? 0;
     const mod = (s.health.penalty ?? 0) - (s.armorPenalty ?? 0) + cel;
     const ab = (k) => s.abilities[k]?.total ?? 0;
-    const opts = [{ key: "dodge", label: "Esquive", pool: Math.max(0, dex + ab("athletics") + mod), parts: `Dextérité ${dex} + Athlétisme ${ab("athletics")}` }];
+    const opts = [{ key: "dodge", label: loc("NOCTIS.js.Esquive"), pool: Math.max(0, dex + ab("athletics") + mod), parts: loc("NOCTIS.js.DexteriteAthletisme", { dex, p1: ab("athletics") }) }];
     const hasMelee = this.items.some(i => i.type === "weapon" && i.system.equipped && i.system.ability === "melee");
-    if (attackKind !== "ranged" && hasMelee) opts.push({ key: "parry", label: "Parade", pool: Math.max(0, dex + ab("melee") + mod), parts: `Dextérité ${dex} + Mêlée ${ab("melee")}` });
-    if (attackKind === "brawl") opts.push({ key: "block", label: "Blocage", pool: Math.max(0, dex + ab("brawl") + mod), parts: `Dextérité ${dex} + Bagarre ${ab("brawl")}` });
+    if (attackKind !== "ranged" && hasMelee) opts.push({ key: "parry", label: loc("NOCTIS.js.Parade"), pool: Math.max(0, dex + ab("melee") + mod), parts: loc("NOCTIS.js.DexteriteMelee", { dex, p1: ab("melee") }) });
+    if (attackKind === "brawl") opts.push({ key: "block", label: loc("NOCTIS.js.Blocage"), pool: Math.max(0, dex + ab("brawl") + mod), parts: loc("NOCTIS.js.DexteriteBagarre", { dex, p1: ab("brawl") }) });
     const extra = [];
-    if (cel) extra.push(`${s.mechanicNames?.speed ?? "Vélocité"} +${cel}`);
-    if (s.health.penalty) extra.push(`Blessures ${s.health.penalty}`);
-    if (s.armorPenalty) extra.push(`Armure −${s.armorPenalty}`);
+    if (cel) extra.push(`${s.mechanicNames?.speed ?? loc("NOCTIS.js.Velocite")} +${cel}`);
+    if (s.health.penalty) extra.push(loc("NOCTIS.js.Blessures", { penalty: s.health.penalty }));
+    if (s.armorPenalty) extra.push(loc("NOCTIS.js.Armure2", { armorPenalty: s.armorPenalty }));
     for (const o of opts) o.parts = [o.parts, ...extra].join(" · ");
     return opts.sort((a, b) => b.pool - a.pool);
   }
@@ -348,17 +349,17 @@ export class NOCTISActor extends Actor {
 
   async spendBlood(n = 1, reason = "") {
     const cur = this.system.blood.value;
-    if (cur < n) { ui.notifications.warn(`${this.name} n'a pas assez de sang (${cur}).`); return false; }
+    if (cur < n) { ui.notifications.warn(loc("NOCTIS.js.NAPasAssezDeSang", { name: this.name, cur })); return false; }
     await this.update({ "system.blood.value": cur - n });
-    if (reason) await this.#notify(`<i class="fa-solid fa-droplet"></i> ${this.name} dépense ${n} point${n > 1 ? "s" : ""} de sang : ${reason}.`);
+    if (reason) await this.#notify(loc("NOCTIS.js.DepensePointDeSang", { name: this.name, n, p2: n > 1 ? "s" : "", reason }));
     return true;
   }
 
   async spendWillpower(n = 1, reason = "") {
     const cur = this.system.willpower.temporary;
-    if (cur < n) { ui.notifications.warn(`${this.name} n'a plus de Volonté.`); return false; }
+    if (cur < n) { ui.notifications.warn(loc("NOCTIS.js.NAPlusDeVolonte", { name: this.name })); return false; }
     await this.update({ "system.willpower.temporary": cur - n });
-    if (reason) await this.#notify(`<i class="fa-solid fa-shield-heart"></i> ${this.name} dépense ${n} point de Volonté : ${reason}.`);
+    if (reason) await this.#notify(loc("NOCTIS.js.DepensePointDeVolonte", { name: this.name, n, reason }));
     return true;
   }
 
@@ -366,28 +367,28 @@ export class NOCTISActor extends Actor {
   async bloodHeal() {
     const h = this.system.health;
     const type = h.lethal > 0 ? "lethal" : (h.bashing > 0 ? "bashing" : null);
-    if (!type) return ui.notifications.info("Aucune blessure contondante ou létale à soigner.");
+    if (!type) return ui.notifications.info(loc("NOCTIS.js.AucuneBlessureContondanteOuLetaleA"));
     // Variante : 1 guérison gratuite par tour, puis 1 action chacune
     let cost = "";
     const c = this.system.combat;
     const paid = this.inActiveCombat && rule("bloodHealCombat") === "firstFree" && c.healsUsed > 0;
-    if (paid && c.actions <= 0) return ui.notifications.warn(`${this.name} a déjà guéri gratuitement ce tour et n'a plus d'action.`);
+    if (paid && c.actions <= 0) return ui.notifications.warn(loc("NOCTIS.js.ADejaGueriGratuitementCeTour", { name: this.name }));
     if (!(await this.spendBlood(1))) return;
     if (this.inActiveCombat) {
-      if (paid) { await this.useAction({ attack: false }); cost = " (1 action)"; }
-      else if (rule("bloodHealCombat") === "firstFree") cost = " (guérison gratuite du tour)";
+      if (paid) { await this.useAction({ attack: false }); cost = loc("NOCTIS.js.1Action"); }
+      else if (rule("bloodHealCombat") === "firstFree") cost = loc("NOCTIS.js.GuerisonGratuiteDuTour");
       await this.update({ "system.combat.healsUsed": c.healsUsed + 1 });
     }
     await this.healDamage(type, 1);
-    await this.#notify(`<i class="fa-solid fa-droplet"></i> ${this.name} dépense 1 point de sang et soigne un niveau de dégâts ${NOCTIS.damageTypes[type].label.toLowerCase()}${cost}.`);
+    await this.#notify(loc("NOCTIS.js.Depense1PointDeSangEt", { name: this.name, p1: NOCTIS.damageTypes[type].label.toLowerCase(), cost }));
   }
 
   /** Guérison d'un niveau aggravé : 5 points de sang et une journée de repos. */
   async bloodHealAggravated() {
-    if (!this.system.health.aggravated) return ui.notifications.info("Aucune blessure aggravée.");
+    if (!this.system.health.aggravated) return ui.notifications.info(loc("NOCTIS.js.AucuneBlessureAggravee"));
     if (!(await this.spendBlood(5))) return;
     await this.healDamage("aggravated", 1);
-    await this.#notify(`<i class="fa-solid fa-droplet"></i> ${this.name} dépense 5 points de sang et une journée de repos pour soigner un niveau aggravé.`);
+    await this.#notify(loc("NOCTIS.js.Depense5PointsDeSangEt", { name: this.name }));
   }
 
   /** Amplification : +1 à un attribut physique pour la scène. */
@@ -396,12 +397,12 @@ export class NOCTISActor extends Actor {
     if (!(await this.spendBlood(1))) return;
     const cur = this.system.boosts[attr] ?? 0;
     await this.update({ [`system.boosts.${attr}`]: cur + 1 });
-    await this.#notify(`<i class="fa-solid fa-droplet"></i> ${this.name} dépense 1 point de sang : ${NOCTIS.attributes[attr]} +1 pour la scène.`);
+    await this.#notify(loc("NOCTIS.js.Depense1PointDeSang1", { name: this.name, p1: NOCTIS.attributes[attr] }));
   }
 
   async endScene() {
     await this.update({ "system.boosts.strength": 0, "system.boosts.dexterity": 0, "system.boosts.stamina": 0 });
-    ui.notifications.info(`${this.name} : fin de scène, les amplifications de sang disparaissent.`);
+    ui.notifications.info(loc("NOCTIS.js.FinDeSceneLesAmplificationsDe", { name: this.name }));
   }
 
   /** Réveil : −1 sang, +1 Volonté temporaire. */
@@ -412,7 +413,7 @@ export class NOCTISActor extends Actor {
     if (this.system.usesBlood && this.system.isVampire && !this.statuses?.has("torpor")) upd["system.blood.value"] = Math.max(0, s.blood.value - 1);
     upd["system.willpower.temporary"] = Math.min(s.willpower.max, s.willpower.temporary + 1);
     await this.update(upd);
-    await this.#notify(`<i class="fa-solid fa-moon"></i> ${this.name} s'éveille : −1 point de sang, +1 point de Volonté.`);
+    await this.#notify(loc("NOCTIS.js.SEveille1PointDeSang", { name: this.name }));
   }
 
   async #notify(html) {
@@ -457,8 +458,8 @@ export class NOCTISActor extends Actor {
       category = "virtue"; const k = path.split(".")[2]; label = s.virtues[k].label;
       if (k === "conscience" && this.#hasFlag("doubleConscienceXp")) multiplier = 2;
     }
-    else if (path === "system.willpower.permanent") { category = "willpower"; label = "Volonté"; }
-    else if (path === "system.road.value") { category = "road"; label = s.road.name || "Voie"; if (this.#hasFlag("doubleConscienceXp")) multiplier = 2; }
+    else if (path === "system.willpower.permanent") { category = "willpower"; label = loc("NOCTIS.js.Volonte"); }
+    else if (path === "system.road.value") { category = "road"; label = s.road.name || loc("NOCTIS.js.Voie"); if (this.#hasFlag("doubleConscienceXp")) multiplier = 2; }
     else if (path.startsWith("item.")) {
       const it = this.items.get(path.split(".")[1]);
       label = it?.name ?? "?";
@@ -483,7 +484,7 @@ export class NOCTISActor extends Actor {
   async purchaseTrait(path, from, to, { free = false, note = "" } = {}) {
     const p = this.describePurchase(path, from, to);
     if (!free && p.cost > this.system.experience.available) {
-      ui.notifications.warn(`Pas assez d'expérience : ${p.cost} requis, ${this.system.experience.available} disponible(s).`);
+      ui.notifications.warn(loc("NOCTIS.js.PasAssezDExperienceRequisDisponible", { cost: p.cost, available: this.system.experience.available }));
       return false;
     }
     if (path.startsWith("item.")) {

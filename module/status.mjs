@@ -1,3 +1,4 @@
+import { loc, registerLocalizable } from "./i18n.mjs";
 /**
  * États des jetons : liste d'icônes propre à NOCTIS et synchronisation automatique avec la fiche.
  * Les états « automatiques » suivent les données (santé, sang, Vélocité) ; les autres sont posés
@@ -5,20 +6,20 @@
  */
 
 export const STATUSES = [
-  { id: "frenzy", name: "Frénésie", img: "icons/svg/explosion.svg", tip: "La Bête a pris le contrôle : ignore les pénalités de blessures, insensible à la panique, +2 à la difficulté des pouvoirs mentaux qui le visent. 1 Volonté = un tour de lucidité." },
-  { id: "panic", name: "Panique", img: "icons/svg/terror.svg", tip: "Panique : fuit la source de sa peur et attaque quiconque le retient. 1 Volonté = un tour de contrôle." },
-  { id: "hungry", name: "Assoiffé", img: "icons/svg/blood.svg", auto: true, tip: "Réserve de sang basse : la vue, l'odeur ou le goût du sang peuvent déclencher la frénésie." },
-  { id: "starving", name: "À sec", img: "icons/svg/degen.svg", auto: true, tip: "Plus une goutte de sang : la Soif pousse à la frénésie." },
-  { id: "celerity", name: "Vélocité", img: "icons/svg/wingfoot.svg", auto: true, tip: "Vélocité activée ce tour : actions supplémentaires." },
-  { id: "prone", name: "À terre", img: "icons/svg/falling.svg", tip: "A chuté : Dextérité + Athlétisme (difficulté 6) pour se relever, −2 à l'initiative au prochain tour." },
-  { id: "grappled", name: "Empoigné", img: "icons/svg/net.svg", tip: "Pris dans une lutte ou maintenu : aucune autre action physique que frapper (Force) ou se libérer (Force + Bagarre en opposition). +2 dés pour l'attaquer." },
-  { id: "stunned", name: "Étourdi", img: "icons/svg/daze.svg", tip: "Une attaque a infligé plus que Vigueur + 2 niveaux : ne peut pas agir au prochain tour." },
-  { id: "blinded", name: "Aveuglé", img: "icons/svg/blind.svg", tip: "+2 à la difficulté de toute action qui demande la vue (défenses comprises) ; +2 dés pour l'attaquer." },
-  { id: "staked", name: "Pieu au cœur", img: "icons/svg/paralysis.svg", tip: "Cœur transpercé : le vampire est paralysé jusqu'à ce qu'on retire le pieu. Toute attaque contre lui réussit." },
-  { id: "crippled", name: "Infirme", img: "icons/svg/bones.svg", auto: true, tip: "Niveau de santé Infirmité : −5 dés." },
-  { id: "incapacitated", name: "Invalide", img: "icons/svg/unconscious.svg", auto: true, tip: "Tous les niveaux de santé sont perdus." },
-  { id: "torpor", name: "Torpeur", img: "icons/svg/sleep.svg", auto: true, tip: "Sommeil semblable à la mort ; durée selon la Voie." },
-  { id: "dead", name: "Mort", img: "icons/svg/skull.svg", auto: true, tip: "Mort ultime (vampire) ou mort (mortel)." }
+  { id: "frenzy", name: "NOCTIS.js.Frenesie", img: "icons/svg/explosion.svg", tip: "NOCTIS.js.LaBeteAPrisLeControle" },
+  { id: "panic", name: "NOCTIS.js.Panique", img: "icons/svg/terror.svg", tip: "NOCTIS.js.PaniqueFuitLaSourceDeSa" },
+  { id: "hungry", name: "NOCTIS.js.Assoiffe", img: "icons/svg/blood.svg", auto: true, tip: "NOCTIS.js.ReserveDeSangBasseLaVue" },
+  { id: "starving", name: "NOCTIS.js.ASec", img: "icons/svg/degen.svg", auto: true, tip: "NOCTIS.js.PlusUneGoutteDeSangLa" },
+  { id: "celerity", name: "NOCTIS.js.Velocite", img: "icons/svg/wingfoot.svg", auto: true, tip: "NOCTIS.js.VelociteActiveeCeTourActionsSupplementai" },
+  { id: "prone", name: "NOCTIS.js.ATerre", img: "icons/svg/falling.svg", tip: "NOCTIS.js.AChuteDexteriteAthletismeDifficulte6" },
+  { id: "grappled", name: "NOCTIS.js.Empoigne", img: "icons/svg/net.svg", tip: "NOCTIS.js.PrisDansUneLutteOuMaintenu" },
+  { id: "stunned", name: "NOCTIS.js.Etourdi", img: "icons/svg/daze.svg", tip: "NOCTIS.js.UneAttaqueAInfligePlusQue" },
+  { id: "blinded", name: "NOCTIS.js.Aveugle", img: "icons/svg/blind.svg", tip: "NOCTIS.js.2ALaDifficulteDeToute" },
+  { id: "staked", name: "NOCTIS.js.PieuAuCur", img: "icons/svg/paralysis.svg", tip: "NOCTIS.js.CurTransperceLeVampireEstParalyse" },
+  { id: "crippled", name: "NOCTIS.js.Infirme", img: "icons/svg/bones.svg", auto: true, tip: "NOCTIS.js.NiveauDeSanteInfirmite5Des" },
+  { id: "incapacitated", name: "NOCTIS.js.Invalide", img: "icons/svg/unconscious.svg", auto: true, tip: "NOCTIS.js.TousLesNiveauxDeSanteSont" },
+  { id: "torpor", name: "NOCTIS.js.Torpeur", img: "icons/svg/sleep.svg", auto: true, tip: "NOCTIS.js.SommeilSemblableALaMortDuree" },
+  { id: "dead", name: "NOCTIS.js.Mort", img: "icons/svg/skull.svg", auto: true, tip: "NOCTIS.js.MortUltimeVampireOuMortMortel" }
 ];
 
 export function registerStatuses() {
@@ -32,7 +33,7 @@ export const hasStatus = (actor, id) => !!actor?.statuses?.has(id);
 export async function setStatus(actor, id, active, { overlay = false } = {}) {
   if (!actor || hasStatus(actor, id) === !!active) return;
   try { await actor.toggleStatusEffect(id, { active: !!active, overlay }); }
-  catch (err) { console.warn(`NOCTIS | état ${id}`, err); }
+  catch (err) { console.warn(loc("NOCTIS.js.NoctisEtat", { id }), err); }
 }
 
 /** Seuil de la Soif (réglage du monde). */
@@ -78,3 +79,4 @@ export function statusList(actor) {
   return STATUSES.filter(s => hasStatus(actor, s.id)).map(s => ({ id: s.id, name: s.name, img: s.img, tip: s.tip, auto: !!s.auto }));
 }
 
+registerLocalizable(STATUSES);

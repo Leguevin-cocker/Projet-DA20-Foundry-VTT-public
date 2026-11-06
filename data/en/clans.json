@@ -1,0 +1,73 @@
+[
+ {
+  "name": "Wardens of the Threshold",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Examples",
+  "system": {
+   "nickname": "The Gatekeepers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "murmure-des-ombres",
+    "chair-de-pierre",
+    "hate-sanguine"
+   ],
+   "disciplineNote": "",
+   "weakness": "A Warden cannot cross the threshold of an inhabited dwelling without being invited; forcing the way costs 1 Willpower point per turn spent inside.",
+   "appearanceZero": false,
+   "roads": "Road of the Heart",
+   "emblem": "",
+   "description": "<p><b>Example lineage</b>, invented for this system. Keepers of passages, they sell other vampires the right to enter and leave cities.</p>"
+  }
+ },
+ {
+  "name": "Children of the Forge",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Examples",
+  "system": {
+   "nickname": "The Hammers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "bras-de-fer",
+    "chair-de-pierre",
+    "art-du-sang"
+   ],
+   "disciplineNote": "",
+   "weakness": "Cold metal unsettles them: +1 difficulty to their social rolls while they carry no item of iron forged by their own hands.",
+   "appearanceZero": false,
+   "roads": "Road of Iron",
+   "emblem": "",
+   "description": "<p><b>Example lineage</b>, invented for this system. Craftsmen of blood and metal.</p>"
+  },
+  "flags": {
+   "noctis": {
+    "doubleConscienceXp": false
+   }
+  }
+ },
+ {
+  "name": "Ash Masks",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Examples",
+  "system": {
+   "nickname": "The Grey Faces",
+   "isBloodline": true,
+   "parent": "",
+   "disciplines": [
+    "murmure-des-ombres",
+    "hate-sanguine",
+    "art-du-sang"
+   ],
+   "disciplineNote": "",
+   "weakness": "Their grey, cracked skin betrays their nature: Appearance 0, cannot be raised.",
+   "appearanceZero": true,
+   "roads": "",
+   "emblem": "",
+   "description": "<p><b>Example lineage</b> showing the “Appearance 0” weakness handled by the creator and the sheet.</p>"
+  }
+ }
+]

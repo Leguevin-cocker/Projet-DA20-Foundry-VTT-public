@@ -8,6 +8,7 @@ import { rollPool } from "../dice/roll.mjs";
 import { rule } from "../variants.mjs";
 import { hasStatus, setStatus } from "../status.mjs";
 import { afterClash } from "../beast.mjs";
+import { loc } from "../i18n.mjs";
 
 const SOCKET = "system.noctis";
 const TEMPLATE = "systems/noctis/templates/chat/clash-card.hbs";
@@ -115,11 +116,11 @@ async function gmStart(payload) {
   // Cible paralysée (pieu au cœur) : l'attaque réussit automatiquement
   const target = await resolveActor(state.defender);
   if (hasStatus(target, "staked") && (atk.botch || atk.successes <= 0)) {
-    atk.botch = false; atk.successes = 1; atk.autoHit = "Cible paralysée : l'attaque réussit automatiquement.";
+    atk.botch = false; atk.successes = 1; atk.autoHit = loc("NOCTIS.js.CibleParalyseeLAttaqueReussitAutomatique");
   }
   if (atk.botch || atk.successes <= 0) {
     state.stage = "missed";
-    state.missReason = atk.botch ? "Échec critique de l'attaque." : "L'attaque échoue.";
+    state.missReason = atk.botch ? loc("NOCTIS.js.EchecCritiqueDeLAttaque") : loc("NOCTIS.js.LAttaqueEchoue");
     state.defense = null;
     return saveState(null, state);
   }
@@ -132,7 +133,7 @@ async function advance(state) {
   for (let guard = 0; guard < 10; guard++) {
     const attacker = await resolveActor(state.attacker);
     const defender = await resolveActor(state.defender);
-    if (!attacker || !defender) { state.stage = "done"; state.error = "Participant introuvable."; return; }
+    if (!attacker || !defender) { state.stage = "done"; state.error = loc("NOCTIS.js.ParticipantIntrouvable"); return; }
 
     if (state.stage === "defense") {
       state.defenseDifficulty = defenseDifficulty(state, defender);
@@ -151,7 +152,7 @@ async function advance(state) {
 
     if (state.stage === "resolve") {
       state.net = Math.max(0, (state.attack.successes ?? 0) - (state.defense?.successes ?? 0));
-      if (state.net <= 0) { state.stage = "missed"; state.missReason = "La défense annule toutes les réussites."; return; }
+      if (state.net <= 0) { state.stage = "missed"; state.missReason = loc("NOCTIS.js.LaDefenseAnnuleToutesLesReussites"); return; }
       // Manœuvres sans jet de dégâts (saisie, morsure pour se nourrir)
       if (state.noDamage) { state.stage = "effects"; }
       const allHits = game.settings.get("noctis", "damageAllSuccesses");
@@ -161,9 +162,9 @@ async function advance(state) {
       const w = state.weapon;
       state.damageParts = [
         `${w.name} : ${w.damageLabel || w.damageBase} = ${w.damageBase}`,
-        `${allHits ? "Réussites de l'attaque" : "Réussites excédentaires"} +${Math.max(0, extra)}`,
-        ...(w.armorPiercing ? [`Perforation d'armure ${w.armorPiercing}`] : []),
-        ...(w.might ? [`+${w.might} réussite(s) automatique(s) (vigueur surnaturelle)`] : [])
+        `${allHits ? loc("NOCTIS.js.ReussitesDeLAttaque") : loc("NOCTIS.js.ReussitesExcedentaires2")} +${Math.max(0, extra)}`,
+        ...(w.armorPiercing ? [loc("NOCTIS.js.PerforationDArmure", { armorPiercing: w.armorPiercing })] : []),
+        ...(w.might ? [loc("NOCTIS.js.ReussiteSAutomatiqueSVigueurSurnaturelle", { might: w.might })] : [])
       ].join(" · ");
       if (!state.noDamage) state.stage = "damage";
     }
@@ -193,14 +194,14 @@ async function advance(state) {
 
 async function doDefense(state, defender, mode) {
   if (!mode || mode === "none") {
-    state.defense = { mode: "none", label: "Aucune défense", successes: 0 };
+    state.defense = { mode: "none", label: loc("NOCTIS.js.AucuneDefense"), successes: 0 };
     state.stage = "resolve";
     return;
   }
   const opt = defender.defenseOptions(state.attackKind).find(o => o.key === mode);
-  if (!opt) { state.defense = { mode: "none", label: "Défense impossible", successes: 0 }; state.stage = "resolve"; return; }
+  if (!opt) { state.defense = { mode: "none", label: loc("NOCTIS.js.DefenseImpossible"), successes: 0 }; state.stage = "resolve"; return; }
   const paid = await defender.payDefense();
-  if (!paid.ok) { state.defense = { mode: "none", label: "Plus d'action ce tour : 0 réussite", successes: 0 }; state.stage = "resolve"; return; }
+  if (!paid.ok) { state.defense = { mode: "none", label: loc("NOCTIS.js.PlusDActionCeTour0"), successes: 0 }; state.stage = "resolve"; return; }
   const r = await rollPool({ actor: defender, pool: opt.pool, difficulty: state.defenseDifficulty ?? 6, toChat: false });
   state.defense = rollSummary(r, { mode, label: opt.label, parts: [opt.parts, paid.note].filter(Boolean).join(" · ") });
   state.stage = "resolve";
@@ -215,13 +216,13 @@ async function doDamage(state, attacker, half, halfReason = "", average = false)
   if (minApplied) levels = 1;
   const before = levels;
   if (half) levels = Math.ceil(levels / 2);
-  state.damage = rollSummary(r, { average: !!r.average, half, halfReason: halfReason || (half ? "coup retenu" : ""), before, minApplied, levels, type: state.weapon.damageType, typeLabel: state.weapon.damageTypeLabel, parts: state.damageParts ?? "" });
-  if (levels <= 0) { state.stage = "done"; state.result = { remaining: 0, note: "Aucun dégât." }; return; }
+  state.damage = rollSummary(r, { average: !!r.average, half, halfReason: halfReason || (half ? loc("NOCTIS.js.CoupRetenu") : ""), before, minApplied, levels, type: state.weapon.damageType, typeLabel: state.weapon.damageTypeLabel, parts: state.damageParts ?? "" });
+  if (levels <= 0) { state.stage = "done"; state.result = { remaining: 0, note: loc("NOCTIS.js.AucunDegat") }; return; }
   // Désarmement : si les dégâts dépassent la Force de la cible, elle est désarmée sans blessure
   if (state.maneuver?.effect === "disarm") {
     const defender = await resolveActor(state.defender);
     const str = defender?.system.attributes.strength.total ?? 0;
-    if (levels > str) { state.disarm = { meters: levels - str, str }; state.result = { remaining: 0, note: `Désarmé : ${levels} réussites contre Force ${str}.` }; state.stage = "effects"; return; }
+    if (levels > str) { state.disarm = { meters: levels - str, str }; state.result = { remaining: 0, note: loc("NOCTIS.js.DesarmeReussitesContreForce", { levels, str }) }; state.stage = "effects"; return; }
   }
   state.stage = "soak";
 }
@@ -229,7 +230,7 @@ async function doDamage(state, attacker, half, halfReason = "", average = false)
 async function doSoak(state, defender, half, { willpower = false, halfReason = "" } = {}) {
   const res = await defender.receiveDamage({ amount: state.damage.levels, type: state.weapon.damageType, soak: true, armorPiercing: state.weapon.armorPiercing ?? 0, fire: !!state.weapon.fire, ignoreArmor: !!state.maneuver?.ignoreArmor, willpower, source: state.attacker.name, quiet: true, half });
   state.soak = res.soakResult ? rollSummary(res.soakResult, { parts: (res.soakResult.parts ?? []).join(" · "), willpower: !!res.soakResult.willpower, average: !!res.soakResult.average }) : null;
-  state.result = { remaining: res.remaining, halved: res.halved, half, halfReason: halfReason || (half ? "Moitié des dégâts choisie (arrondi au supérieur)." : ""), typeLabel: res.typeLabel, status: res.status, torpor: res.torpor, finalDeath: res.finalDeath, incapacitated: res.incapacitated };
+  state.result = { remaining: res.remaining, halved: res.halved, half, halfReason: halfReason || (half ? loc("NOCTIS.js.MoitieDesDegatsChoisieArrondiAu") : ""), typeLabel: res.typeLabel, status: res.status, torpor: res.torpor, finalDeath: res.finalDeath, incapacitated: res.incapacitated };
   state.stage = "done";
 }
 
@@ -242,10 +243,10 @@ function defenseDifficulty(state, defender) {
 
 function noDefenseReason(defender) {
   const st = defender.statuses ?? new Set();
-  if (st.has("staked")) return "Paralysé par un pieu : aucune défense";
-  if (st.has("torpor") || st.has("incapacitated") || st.has("dead")) return "Hors de combat : aucune défense";
-  if (defender.system.combat?.noDefense) return "Coup puissant porté ce tour : aucune défense";
-  return "Plus d'action ce tour : 0 réussite";
+  if (st.has("staked")) return loc("NOCTIS.js.ParalyseParUnPieuAucuneDefense");
+  if (st.has("torpor") || st.has("incapacitated") || st.has("dead")) return loc("NOCTIS.js.HorsDeCombatAucuneDefense");
+  if (defender.system.combat?.noDefense) return loc("NOCTIS.js.CoupPuissantPorteCeTourAucune");
+  return loc("NOCTIS.js.PlusDActionCeTour0");
 }
 
 /** Effets des manœuvres et complications, une fois l'attaque résolue (touchée). */
@@ -257,16 +258,16 @@ async function applyEffects(state, attacker, defender) {
   switch (m?.effect) {
     case "prone":
       await setStatus(defender, "prone", true);
-      fx.push(`${state.defender.name} chute : Dextérité + Athlétisme (difficulté 6) pour se relever, −2 à l'initiative au prochain tour.`);
+      fx.push(loc("NOCTIS.js.ChuteDexteriteAthletismeDifficulte6Pour", { name: state.defender.name }));
       break;
     case "grapple":
       await setStatus(defender, "grappled", true);
       await setStatus(attacker, "grappled", true);
-      fx.push(`Lutte engagée : chacun peut infliger sa Force en dégâts ou tenter de se libérer (Force + Bagarre en opposition).`);
+      fx.push(loc("NOCTIS.js.LutteEngageeChacunPeutInfligerSa"));
       break;
     case "hold":
       await setStatus(defender, "grappled", true);
-      fx.push(`${state.defender.name} est maintenu : pour agir, il doit l'emporter sur un jet de Force + Bagarre en opposition.`);
+      fx.push(loc("NOCTIS.js.EstMaintenuPourAgirIlDoit", { name: state.defender.name }));
       break;
     case "tackle": {
       for (const [ref, a] of [[state.attacker, attacker], [state.defender, defender]]) {
@@ -274,7 +275,7 @@ async function applyEffects(state, attacker, defender) {
         const r = await rollPool({ actor: a, pool: ath, difficulty: 7, toChat: false });
         const down = r.successes <= 0;
         if (down) await setStatus(a, "prone", true);
-        fx.push(`${ref.name} : Dextérité + Athlétisme (${ath} dés, diff. 7) → ${r.successes} réussite(s), ${down ? "chute" : "reste debout (difficulté +1 au prochain tour)"}.`);
+        fx.push(loc("NOCTIS.js.DexteriteAthletismeDesDiff7Reussite", { name: ref.name, ath, successes: r.successes, p3: down ? "chute" : loc("NOCTIS.js.ResteDeboutDifficulte1AuProchain") }));
       }
       break;
     }
@@ -282,14 +283,14 @@ async function applyEffects(state, attacker, defender) {
       if (state.disarm) {
         const w = defender.items.find(i => i.type === "weapon" && i.system.equipped);
         if (w) await w.update({ "system.equipped": false });
-        fx.push(`${state.defender.name} est désarmé${w ? ` : ${w.name}` : ""} vole à ${state.disarm.meters} m.`);
+        fx.push(loc("NOCTIS.js.EstDesarmeVoleAM", { name: state.defender.name, p1: w ? ` : ${w.name}` : "", meters: state.disarm.meters }));
       }
       break;
     case "stake":
       if (remaining >= 3) {
-        if (defender.system.isVampire) { await setStatus(defender, "staked", true); fx.push(`Le pieu transperce le cœur de ${state.defender.name} : paralysé jusqu'à ce qu'on le retire.`); }
-        else fx.push(`Le trait transperce le cœur de ${state.defender.name} : un mortel en meurt.`);
-      } else fx.push(`Le cœur n'est pas atteint (${remaining} niveau(x) après absorption, il en faut 3).`);
+        if (defender.system.isVampire) { await setStatus(defender, "staked", true); fx.push(loc("NOCTIS.js.LePieuTransperceLeCurDe", { name: state.defender.name })); }
+        else fx.push(loc("NOCTIS.js.LeTraitTransperceLeCurDe", { name: state.defender.name }));
+      } else fx.push(loc("NOCTIS.js.LeCurNEstPasAtteint", { remaining }));
       break;
     case "feed": {
       const vb = defender.system.blood;
@@ -300,24 +301,24 @@ async function applyEffects(state, attacker, defender) {
         await defender.update({ "system.blood.value": vb.value - n });
         await attacker.update({ "system.blood.value": ab.value + n });
       }
-      fx.push(`Le Baiser : ${state.attacker.name} boit ${n} point(s) de sang (${attacker.system.blood.value}/${ab.max}). ${state.defender.name} sombre dans l'extase et ne résiste plus.${(vb.value - n) <= 0 ? " La victime est vidée : elle meurt." : ` Il lui reste ${vb.value - n} point(s).`}`);
-      if (room < 3 && room === n) fx.push("La réserve de sang de l'attaquant est pleine.");
+      fx.push(loc("NOCTIS.js.LeBaiserBoitPointSDe", { name: state.attacker.name, n, value: attacker.system.blood.value, max: ab.max, name2: state.defender.name, p5: (vb.value - n) <= 0 ? loc("NOCTIS.js.LaVictimeEstVideeElleMeurt") : loc("NOCTIS.js.IlLuiRestePointS", { p0: vb.value - n }) }));
+      if (room < 3 && room === n) fx.push(loc("NOCTIS.js.LaReserveDeSangDeL"));
       break;
     }
     case "suppress":
-      fx.push(`S'il continue d'avancer, ${state.defender.name} se défend à difficulté +2 face à l'archer, qui tire à −2.`);
+      fx.push(loc("NOCTIS.js.SIlContinueDAvancerSe", { name: state.defender.name }));
       break;
   }
-  if (m?.needsHold && !hasStatus(defender, "grappled")) fx.push("Rappel : la morsure suppose une cible déjà agrippée (empoignade, saisie ou placage).");
+  if (m?.needsHold && !hasStatus(defender, "grappled")) fx.push(loc("NOCTIS.js.RappelLaMorsureSupposeUneCible"));
   // Étourdissement : plus de Vigueur + 2 niveaux en une attaque
   const sta = defender.system.attributes.stamina.total ?? 0;
   if (remaining > sta + 2 && !hasStatus(defender, "dead")) {
     await setStatus(defender, "stunned", true);
-    fx.push(`${state.defender.name} est étourdi (${remaining} niveaux > Vigueur ${sta} + 2) : il ne pourra pas agir au prochain tour.`);
+    fx.push(loc("NOCTIS.js.EstEtourdiNiveauxVigueur2Il", { name: state.defender.name, remaining, sta }));
   }
   if (state.attack?.autoHit) fx.unshift(state.attack.autoHit);
   if (fx.length) state.effects = fx;
-  try { await afterClash(state, attacker, defender); } catch (err) { console.warn("NOCTIS | la Bête après la confrontation", err); }
+  try { await afterClash(state, attacker, defender); } catch (err) { console.warn(loc("NOCTIS.js.NoctisLaBeteApresLaConfrontation"), err); }
 }
 
 /** Choix d'un joueur (ou du MJ) sur une carte. */
@@ -352,13 +353,13 @@ async function gmStep({ messageId, step, choice, userId }) {
 /** Envoie la confrontation au MJ (ou l'exécute si l'on est MJ). */
 export async function startClash(state) {
   if (isGM()) return gmStart({ state });
-  if (!game.users.activeGM) return ui.notifications.error("Aucun MJ connecté : la confrontation ne peut pas être résolue.");
+  if (!game.users.activeGM) return ui.notifications.error(loc("NOCTIS.js.AucunMjConnecteLaConfrontationNe"));
   game.socket.emit(SOCKET, { action: "clashStart", state, userId: game.user.id });
 }
 
 function sendStep(messageId, step, choice) {
   if (isGM()) return gmStep({ messageId, step, choice, userId: game.user.id });
-  if (!game.users.activeGM) return ui.notifications.error("Aucun MJ connecté.");
+  if (!game.users.activeGM) return ui.notifications.error(loc("NOCTIS.js.AucunMjConnecte"));
   game.socket.emit(SOCKET, { action: "clashStep", messageId, step, choice, userId: game.user.id });
 }
 
@@ -406,14 +407,14 @@ export async function promptCelerity(actors) {
   const { DialogV2 } = foundry.applications.api;
   const rows = actors.map((a, i) => {
     const max = a.celerityAvailable;
-    const opts = Array.from({ length: max + 1 }, (_, n) => `<option value="${n}">${n === 0 ? "Pas de Vélocité" : `${n} point${n > 1 ? "s" : ""} de sang → ${n} action${n > 1 ? "s" : ""} en plus`}</option>`).join("");
-    return `<div class="cel-row"><img src="${a.img}" alt=""><span><b>${a.name}</b><small>${a.system.mechanicNames?.speed ?? "Vélocité"} ${a.system.mechanics.speed} · sang ${a.system.blood.value} · ${a.system.blood.perTurn}/tour</small></span><select name="cel${i}">${opts}</select></div>`;
+    const opts = Array.from({ length: max + 1 }, (_, n) => `<option value="${n}">${n === 0 ? loc("NOCTIS.js.PasDeVelocite") : loc("NOCTIS.js.PointDeSangActionEnPlus", { n, p1: n > 1 ? "s" : "", p2: n > 1 ? "s" : "" })}</option>`).join("");
+    return loc("NOCTIS.js.SangTour", { img: a.img, name: a.name, p2: a.system.mechanicNames?.speed ?? loc("NOCTIS.js.Velocite"), speed: a.system.mechanics.speed, value: a.system.blood.value, perTurn: a.system.blood.perTurn, i, opts });
   }).join("");
   const data = await DialogV2.prompt({
-    window: { title: "Nouveau tour : Vélocité", icon: "fa-solid fa-bolt" },
+    window: { title: loc("NOCTIS.js.NouveauTourVelocite"), icon: "fa-solid fa-bolt" },
     classes: ["noctis-celerity-dialog"],
-    content: `<p>Chaque point de sang dépensé donne une action supplémentaire ce tour, sans pénalité d'actions multiples ; au plus la moitié (arrondi supérieur) de ces actions peuvent être des attaques.</p><p>Chaque point de Vélocité utilisé ainsi ne s'ajoute plus aux jets de Dextérité et à l'initiative pendant ce tour.</p>${rows}`,
-    ok: { label: "Valider", icon: "fa-solid fa-bolt", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
+    content: loc("NOCTIS.js.ChaquePointDeSangDepenseDonne", { rows }),
+    ok: { label: loc("NOCTIS.js.Valider"), icon: "fa-solid fa-bolt", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
     rejectClose: false
   }).catch(() => null);
   if (!data) return;
@@ -432,9 +433,9 @@ export async function onCombatRound(combat, changed) {
   if (!rule("initiativeOnce") && changed.round > 1) {
     try {
       await combat.resetAll();
-      await combat.rollAll({ messageOptions: { flavor: `Initiative — tour ${changed.round}` } });
+      await combat.rollAll({ messageOptions: { flavor: loc("NOCTIS.js.InitiativeTour", { round: changed.round }) } });
       await combat.update({ turn: 0 });
-    } catch (err) { console.warn("NOCTIS | relance de l'initiative", err); }
+    } catch (err) { console.warn(loc("NOCTIS.js.NoctisRelanceDeLInitiative"), err); }
   }
   const gmPrompt = [];
   for (const a of actors) {

@@ -1,8 +1,8 @@
 <section class="tab tab-experience {{tab.cssClass}}" data-tab="experience">
   <div class="xp-summary">
-    <div class="xp-card gained"><span class="n">{{system.experience.total}}</span><span class="l">gagnés</span></div>
-    <div class="xp-card spent"><span class="n">{{system.experience.spent}}</span><span class="l">dépensés</span></div>
-    <div class="xp-card available"><span class="n">{{system.experience.available}}</span><span class="l">disponibles</span></div>
+    <div class="xp-card gained"><span class="n">{{system.experience.total}}</span><span class="l">{{localize "NOCTIS.ui.Gagnes"}}</span></div>
+    <div class="xp-card spent"><span class="n">{{system.experience.spent}}</span><span class="l">{{localize "NOCTIS.ui.Depenses"}}</span></div>
+    <div class="xp-card available"><span class="n">{{system.experience.available}}</span><span class="l">{{localize "NOCTIS.ui.Disponibles"}}</span></div>
   </div>
 
   {{#if xpSegments.length}}
@@ -13,21 +13,21 @@
   {{/if}}
 
   <div class="xp-actions">
-    <button type="button" data-action="xpAdd"><i class="fa-solid fa-plus"></i> Gain d'expérience</button>
-    <button type="button" data-action="xpSpend"><i class="fa-solid fa-pen-to-square"></i> Dépense / ajout manuel</button>
+    <button type="button" data-action="xpAdd"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.GainDExperience"}}</button>
+    <button type="button" data-action="xpSpend"><i class="fa-solid fa-pen-to-square"></i> {{localize "NOCTIS.ui.DepenseAjoutManuel"}}</button>
   </div>
   <p class="hint">
     {{#if creationDone}}
-      {{#if locked}}Fiche verrouillée : cliquez sur un point vide pour acheter le niveau suivant. Le coût est calculé selon le tableau des coûts et la ligne s'ajoute au journal (payante ou gratuite).{{else}}Édition libre : les changements de points ne sont pas inscrits au journal.{{/if}}
+      {{#if locked}}{{localize "NOCTIS.ui.FicheVerrouilleeCliquezSurUnPoint"}}{{else}}{{localize "NOCTIS.ui.EditionLibreLesChangementsDePoints"}}{{/if}}
     {{else}}
-      Personnage en création : les points se répartissent librement. Terminez la création (<i class="fa-solid fa-hourglass-half"></i> en haut de la fiche) pour que chaque progression passe par l'expérience.
+      {{localize "NOCTIS.ui.PersonnageEnCreationLesPointsSe"}}<i class="fa-solid fa-hourglass-half"></i> {{localize "NOCTIS.ui.EnHautDeLaFichePour"}}
     {{/if}}
   </p>
 
-  <h2 class="noctis-section"><span>Journal</span></h2>
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Journal"}}</span></h2>
   {{#if xpLog.length}}
   <table class="xp-log">
-    <thead><tr><th>Date</th><th>Libellé</th><th>Catégorie</th><th>XP</th><th>Type</th><th></th></tr></thead>
+    <thead><tr><th>{{localize "NOCTIS.ui.Date"}}</th><th>{{localize "NOCTIS.ui.Libelle"}}</th><th>{{localize "NOCTIS.ui.Categorie"}}</th><th>{{localize "NOCTIS.ui.Xp"}}</th><th>{{localize "NOCTIS.ui.Type"}}</th><th></th></tr></thead>
     <tbody>
       {{#each xpLog}}
         <tr class="{{kind}} {{#if free}}free{{/if}}" data-entry-id="{{id}}">
@@ -36,34 +36,34 @@
           <td class="cat">{{categoryLabel}}</td>
           <td class="amount">{{sign}}{{amount}}</td>
           <td class="kind">
-            {{#if (noctisEq kind "gain")}}<span class="badge gain">Gain</span>
-            {{else}}<a class="badge {{#if free}}free{{else}}paid{{/if}}" data-action="xpToggleFree" data-tooltip="Basculer gratuit / payant">{{#if free}}Gratuit{{else}}Payant{{/if}}</a>{{/if}}
+            {{#if (noctisEq kind "gain")}}<span class="badge gain">{{localize "NOCTIS.ui.Gain"}}</span>
+            {{else}}<a class="badge {{#if free}}free{{else}}paid{{/if}}" data-action="xpToggleFree" data-tooltip="{{localize "NOCTIS.ui.BasculerGratuitPayant"}}">{{#if free}}{{localize "NOCTIS.ui.Gratuit"}}{{else}}{{localize "NOCTIS.ui.Payant"}}{{/if}}</a>{{/if}}
           </td>
-          <td class="ctrl"><a data-action="xpDelete" data-tooltip="Supprimer la ligne"><i class="fa-solid fa-trash"></i></a></td>
+          <td class="ctrl"><a data-action="xpDelete" data-tooltip="{{localize "NOCTIS.ui.SupprimerLaLigne"}}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
       {{/each}}
     </tbody>
   </table>
   {{else}}
-    <p class="empty">Aucune entrée pour l'instant.</p>
+    <p class="empty">{{localize "NOCTIS.ui.AucuneEntreePourLInstant"}}</p>
   {{/if}}
 
   {{#if creationLog}}
   <details class="xp-costs xp-creation">
-    <summary>Création du personnage (mode {{creationLog.mode}})</summary>
+    <summary>{{localize "NOCTIS.ui.CreationDuPersonnageMode" mode=creationLog.mode}}</summary>
     {{#each creationLog.sections}}
       <h4>{{title}} <em>{{rule}}</em></h4>
       <table>
         {{#each rows}}<tr><td class="lbl">{{label}}</td><td class="pts">{{points}}</td><td class="det">{{detail}}</td></tr>{{/each}}
       </table>
     {{/each}}
-    <h4>Points de bonus <em>{{creationLog.bonusSpent}} / {{creationLog.bonusTotal}} dépensés{{#if creationLog.flawGain}} (dont {{creationLog.flawGain}} des handicaps){{/if}}</em></h4>
+    <h4>{{{localize "NOCTIS.ui.PointsDeBonusDepenses" bonusSpent=creationLog.bonusSpent bonusTotal=creationLog.bonusTotal}}}{{#if creationLog.flawGain}} {{localize "NOCTIS.ui.DontDesHandicaps" flawGain=creationLog.flawGain}}{{/if}}</em></h4>
     {{#if creationLog.bonus.length}}
     <table>
       {{#each creationLog.bonus}}<tr><td class="lbl">{{label}}</td><td class="det">{{kind}}{{#if detail}} · {{detail}}{{/if}}</td><td class="pts">{{#if (noctisGt cost 0)}}−{{cost}}{{else}}+{{noctisAbs cost}}{{/if}}</td></tr>{{/each}}
     </table>
-    {{else}}<p class="hint">Aucun point de bonus dépensé.</p>{{/if}}
-    <h4>Résultat</h4>
+    {{else}}<p class="hint">{{localize "NOCTIS.ui.AucunPointDeBonusDepense"}}</p>{{/if}}
+    <h4>{{localize "NOCTIS.ui.Resultat"}}</h4>
     <table>
       {{#each creationLog.derived}}<tr><td class="lbl">{{label}}</td><td class="pts">{{value}}</td><td></td></tr>{{/each}}
     </table>
@@ -71,22 +71,22 @@
   {{/if}}
 
   <details class="xp-costs">
-    <summary>Coûts en expérience</summary>
+    <summary>{{localize "NOCTIS.ui.CoutsEnExperience"}}</summary>
     <table>
-      <tr><td>Domaine d'expertise (spécialité)</td><td>1</td></tr>
-      <tr><td>Nouvelle capacité</td><td>3</td></tr>
-      <tr><td>Nouvelle discipline</td><td>10</td></tr>
-      <tr><td>Nouvelle voie de sorcellerie</td><td>7</td></tr>
-      <tr><td>Rituel de sorcellerie de sang</td><td>niveau × 2</td></tr>
-      <tr><td>Attribut</td><td>niveau actuel × 4</td></tr>
-      <tr><td>Capacité</td><td>niveau actuel × 2</td></tr>
-      <tr><td>Discipline de clan</td><td>niveau actuel × 5</td></tr>
-      <tr><td>Autre discipline</td><td>niveau actuel × 7</td></tr>
-      <tr><td>Voie secondaire</td><td>niveau actuel × 4</td></tr>
-      <tr><td>Vertu*</td><td>niveau actuel × 2</td></tr>
-      <tr><td>Volonté</td><td>niveau actuel</td></tr>
-      <tr><td>Voie</td><td>niveau actuel × 2</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.DomaineDExpertiseSpecialite"}}</td><td>1</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.NouvelleCapacite"}}</td><td>3</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.NouvelleDiscipline"}}</td><td>10</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.NouvelleVoieDeSorcellerie"}}</td><td>7</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.RituelDeSorcellerieDeSang"}}</td><td>{{localize "NOCTIS.ui.Niveau2"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.Attribut"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel4"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.Capacite"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel2"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.DisciplineDeClan"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel5"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.AutreDiscipline"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel7"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.VoieSecondaire"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel4"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.Vertu"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel2"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.Volonte"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel"}}</td></tr>
+      <tr><td>{{localize "NOCTIS.ui.Voie"}}</td><td>{{localize "NOCTIS.ui.NiveauActuel2"}}</td></tr>
     </table>
-    <p class="hint">* Augmenter une vertu avec de l'XP n'augmente pas les traits qui en dépendent. Aucun trait ne peut gagner plus d'un point par scénario.</p>
+    <p class="hint">{{localize "NOCTIS.ui.AugmenterUneVertuAvecDeL"}}</p>
   </details>
 </section>

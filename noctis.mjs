@@ -24,9 +24,10 @@ import { registerBeastSettings, onBloodChange, beastTest, provocationDialog } fr
 import * as Time from "./module/time/time.mjs";
 import { ChronicleCalendar, ChronicleCalendarGM } from "./module/apps/calendar.mjs";
 import { Workshop } from "./module/apps/workshop.mjs";
+import { loc, localizeRegistered } from "./module/i18n.mjs";
 
 Hooks.once("init", () => {
-  console.log("NOCTIS | Initialisation du système Noctis");
+  console.log("Noctis | init");
 
   CONFIG.NOCTIS = NOCTIS;
   game.noctis = { NOCTIS, CharacterCreator, XpLedger, openXpLedger: () => XpLedger.open(), openGmDashboard: () => XpLedger.open(), promptCelerity, variantList, RollDialog, rollPool, xpCost, manualDamageDialog, buildCompendiums, damageTargets,
@@ -55,12 +56,12 @@ Hooks.once("init", () => {
     derangement: itemModels.DerangementModel
   });
 
-  CONFIG.Combat.initiative = { formula: "1d10 + @initiative.value + (@initiative.base / 100)", decimals: 2 };
+  CONFIG.Combat.initiative = { formula: `1d10 + @initiative.value + (@initiative.base / 100)`, decimals: 2 };
 
   const Actors = foundry.documents.collections.Actors;
   const Items = foundry.documents.collections.Items;
-  Actors.registerSheet("noctis", NOCTISActorSheet, { types: ["vampire", "ghoul", "mortal", "npc"], makeDefault: true, label: "Fiche NOCTIS" });
-  Items.registerSheet("noctis", NOCTISItemSheet, { makeDefault: true, label: "Fiche d'objet NOCTIS" });
+  Actors.registerSheet("noctis", NOCTISActorSheet, { types: ["vampire", "ghoul", "mortal", "npc"], makeDefault: true, label: loc("NOCTIS.js.FicheNoctis") });
+  Items.registerSheet("noctis", NOCTISItemSheet, { makeDefault: true, label: loc("NOCTIS.js.FicheDObjetNoctis") });
 
   game.settings.register("noctis", "compendiumVersion", { scope: "world", config: false, type: String, default: "" });
   registerRuleSettings();
@@ -69,22 +70,22 @@ Hooks.once("init", () => {
   registerStatuses();
   game.settings.register("noctis", "xpBatches", { scope: "world", config: false, type: Array, default: [] });
   game.settings.registerMenu("noctis", "workshopMenu", {
-    name: "Atelier du conteur", label: "Ouvrir l'atelier", hint: "Créer et ranger lignées, disciplines, Voies, atouts, rituels et équipement de votre table.",
+    name: loc("NOCTIS.js.AtelierDuConteur"), label: loc("NOCTIS.js.OuvrirLAtelier"), hint: loc("NOCTIS.js.CreerEtRangerLigneesDisciplinesVoies"),
     icon: "fa-solid fa-hammer", type: Workshop, restricted: true
   });
   game.settings.registerMenu("noctis", "xpLedgerMenu", {
-    name: "Tableau de bord MJ", label: "Ouvrir le tableau de bord", hint: "Expérience (vue d'ensemble, attribution groupée) et sang des personnages joueurs. Réservé au MJ.",
+    name: loc("NOCTIS.js.TableauDeBordMj"), label: loc("NOCTIS.js.OuvrirLeTableauDeBord"), hint: loc("NOCTIS.js.ExperienceVueDEnsembleAttributionGroupee"),
     icon: "fa-solid fa-chess-king", type: XpLedger, restricted: true
   });
   game.settings.register("noctis", "packVersions", { scope: "world", config: false, type: Object, default: {} });
   game.settings.register("noctis", "rebuildCompendiums", {
-    name: "Reconstruire les compendiums",
-    hint: "Cochez puis rechargez le monde pour recréer les compendiums NOCTIS à partir des données du système (vos modifications dans ces compendiums seront perdues).",
+    name: loc("NOCTIS.js.ReconstruireLesCompendiums"),
+    hint: loc("NOCTIS.js.CochezPuisRechargezLeMondePour"),
     scope: "world", config: true, type: Boolean, default: false
   });
   game.settings.register("noctis", "frameStyle", {
-    name: "Liseré des cartes de jet",
-    hint: "Affiche un liseré décoratif autour des cartes de jet.",
+    name: loc("NOCTIS.js.LisereDesCartesDeJet"),
+    hint: loc("NOCTIS.js.AfficheUnLisereDecoratifAutourDes"),
     scope: "client", config: true, type: Boolean, default: true,
     onChange: v => document.body.classList.toggle("noctis-noframe", !v)
   });
@@ -109,8 +110,8 @@ Hooks.once("ready", async () => {
         await game.settings.set("noctis", "compendiumVersion", COMPENDIUM_VERSION);
         if (force) await game.settings.set("noctis", "rebuildCompendiums", false);
       } catch (err) {
-        console.error("NOCTIS | Échec de la construction des compendiums", err);
-        ui.notifications.error("Noctis : la construction des compendiums a échoué (voir la console F12).");
+        console.error(loc("NOCTIS.js.NoctisEchecDeLaConstructionDes"), err);
+        ui.notifications.error(loc("NOCTIS.js.NoctisLaConstructionDesCompendiumsA"));
       }
     }
   }
@@ -147,7 +148,7 @@ for (const h of ["createItem", "updateItem", "deleteItem", "updateCompendium"]) 
 function addCreatorContext(_app, options) {
   const actorOf = li => game.actors.get((li?.dataset ?? li?.[0]?.dataset)?.entryId);
   options.push({
-    name: "Créateur de personnage",
+    name: loc("NOCTIS.js.CreateurDePersonnage"),
     icon: '<i class="fa-solid fa-wand-magic-sparkles"></i>',
     condition: li => actorOf(li)?.isOwner,
     callback: li => CharacterCreator.open(actorOf(li))
@@ -157,10 +158,8 @@ Hooks.on("getActorContextOptions", addCreatorContext);
 
 /** Libellés des types dans la boîte « Créer un acteur / un objet ». */
 Hooks.once("i18nInit", () => {
-  const t = { vampire: "Vampire", ghoul: "Goule", mortal: "Mortel", npc: "PNJ" };
-  const it = { clan: "Clan / lignée", discipline: "Discipline / voie", merit: "Atout", flaw: "Handicap", ability: "Capacité", road: "Voie (morale)", weapon: "Arme", armor: "Armure", gear: "Objet", ritual: "Rituel", derangement: "Dérangement" };
-  for (const [k, v] of Object.entries(t)) if (game.i18n.translations.TYPES?.Actor) game.i18n.translations.TYPES.Actor[k] ??= v;
-  for (const [k, v] of Object.entries(it)) if (game.i18n.translations.TYPES?.Item) game.i18n.translations.TYPES.Item[k] ??= v;
+  // Tables construites au chargement (config, manœuvres, aides, variantes…) : clés -> textes de la langue choisie
+  localizeRegistered();
 });
 
 /** Répertoire des acteurs : bouton « Tableau de bord MJ » (MJ) et pastille « PJ ». */
@@ -173,7 +172,7 @@ Hooks.on("renderActorDirectory", (app, html) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "noctis-ledger-btn";
-      btn.innerHTML = '<i class="fa-solid fa-chess-king"></i> Tableau de bord MJ';
+      btn.innerHTML = loc("NOCTIS.js.TableauDeBordMj2");
       btn.addEventListener("click", () => XpLedger.open());
       host.append(btn);
     }
@@ -183,9 +182,9 @@ Hooks.on("renderActorDirectory", (app, html) => {
       const badge = document.createElement("span");
       badge.className = "noctis-pc-badge";
       badge.textContent = "PJ";
-      (li.querySelector(".entry-name, .document-name, h4") ?? li).append(badge);
+      (li.querySelector(`.entry-name, .document-name, h4`) ?? li).append(badge);
     }
-  } catch (err) { console.warn("NOCTIS | répertoire des acteurs", err); }
+  } catch (err) { console.warn(loc("NOCTIS.js.NoctisRepertoireDesActeurs"), err); }
 });
 Hooks.on("updateActor", (actor, changes) => {
   if (foundry.utils.hasProperty(changes, "flags.noctis.isPC")) ui.actors?.render();
@@ -203,7 +202,7 @@ Hooks.on("renderItemDirectory", (app, html) => {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "noctis-workshop-btn";
-  btn.innerHTML = '<i class="fa-solid fa-hammer"></i> Atelier du conteur';
+  btn.innerHTML = loc("NOCTIS.js.AtelierDuConteur2");
   btn.addEventListener("click", () => Workshop.open());
   host.append(btn);
 });

@@ -1,0 +1,331 @@
+[
+ {
+  "name": "Knife",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 0,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "P",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Sword",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Axe",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Mace",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "bashing",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "L",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Spear",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Staff",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 1,
+   "damageType": "bashing",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Wooden stake",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 1,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "A",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Torch",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Melee weapons",
+  "system": {
+   "ability": "melee",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 1,
+   "damageType": "aggravated",
+   "difficulty": 6,
+   "range": 0,
+   "conceal": "N",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": false,
+   "fire": true,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Bow",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Ranged weapons",
+  "system": {
+   "ability": "archery",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 2,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 60,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 0,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Crossbow",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Ranged weapons",
+  "system": {
+   "ability": "archery",
+   "attribute": "dexterity",
+   "damageAttribute": "",
+   "damageBonus": 3,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 80,
+   "conceal": "N",
+   "strength": 2,
+   "armorPiercing": 1,
+   "twoHanded": true,
+   "thrown": false,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Throwing knife",
+  "type": "weapon",
+  "img": "systems/noctis/assets/icons/weapon.svg",
+  "folder": "Ranged weapons",
+  "system": {
+   "ability": "athletics",
+   "attribute": "dexterity",
+   "damageAttribute": "strength",
+   "damageBonus": 0,
+   "damageType": "lethal",
+   "difficulty": 6,
+   "range": 15,
+   "conceal": "P",
+   "strength": 1,
+   "armorPiercing": 0,
+   "twoHanded": false,
+   "thrown": true,
+   "fire": false,
+   "equipped": true,
+   "notes": "",
+   "description": ""
+  }
+ },
+ {
+  "name": "Heavy clothing",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armor",
+  "system": {
+   "kind": "armor",
+   "rating": 1,
+   "penalty": 0,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Boiled leather",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armor",
+  "system": {
+   "kind": "armor",
+   "rating": 2,
+   "penalty": 1,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Mail",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armor",
+  "system": {
+   "kind": "armor",
+   "rating": 3,
+   "penalty": 1,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Plate",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armor",
+  "system": {
+   "kind": "armor",
+   "rating": 4,
+   "penalty": 2,
+   "equipped": true,
+   "description": ""
+  }
+ },
+ {
+  "name": "Shield",
+  "type": "armor",
+  "img": "systems/noctis/assets/icons/armor.svg",
+  "folder": "Armor",
+  "system": {
+   "kind": "shield",
+   "rating": 0,
+   "penalty": 0,
+   "equipped": true,
+   "description": "<p>Round shield: used for parrying.</p>"
+  }
+ }
+]

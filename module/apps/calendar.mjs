@@ -7,6 +7,7 @@ import * as C from "../time/calendar-math.mjs";
 import * as T from "../time/time.mjs";
 import { playerCharacters } from "./xp-ledger.mjs";
 import { hasStatus } from "../status.mjs";
+import { loc } from "../i18n.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
@@ -16,7 +17,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
     id: "noctis-calendar",
     tag: "div",
     classes: ["noctis", "noctis-window", "noctis-calendar", "player-view"],
-    window: { title: "Chronique — vue des joueurs", icon: "fa-solid fa-calendar-days", resizable: true },
+    window: { title: loc("NOCTIS.js.ChroniqueVueDesJoueurs"), icon: "fa-solid fa-calendar-days", resizable: true },
     position: { width: 1040, height: 760 },
     actions: {
       calTab: ChronicleCalendar.#onTab,
@@ -58,7 +59,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
   }
 
   static open(date) {
-    if (this.GM_VIEW && !game.user.isGM) return ui.notifications.warn("La vue du MJ est réservée au conteur.");
+    if (this.GM_VIEW && !game.user.isGM) return ui.notifications.warn(loc("NOCTIS.js.LaVueDuMjEstReservee"));
     const app = foundry.applications.instances?.get?.(this.DEFAULT_OPTIONS.id) ?? new this();
     if (date?.year) { app.view = { year: date.year, month: date.month }; app.sel = { ...date }; app.tab = "month"; }
     return app.render({ force: true });
@@ -108,7 +109,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
       label: C.longDate(this.sel.year, this.sel.month, this.sel.day), moon: C.moonPhase(sj),
       sunrise: C.fmtHour(sun.rise), sunset: C.fmtHour(sun.set), night: C.fmtDuration(Math.round((24 - sun.dayLength) * 60)),
       feasts: C.feasts(sj), events: selEvents, isToday: sj === now.jdn,
-      relative: sj === now.jdn ? "aujourd'hui" : (sj < now.jdn ? `il y a ${C.fmtDuration((now.jdn - sj) * C.MIN_PER_DAY)}` : `dans ${C.fmtDuration((sj - now.jdn) * C.MIN_PER_DAY)}`)
+      relative: sj === now.jdn ? "aujourd'hui" : (sj < now.jdn ? loc("NOCTIS.js.IlYA", { p0: C.fmtDuration((now.jdn - sj) * C.MIN_PER_DAY) }) : `dans ${C.fmtDuration((sj - now.jdn) * C.MIN_PER_DAY)}`)
     };
 
     // Événements sans jour précis : ce mois-ci (mois, saison) et cette année-là (année, plage, décennie)
@@ -131,7 +132,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
       if (!nowPlaced && j > now.jdn) { nowPlaced = true; e.nowBefore = true; }
       let y = years.at(-1);
       if (!y || y.year !== e.year) { y = { year: e.year, events: [] }; years.push(y); }
-      e.monthLabel = e.approx ? e.dateLabel : `${e.day === 1 ? "1er" : e.day} ${C.MONTHS[e.month - 1]}`;
+      e.monthLabel = e.approx ? e.dateLabel : loc("NOCTIS.js.DayMonth", { day: C.dayLabel(e.day), month: C.MONTHS[e.month - 1] });
       y.events.push(e);
     }
 
@@ -180,7 +181,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
     const centuryNum = Math.floor((vy - 1) / 100) + 1;
     const centuryList = events.filter(e => e.year >= c0 && e.year <= c0 + 99).map(decorate).sort((a, b) => T.eventJdn(a) - T.eventJdn(b));
 
-    const navLabel = { month: `${C.MONTHS[month - 1].charAt(0).toUpperCase()}${C.MONTHS[month - 1].slice(1)} ${year}`, year: `${vy}`, century: `${roman(centuryNum)}e siècle`, timeline: "" }[this.tab];
+    const navLabel = { month: `${C.MONTHS[month - 1].charAt(0).toUpperCase()}${C.MONTHS[month - 1].slice(1)} ${year}`, year: `${vy}`, century: loc("NOCTIS.js.ESiecle", { p0: roman(centuryNum) }), timeline: "" }[this.tab];
     return {
       gmView: isGM, centuryRange: `${c0} – ${c0 + 99}`, navLabel, isYear: this.tab === "year", isCentury: this.tab === "century",
       yearMonths, yearList, decades, centuryList, centuryCount: centuryList.length,
@@ -251,27 +252,11 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
   static async #eventForm(ev = {}, { player = false } = {}) {
     const cats = Object.entries(T.CATEGORIES).filter(([k]) => !player || k === "memory");
     const date = ev.year ? ev : null;
-    const content = `<div class="noctis-mini-form cal-form">
-      <label>Titre <input type="text" name="title" value="${foundry.utils.escapeHTML(ev.title ?? "")}" required></label>
-      <div class="cal-form-row">
-        <label>Jour <input type="number" name="day" min="1" max="31" value="${date?.day ?? ""}"></label>
-        <label>Mois <select name="month">${C.MONTHS.map((m, i) => `<option value="${i + 1}" ${date?.month === i + 1 ? "selected" : ""}>${m}</option>`).join("")}</select></label>
-        <label>Année <input type="number" name="year" value="${date?.year ?? ""}"></label>
-      </div>
-      ${player ? "" : `<div class="cal-form-row">
-        <label>Précision <select name="precision">${[["day", "Jour précis"], ["month", "Mois"], ["season", "Saison"], ["year", "Année (ou plage)"], ["decade", "Décennie"]].map(([k, l]) => `<option value="${k}" ${(ev.precision ?? "day") === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
-        <label>Saison <select name="season"><option value="">—</option>${[["spring", "Printemps"], ["summer", "Été"], ["autumn", "Automne"], ["winter", "Hiver"]].map(([k, l]) => `<option value="${k}" ${ev.season === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
-        <label>Jusqu'en <input type="number" name="endYear" value="${ev.endYear ?? ""}" placeholder="année de fin"></label>
-      </div>`}
-      ${player ? "" : `<label>Catégorie <select name="category">${cats.map(([k, v]) => `<option value="${k}" ${ev.category === k ? "selected" : ""}>${v.label}</option>`).join("")}</select></label>`}
-      <label>Récit <textarea name="text" rows="4" placeholder="Ce qui s'est passé, vu par les personnages">${foundry.utils.escapeHTML(ev.text ?? "")}</textarea></label>
-      ${player ? "" : `<label>Note du MJ (jamais montrée aux joueurs) <textarea name="gmNote" rows="2">${foundry.utils.escapeHTML(ev.gmNote ?? "")}</textarea></label>
-      <label class="check"><input type="checkbox" name="revealed" ${ev.revealed ? "checked" : ""}> Révélé aux joueurs</label>`}
-    </div>`;
+    const content = loc("NOCTIS.js.TitreJourMoisAnneeRecit", { p0: foundry.utils.escapeHTML(ev.title ?? ""), p1: date?.day ?? "", p2: C.MONTHS.map((m, i) => `<option value="${i + 1}" ${date?.month === i + 1 ? "selected" : ""}>${m}</option>`).join(""), p3: date?.year ?? "", p4: player ? "" : loc("NOCTIS.js.PrecisionSaisonJusquEn", { p0: [["day", loc("NOCTIS.js.JourPrecis")], ["month", loc("NOCTIS.js.Mois")], ["season", loc("NOCTIS.js.Saison")], ["year", loc("NOCTIS.js.AnneeOuPlage")], ["decade", loc("NOCTIS.js.Decennie")]].map(([k, l]) => `<option value="${k}" ${(ev.precision ?? "day") === k ? "selected" : ""}>${l}</option>`).join(""), p1: [["spring", loc("NOCTIS.js.Printemps")], ["summer", loc("NOCTIS.js.Ete")], ["autumn", loc("NOCTIS.js.Automne")], ["winter", loc("NOCTIS.js.Hiver")]].map(([k, l]) => `<option value="${k}" ${ev.season === k ? "selected" : ""}>${l}</option>`).join(""), p2: ev.endYear ?? "" }), p5: player ? "" : loc("NOCTIS.js.Categorie", { p0: cats.map(([k, v]) => `<option value="${k}" ${ev.category === k ? "selected" : ""}>${v.label}</option>`).join("") }), p6: foundry.utils.escapeHTML(ev.text ?? ""), p7: player ? "" : loc("NOCTIS.js.NoteDuMjJamaisMontreeAux", { p0: foundry.utils.escapeHTML(ev.gmNote ?? ""), p1: ev.revealed ? "checked" : "" }) });
     return DialogV2.prompt({
-      window: { title: ev.id ? "Modifier l'événement" : (player ? "Ajouter un souvenir" : "Nouvel événement"), icon: "fa-solid fa-feather" },
+      window: { title: ev.id ? loc("NOCTIS.js.ModifierLEvenement") : (player ? loc("NOCTIS.js.AjouterUnSouvenir") : loc("NOCTIS.js.NouvelEvenement")), icon: "fa-solid fa-feather" },
       content,
-      ok: { label: "Enregistrer", icon: "fa-solid fa-check", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
+      ok: { label: loc("NOCTIS.js.Enregistrer"), icon: "fa-solid fa-check", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
       rejectClose: false
     }).catch(() => null);
   }
@@ -283,7 +268,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
     await T.addEvent({ title: data.title, text: data.text ?? "", year: Number(data.year), month: Number(data.month), day: Number(data.day),
       category: player ? "memory" : data.category, revealed: player ? true : !!data.revealed, gmNote: data.gmNote ?? "",
       precision: data.precision || "day", season: data.season || undefined, endYear: Number(data.endYear) || undefined });
-    if (player) ui.notifications.info("Souvenir envoyé à la chronique.");
+    if (player) ui.notifications.info(loc("NOCTIS.js.SouvenirEnvoyeALaChronique"));
   }
 
   static async #onEditEvent(event, target) {
@@ -298,7 +283,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
 
   static async #onDeleteEvent(event, target) {
     const id = target.closest("[data-event-id]").dataset.eventId;
-    const ok = await DialogV2.confirm({ window: { title: "Supprimer l'événement" }, content: "<p>Supprimer définitivement cet événement ?</p>", rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.SupprimerLEvenement") }, content: loc("NOCTIS.js.SupprimerDefinitivementCetEvenement"), rejectClose: false });
     if (ok) await T.deleteEvent(id);
   }
 
@@ -313,7 +298,7 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
   static async #onNextNight() { await T.nextNight(); }
   static async #onSetToday() {
     const s = this.sel;
-    const ok = await DialogV2.confirm({ window: { title: "Changer la date" }, content: `<p>Placer la chronique au <b>${C.longDate(s.year, s.month, s.day)}</b>, à la tombée de la nuit ? Aucun effet n'est appliqué (sang, réveils…).</p>`, rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.ChangerLaDate") }, content: loc("NOCTIS.js.PlacerLaChroniqueAuALa", { p0: C.longDate(s.year, s.month, s.day) }), rejectClose: false });
     if (!ok) return;
     const set = Math.ceil(C.sunTimes(C.toJdn(s.year, s.month, s.day), game.settings.get("noctis", "latitude")).set * 60);
     await T.setDate({ ...s, hour: Math.floor(set / 60), minute: set % 60 });
@@ -322,14 +307,9 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
   static async #onSetDate() {
     const t = T.getTime();
     const data = await DialogV2.prompt({
-      window: { title: "Régler la date et l'heure", icon: "fa-solid fa-clock" },
-      content: `<div class="noctis-mini-form cal-form"><div class="cal-form-row">
-        <label>Jour <input type="number" name="day" min="1" max="31" value="${t.day}"></label>
-        <label>Mois <select name="month">${C.MONTHS.map((m, i) => `<option value="${i + 1}" ${t.month === i + 1 ? "selected" : ""}>${m}</option>`).join("")}</select></label>
-        <label>Année <input type="number" name="year" value="${t.year}"></label></div>
-        <div class="cal-form-row"><label>Heure <input type="number" name="hour" min="0" max="23" value="${t.hour}"></label><label>Minutes <input type="number" name="minute" min="0" max="59" step="5" value="${t.minute ?? 0}"></label></div>
-        <p class="hint">Calendrier julien, en usage dans l'Europe médiévale. Changer la date n'applique aucun effet.</p></div>`,
-      ok: { label: "Valider", icon: "fa-solid fa-check", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
+      window: { title: loc("NOCTIS.js.ReglerLaDateEtLHeure"), icon: "fa-solid fa-clock" },
+      content: loc("NOCTIS.js.JourMoisAnneeHeureMinutesCalendrier", { day: t.day, p1: C.MONTHS.map((m, i) => `<option value="${i + 1}" ${t.month === i + 1 ? "selected" : ""}>${m}</option>`).join(""), year: t.year, hour: t.hour, p4: t.minute ?? 0 }),
+      ok: { label: loc("NOCTIS.js.Valider"), icon: "fa-solid fa-check", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
       rejectClose: false
     }).catch(() => null);
     if (!data) return;
@@ -341,22 +321,14 @@ export class ChronicleCalendar extends HandlebarsApplicationMixin(ApplicationV2)
   static async #onEllipse() {
     const ghouls = playerCharacters().list.filter(a => a.type === "ghoul");
     const data = await DialogV2.prompt({
-      window: { title: "Ellipse", icon: "fa-solid fa-hourglass-half" },
-      content: `<div class="noctis-mini-form cal-form">
-        <p>Faire passer du temps entre deux histoires. La chronique reprend à la tombée de la nuit du jour d'arrivée.</p>
-        <div class="cal-form-row"><label>Années <input type="number" name="years" min="0" value="0"></label><label>Mois <input type="number" name="months" min="0" value="0"></label><label>Jours <input type="number" name="days" min="0" value="0"></label></div>
-        <label>Ce qui s'est passé (visible des joueurs) <textarea name="note" rows="2" placeholder="ex. La coterie hiverne à Brasov pendant que la guerre ravage la Moldavie."></textarea></label>
-        <label class="check"><input type="checkbox" name="feed" checked> Les vampires se sont nourris : réserves de sang pleines</label>
-        <label class="check"><input type="checkbox" name="restoreWP" checked> Volonté entièrement regagnée</label>
-        <div class="cal-form-row"><label>XP de la période (par personnage) <input type="number" name="xp" min="0" value="0"></label><label>Motif <input type="text" name="xpLabel" placeholder="Années d'étude et d'intrigues"></label></div>
-        ${ghouls.length ? `<fieldset><legend>Goules</legend>${ghouls.map(g => `<label class="check"><input type="checkbox" name="ghoul.${g.id}" checked> ${g.name} a bu de la vitae chaque mois</label>`).join("")}</fieldset>` : ""}
-      </div>`,
-      ok: { label: "Faire passer le temps", icon: "fa-solid fa-hourglass-half", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
+      window: { title: loc("NOCTIS.js.Ellipse"), icon: "fa-solid fa-hourglass-half" },
+      content: loc("NOCTIS.js.FairePasserDuTempsEntreDeux", { p0: ghouls.length ? loc("NOCTIS.js.Goules", { p0: ghouls.map(g => loc("NOCTIS.js.ABuDeLaVitaeChaque", { id: g.id, name: g.name })).join("") }) : "" }),
+      ok: { label: loc("NOCTIS.js.FairePasserLeTemps"), icon: "fa-solid fa-hourglass-half", callback: (e, button) => new foundry.applications.ux.FormDataExtended(button.form).object },
       rejectClose: false
     }).catch(() => null);
     if (!data) return;
     const years = Number(data.years) || 0, months = Number(data.months) || 0, days = Number(data.days) || 0;
-    if (!years && !months && !days) return ui.notifications.warn("Indiquez une durée.");
+    if (!years && !months && !days) return ui.notifications.warn(loc("NOCTIS.js.IndiquezUneDuree"));
     const ghoulsFed = Object.fromEntries(ghouls.map(g => [g.id, !!data[`ghoul.${g.id}`]]));
     await T.ellipse({ years, months, days, feed: !!data.feed, restoreWP: !!data.restoreWP, xp: Number(data.xp) || 0, xpLabel: data.xpLabel, ghoulsFed, note: data.note });
     const t = T.getTime();
@@ -371,7 +343,7 @@ export class ChronicleCalendarGM extends ChronicleCalendar {
   static DEFAULT_OPTIONS = {
     id: "noctis-calendar-gm",
     classes: ["noctis", "noctis-window", "noctis-calendar", "gm-view"],
-    window: { title: "Chronique — vue du MJ", icon: "fa-solid fa-user-secret" }
+    window: { title: loc("NOCTIS.js.ChroniqueVueDuMj"), icon: "fa-solid fa-user-secret" }
   };
 }
 

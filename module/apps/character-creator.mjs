@@ -1,54 +1,83 @@
 import { gatherItems, disciplineKey } from "../registry.mjs";
 import { NOCTIS, generationStats } from "../config.mjs";
 import { traitTooltip } from "../trait-help.mjs";
+import { loc, registerLocalizable } from "../i18n.mjs";
 
 const TIP_COST = {
-  attribute: "Création : 7 / 5 / 3 points selon la catégorie (1 point offert). Bonus : 5 points par point.",
-  ability: "Création : 13 / 9 / 5 points selon la catégorie, 3 au maximum. Bonus : 2 points par point.",
-  discipline: "Création : 4 points à répartir. Bonus : 7 points par point.",
-  background: "Création : 5 points à répartir. Bonus : 1 point par point.",
-  virtue: "Création : 7 points (1 offert dans chaque vertu). Bonus : 2 points par point."
+  attribute: "NOCTIS.js.Creation753PointsSelon",
+  ability: "NOCTIS.js.Creation1395PointsSelon",
+  discipline: "NOCTIS.js.Creation4PointsARepartirBonus",
+  background: "NOCTIS.js.Creation5PointsARepartirBonus",
+  virtue: "NOCTIS.js.Creation7Points1OffertDans"
 };
 const tip = (kind, key, label) => traitTooltip(kind, key, label, TIP_COST[kind]);
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
 /** Descriptions courtes des archétypes. */
-export const ARCHETYPES = {
-  "Ange gardien": "Protège et réconforte les autres.", "Architecte": "Veut bâtir quelque chose qui dure.", "Autocrate": "Veut régner, contrôler.",
-  "Battant": "Fait de tout une compétition.", "Bête": "Méprise la civilisation.", "Bon vivant": "Croque la vie (et la non-vie) à pleines dents.",
-  "Bouffon": "Révèle la vérité par la farce.", "Brute": "Obtient ce qu'il veut par la force.", "Caméléon": "Se fond partout, accepté de tous.",
-  "Casse-cou": "Vit pour le frisson du danger.", "Célébrant": "Vit avec passion pour sa cause.", "Conformiste": "Suit le mouvement et soutient le meneur.",
-  "Défenseur": "Défend ses convictions coûte que coûte.", "Déviant": "Goûts excentriques, assumés.", "Dilettante": "Papillonne de passion en passion.",
-  "Dirigiste": "Fait naître l'ordre du chaos.", "Enfant": "Immature, cherche un guide.", "Énigme": "Ses motifs restent impénétrables.",
-  "Fanatique": "Dévoré par sa cause.", "Gourou": "Inspire spirituellement les autres.", "Grand-guignol": "Aime choquer et dégoûter.",
-  "Idéaliste": "Poursuit une perfection qu'il sait exister.", "Individualiste": "Ne pense qu'à lui-même.", "Juge": "Pèse les preuves pour trouver la vérité.",
-  "Martyr": "Sa souffrance sauvera les autres.", "Masochiste": "Recherche la douleur.", "Mercenaire": "Tout s'achète, lui compris.",
-  "Monstre": "Embrasse sa nature de cauchemar.", "Œil du cyclone": "Reste calme au cœur du chaos.", "Opportuniste": "Tourne tout à son avantage.",
-  "Pédagogue": "Transmet son savoir.", "Pénitent": "Doit expier, jamais assez bon.", "Perfectionniste": "Exige l'excellence, de lui d'abord.",
-  "Philosophe": "Cherche le sens de toute chose.", "Râleur": "Trouve des défauts à tout.", "Rebelle": "Le système est une prison : il faut le briser.",
-  "Sadique": "Prend plaisir à faire souffrir.", "Séducteur": "Veut être le centre de toutes les attentions.", "Soldat": "Suit un code et les ordres qui le respectent.",
-  "Solitaire": "N'a besoin de personne.", "Survivant": "Rien ne l'arrêtera.", "Traditionaliste": "Ce qui a fait ses preuves doit demeurer.",
-  "Visionnaire": "Voit tous les possibles."
-};
-
-const CONCEPTS = ["Artiste (troubadour, musicien, acteur)", "Clerc (moine, moniale, prêtre, imam)", "Criminel (voleur, receleur, brigand)", "Enfant (orphelin, enfant soldat)",
-  "Intellectuel (philosophe, lettré)", "Investigateur (shérif, inquisiteur)", "Marginal (étranger, lépreux, hérétique)", "Politicien (noble, juge, conseiller)",
-  "Professionnel (maçon, médecin, forgeron)", "Soldat (mercenaire, croisé, sentinelle)", "Travailleur (fermier, mineur, marin)", "Vagabond (pèlerin, caravanier)"];
-
-const STEPS = [
-  { id: 0, label: "Mode", icon: "fa-solid fa-signs-post" },
-  { id: 1, label: "Concept", icon: "fa-solid fa-feather" },
-  { id: 2, label: "Attributs", icon: "fa-solid fa-hand-fist" },
-  { id: 3, label: "Capacités", icon: "fa-solid fa-book-open" },
-  { id: 4, label: "Avantages", icon: "fa-solid fa-droplet" },
-  { id: 5, label: "Touches finales", icon: "fa-solid fa-scale-balanced" },
-  { id: 6, label: "Atouts et handicaps", icon: "fa-solid fa-scale-unbalanced" },
-  { id: 7, label: "Points de bonus", icon: "fa-solid fa-star" },
-  { id: 8, label: "Résumé", icon: "fa-solid fa-scroll" }
+export const ARCHETYPES = [
+  { name: "NOCTIS.js.ArchAngeGardien", desc: "NOCTIS.js.ProtegeEtReconforteLesAutres" },
+  { name: "NOCTIS.js.ArchArchitecte", desc: "NOCTIS.js.VeutBatirQuelqueChoseQuiDure" },
+  { name: "NOCTIS.js.ArchAutocrate", desc: "NOCTIS.js.VeutRegnerControler" },
+  { name: "NOCTIS.js.ArchBattant", desc: "NOCTIS.js.FaitDeToutUneCompetition" },
+  { name: "NOCTIS.js.ArchBete", desc: "NOCTIS.js.MepriseLaCivilisation" },
+  { name: "NOCTIS.js.ArchBonVivant", desc: "NOCTIS.js.CroqueLaVieEtLaNon" },
+  { name: "NOCTIS.js.ArchBouffon", desc: "NOCTIS.js.ReveleLaVeriteParLaFarce" },
+  { name: "NOCTIS.js.ArchBrute", desc: "NOCTIS.js.ObtientCeQuIlVeutPar" },
+  { name: "NOCTIS.js.ArchCameleon", desc: "NOCTIS.js.SeFondPartoutAccepteDeTous" },
+  { name: "NOCTIS.js.ArchCasseCou", desc: "NOCTIS.js.VitPourLeFrissonDuDanger" },
+  { name: "NOCTIS.js.ArchCelebrant", desc: "NOCTIS.js.VitAvecPassionPourSaCause" },
+  { name: "NOCTIS.js.ArchConformiste", desc: "NOCTIS.js.SuitLeMouvementEtSoutientLe" },
+  { name: "NOCTIS.js.ArchDefenseur", desc: "NOCTIS.js.DefendSesConvictionsCouteQueCoute" },
+  { name: "NOCTIS.js.ArchDeviant", desc: "NOCTIS.js.GoutsExcentriquesAssumes" },
+  { name: "NOCTIS.js.ArchDilettante", desc: "NOCTIS.js.PapillonneDePassionEnPassion" },
+  { name: "NOCTIS.js.ArchDirigiste", desc: "NOCTIS.js.FaitNaitreLOrdreDuChaos" },
+  { name: "NOCTIS.js.ArchEnfant", desc: "NOCTIS.js.ImmatureChercheUnGuide" },
+  { name: "NOCTIS.js.ArchEnigme", desc: "NOCTIS.js.SesMotifsRestentImpenetrables" },
+  { name: "NOCTIS.js.ArchFanatique", desc: "NOCTIS.js.DevoreParSaCause" },
+  { name: "NOCTIS.js.ArchGourou", desc: "NOCTIS.js.InspireSpirituellementLesAutres" },
+  { name: "NOCTIS.js.ArchGrandGuignol", desc: "NOCTIS.js.AimeChoquerEtDegouter" },
+  { name: "NOCTIS.js.ArchIdealiste", desc: "NOCTIS.js.PoursuitUnePerfectionQuIlSait" },
+  { name: "NOCTIS.js.ArchIndividualiste", desc: "NOCTIS.js.NePenseQuALuiMeme" },
+  { name: "NOCTIS.js.ArchJuge", desc: "NOCTIS.js.PeseLesPreuvesPourTrouverLa" },
+  { name: "NOCTIS.js.ArchMartyr", desc: "NOCTIS.js.SaSouffranceSauveraLesAutres" },
+  { name: "NOCTIS.js.ArchMasochiste", desc: "NOCTIS.js.RechercheLaDouleur" },
+  { name: "NOCTIS.js.ArchMercenaire", desc: "NOCTIS.js.ToutSAcheteLuiCompris" },
+  { name: "NOCTIS.js.ArchMonstre", desc: "NOCTIS.js.EmbrasseSaNatureDeCauchemar" },
+  { name: "NOCTIS.js.ArchIlDuCyclone", desc: "NOCTIS.js.ResteCalmeAuCurDuChaos" },
+  { name: "NOCTIS.js.ArchOpportuniste", desc: "NOCTIS.js.TourneToutASonAvantage" },
+  { name: "NOCTIS.js.ArchPedagogue", desc: "NOCTIS.js.TransmetSonSavoir" },
+  { name: "NOCTIS.js.ArchPenitent", desc: "NOCTIS.js.DoitExpierJamaisAssezBon" },
+  { name: "NOCTIS.js.ArchPerfectionniste", desc: "NOCTIS.js.ExigeLExcellenceDeLuiD" },
+  { name: "NOCTIS.js.ArchPhilosophe", desc: "NOCTIS.js.ChercheLeSensDeTouteChose" },
+  { name: "NOCTIS.js.ArchRaleur", desc: "NOCTIS.js.TrouveDesDefautsATout" },
+  { name: "NOCTIS.js.ArchRebelle", desc: "NOCTIS.js.LeSystemeEstUnePrisonIl" },
+  { name: "NOCTIS.js.ArchSadique", desc: "NOCTIS.js.PrendPlaisirAFaireSouffrir" },
+  { name: "NOCTIS.js.ArchSeducteur", desc: "NOCTIS.js.VeutEtreLeCentreDeToutes" },
+  { name: "NOCTIS.js.ArchSoldat", desc: "NOCTIS.js.SuitUnCodeEtLesOrdres" },
+  { name: "NOCTIS.js.ArchSolitaire", desc: "NOCTIS.js.NABesoinDePersonne" },
+  { name: "NOCTIS.js.ArchSurvivant", desc: "NOCTIS.js.RienNeLArretera" },
+  { name: "NOCTIS.js.ArchTraditionaliste", desc: "NOCTIS.js.CeQuiAFaitSesPreuves" },
+  { name: "NOCTIS.js.ArchVisionnaire", desc: "NOCTIS.js.VoitTousLesPossibles" }
 ];
 
-const GROUP_LABEL = { primary: "Primaire", secondary: "Secondaire", tertiary: "Tertiaire" };
+const CONCEPTS = ["NOCTIS.js.ArtisteTroubadourMusicienActeur", "NOCTIS.js.ClercMoineMonialePretreImam", "NOCTIS.js.CriminelVoleurReceleurBrigand", "NOCTIS.js.EnfantOrphelinEnfantSoldat",
+  "NOCTIS.js.IntellectuelPhilosopheLettre", "NOCTIS.js.InvestigateurSherifInquisiteur", "NOCTIS.js.MarginalEtrangerLepreuxHeretique", "NOCTIS.js.PoliticienNobleJugeConseiller",
+  "NOCTIS.js.ProfessionnelMaconMedecinForgeron", "NOCTIS.js.SoldatMercenaireCroiseSentinelle", "NOCTIS.js.TravailleurFermierMineurMarin", "NOCTIS.js.VagabondPelerinCaravanier"];
+
+const STEPS = [
+  { id: 0, label: "NOCTIS.js.Mode", icon: "fa-solid fa-signs-post" },
+  { id: 1, label: "NOCTIS.js.Concept", icon: "fa-solid fa-feather" },
+  { id: 2, label: "NOCTIS.js.Attributs", icon: "fa-solid fa-hand-fist" },
+  { id: 3, label: "NOCTIS.js.Capacites", icon: "fa-solid fa-book-open" },
+  { id: 4, label: "NOCTIS.js.Avantages", icon: "fa-solid fa-droplet" },
+  { id: 5, label: "NOCTIS.js.TouchesFinales", icon: "fa-solid fa-scale-balanced" },
+  { id: 6, label: "NOCTIS.js.AtoutsEtHandicaps", icon: "fa-solid fa-scale-unbalanced" },
+  { id: 7, label: "NOCTIS.js.PointsDeBonus", icon: "fa-solid fa-star" },
+  { id: 8, label: "NOCTIS.js.Resume", icon: "fa-solid fa-scroll" }
+];
+
+const GROUP_LABEL = { primary: "NOCTIS.js.Primaire", secondary: "NOCTIS.js.Secondaire", tertiary: "NOCTIS.js.Tertiaire" };
 
 function emptyState() {
   const z = (keys) => Object.fromEntries(keys.map(k => [k, 0]));
@@ -80,9 +109,9 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     if (actor?.id) options.id ??= `noctis-creator-${actor.id}`;
     super(options);
     this.actor = actor;
-    if (!this.actor) throw new Error("NOCTIS | Le créateur de personnage a besoin d'un acteur.");
+    if (!this.actor) throw new Error(loc("NOCTIS.js.NoctisLeCreateurDePersonnageA"));
     let saved = null;
-    try { saved = this.actor.getFlag("noctis", "creator"); } catch (err) { console.warn("NOCTIS | brouillon illisible", err); }
+    try { saved = this.actor.getFlag("noctis", "creator"); } catch (err) { console.warn(loc("NOCTIS.js.NoctisBrouillonIllisible"), err); }
     this.cs = foundry.utils.mergeObject(emptyState(), saved ?? {}, { inplace: false });
     if (!this.cs.name) this.cs.name = this.actor.name;
     if (!this.cs.player) this.cs.player = this.actor.system.identity?.player ?? "";
@@ -92,7 +121,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
   static DEFAULT_OPTIONS = {
     tag: "div",
     classes: ["noctis", "noctis-window", "noctis-creator"],
-    window: { title: "Créateur de personnage", icon: "fa-solid fa-wand-magic-sparkles", resizable: true },
+    window: { title: loc("NOCTIS.js.CreateurDePersonnage"), icon: "fa-solid fa-wand-magic-sparkles", resizable: true },
     position: { width: 940, height: 820 },
     actions: {
       setMode: CharacterCreator.#onSetMode,
@@ -110,7 +139,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
 
   static PARTS = { body: { template: "systems/noctis/templates/apps/creator.hbs", scrollable: [".creator-main"] } };
 
-  get title() { return `Créateur de personnage : ${this.actor?.name ?? ""}`; }
+  get title() { return loc("NOCTIS.js.CreateurDePersonnage2", { p0: this.actor?.name ?? "" }); }
 
   /** Ouvre (ou ramène au premier plan) le créateur d'un acteur, en affichant toute erreur. */
   static async open(actor) {
@@ -121,8 +150,8 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       await app.render({ force: true });
       return app;
     } catch (err) {
-      console.error("NOCTIS | Impossible d'ouvrir le créateur de personnage", err);
-      ui.notifications.error(`Noctis : le créateur n'a pas pu s'ouvrir (${err.message}). Détail dans la console (F12).`);
+      console.error(loc("NOCTIS.js.NoctisImpossibleDOuvrirLeCreateur"), err);
+      ui.notifications.error(loc("NOCTIS.js.NoctisLeCreateurNAPas", { message: err.message }));
     }
   }
 
@@ -202,7 +231,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const virtues = [
       { key: "conscience", label: NOCTIS.virtueLabels[v1] },
       { key: "selfcontrol", label: NOCTIS.virtueLabels[v2] },
-      { key: "courage", label: "Courage" }
+      { key: "courage", label: loc("NOCTIS.js.Courage") }
     ].map(v => ({ ...v, alloc: st.virtues[v.key] || 0, bonus: st.bonus.virtues[v.key] || 0, value: 1 + (st.virtues[v.key] || 0) + (st.bonus.virtues[v.key] || 0), path: `virtues.${v.key}`, tip: tip("virtue", v.key === "conscience" ? v1 : v.key === "selfcontrol" ? v2 : "courage", v.label) }));
     const virtSpent = sum(st.virtues);
     const vv = Object.fromEntries(virtues.map(v => [v.key, v.value]));
@@ -227,23 +256,23 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     // Contrôles du mode guidé
     const errors = {};
     const e = (step, msg) => (errors[step] ??= []).push(msg);
-    if (!st.name) e(1, "Donnez un nom au personnage.");
-    if (!clan && this.actor.type === "vampire") e(1, "Choisissez un clan.");
-    if (!road) e(1, "Choisissez une Voie.");
-    if (!st.nature || !st.demeanor) e(1, "Choisissez une nature et une attitude.");
-    const ranksA = Object.values(st.attrRank); if (new Set(ranksA.filter(Boolean)).size !== 3) e(2, "Classez les trois catégories d'attributs (une primaire, une secondaire, une tertiaire).");
-    for (const g of attrGroups) if (g.points != null && g.spent !== g.points) e(2, `${g.label} : ${g.spent}/${g.points} points répartis.`);
-    for (const g of attrGroups) for (const t of g.traits) if (t.base + t.alloc > 5) e(2, `${t.label} ne peut pas dépasser 5.`);
-    const ranksB = Object.values(st.abilRank); if (new Set(ranksB.filter(Boolean)).size !== 3) e(3, "Classez les trois catégories de capacités.");
-    for (const g of abilGroups) if (g.points != null && g.spent !== g.points) e(3, `${g.label} : ${g.spent}/${g.points} points répartis.`);
-    for (const g of abilGroups) for (const t of g.traits) if (t.alloc > NOCTIS.creation.abilityMax) e(3, `${t.label} : 3 maximum avant les points de bonus.`);
-    if (discSpent !== NOCTIS.creation.disciplines) e(4, `Disciplines : ${discSpent}/${NOCTIS.creation.disciplines} points.`);
-    if (bgSpent !== NOCTIS.creation.backgrounds) e(4, `Historiques : ${bgSpent}/${NOCTIS.creation.backgrounds} points.`);
-    if (virtSpent !== NOCTIS.creation.virtues) e(4, `Vertus : ${virtSpent}/${NOCTIS.creation.virtues} points.`);
-    for (const v of virtues) if (1 + v.alloc > 5) e(4, `${v.label} ne peut pas dépasser 5.`);
-    if (bonusLeft < 0) e(7, `Points de bonus dépassés de ${-bonusLeft}.`);
+    if (!st.name) e(1, loc("NOCTIS.js.DonnezUnNomAuPersonnage"));
+    if (!clan && this.actor.type === "vampire") e(1, loc("NOCTIS.js.ChoisissezUnClan"));
+    if (!road) e(1, loc("NOCTIS.js.ChoisissezUneVoie"));
+    if (!st.nature || !st.demeanor) e(1, loc("NOCTIS.js.ChoisissezUneNatureEtUneAttitude"));
+    const ranksA = Object.values(st.attrRank); if (new Set(ranksA.filter(Boolean)).size !== 3) e(2, loc("NOCTIS.js.ClassezLesTroisCategoriesDAttributs"));
+    for (const g of attrGroups) if (g.points != null && g.spent !== g.points) e(2, loc("NOCTIS.js.PointsRepartis", { label: g.label, spent: g.spent, points: g.points }));
+    for (const g of attrGroups) for (const t of g.traits) if (t.base + t.alloc > 5) e(2, loc("NOCTIS.js.NePeutPasDepasser5", { label: t.label }));
+    const ranksB = Object.values(st.abilRank); if (new Set(ranksB.filter(Boolean)).size !== 3) e(3, loc("NOCTIS.js.ClassezLesTroisCategoriesDeCapacites"));
+    for (const g of abilGroups) if (g.points != null && g.spent !== g.points) e(3, loc("NOCTIS.js.PointsRepartis", { label: g.label, spent: g.spent, points: g.points }));
+    for (const g of abilGroups) for (const t of g.traits) if (t.alloc > NOCTIS.creation.abilityMax) e(3, loc("NOCTIS.js.3MaximumAvantLesPointsDe", { label: t.label }));
+    if (discSpent !== NOCTIS.creation.disciplines) e(4, loc("NOCTIS.js.DisciplinesPoints", { discSpent, disciplines: NOCTIS.creation.disciplines }));
+    if (bgSpent !== NOCTIS.creation.backgrounds) e(4, loc("NOCTIS.js.HistoriquesPoints", { bgSpent, backgrounds: NOCTIS.creation.backgrounds }));
+    if (virtSpent !== NOCTIS.creation.virtues) e(4, loc("NOCTIS.js.VertusPoints", { virtSpent, virtues: NOCTIS.creation.virtues }));
+    for (const v of virtues) if (1 + v.alloc > 5) e(4, loc("NOCTIS.js.NePeutPasDepasser5", { label: v.label }));
+    if (bonusLeft < 0) e(7, loc("NOCTIS.js.PointsDeBonusDepassesDe", { p0: -bonusLeft }));
     const flawRaw = flawRawSum;
-    if (flawRaw > NOCTIS.creation.maxFlaws) e(6, `Les handicaps ne rapportent que ${NOCTIS.creation.maxFlaws} points au maximum (${flawRaw} choisis).`);
+    if (flawRaw > NOCTIS.creation.maxFlaws) e(6, loc("NOCTIS.js.LesHandicapsNeRapportentQuePoints", { maxFlaws: NOCTIS.creation.maxFlaws, flawRaw }));
 
     const bloodStart = st.bloodRoll != null ? Math.min(gs.blood, st.bloodRoll + (st.backgrounds.domain || 0) + (st.backgrounds.herd || 0) + (st.bonus.backgrounds.domain || 0) + (st.bonus.backgrounds.herd || 0)) : null;
 
@@ -263,36 +292,36 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const list = (traits) => traits.filter(t => t.alloc > 0).map(t => `${t.label} +${t.alloc}`).join(", ") || "—";
     const groups = (gs) => gs.map(g => ({ label: g.rank ? `${g.label} (${g.rankLabel.toLowerCase()})` : g.label, points: `${g.spent} / ${g.points ?? "—"}`, detail: list(g.traits) }));
     const sections = [
-      { title: "Attributs", rule: "7 / 5 / 3 points (1 point offert dans chaque attribut)", rows: groups(c.attrGroups) },
-      { title: "Capacités", rule: "13 / 9 / 5 points, 3 au maximum", rows: groups(c.abilGroups) },
-      { title: "Avantages", rule: "4 en disciplines, 5 en historiques, 7 en vertus", rows: [
-        { label: "Disciplines", points: `${c.discSpent} / ${NOCTIS.creation.disciplines}`, detail: list(c.disciplines) },
-        { label: "Historiques", points: `${c.bgSpent} / ${NOCTIS.creation.backgrounds}`, detail: list(c.backgrounds) },
-        { label: "Vertus", points: `${c.virtSpent} / ${NOCTIS.creation.virtues}`, detail: list(c.virtues) }
+      { title: loc("NOCTIS.js.Attributs"), rule: loc("NOCTIS.js.753Points1Point"), rows: groups(c.attrGroups) },
+      { title: loc("NOCTIS.js.Capacites"), rule: loc("NOCTIS.js.1395Points3Au"), rows: groups(c.abilGroups) },
+      { title: loc("NOCTIS.js.Avantages"), rule: loc("NOCTIS.js.4EnDisciplines5EnHistoriques"), rows: [
+        { label: loc("NOCTIS.js.Disciplines"), points: `${c.discSpent} / ${NOCTIS.creation.disciplines}`, detail: list(c.disciplines) },
+        { label: loc("NOCTIS.js.Historiques"), points: `${c.bgSpent} / ${NOCTIS.creation.backgrounds}`, detail: list(c.backgrounds) },
+        { label: loc("NOCTIS.js.Vertus"), points: `${c.virtSpent} / ${NOCTIS.creation.virtues}`, detail: list(c.virtues) }
       ] }
     ];
     const bonus = [];
     const add = (traits, unit, kind) => { for (const t of traits) if (t.bonus > 0) bonus.push({ label: t.label, kind, detail: `+${t.bonus} × ${unit}`, cost: t.bonus * unit }); };
-    add(c.attrGroups.flatMap(g => g.traits), C.attribute, "Attribut");
-    add(c.abilGroups.flatMap(g => g.traits), C.ability, "Capacité");
-    add(c.disciplines, C.discipline, "Discipline");
-    add(c.backgrounds, C.background, "Historique");
-    add(c.virtues, C.virtue, "Vertu");
-    if (st.bonus.road > 0) bonus.push({ label: "Voie", kind: "Voie", detail: `+${st.bonus.road} × ${C.road}`, cost: st.bonus.road * C.road });
-    if (st.bonus.willpower > 0) bonus.push({ label: "Volonté", kind: "Volonté", detail: `+${st.bonus.willpower} × ${C.willpower}`, cost: st.bonus.willpower * C.willpower });
+    add(c.attrGroups.flatMap(g => g.traits), C.attribute, loc("NOCTIS.js.Attribut"));
+    add(c.abilGroups.flatMap(g => g.traits), C.ability, loc("NOCTIS.js.Capacite"));
+    add(c.disciplines, C.discipline, loc("NOCTIS.js.Discipline"));
+    add(c.backgrounds, C.background, loc("NOCTIS.js.Historique"));
+    add(c.virtues, C.virtue, loc("NOCTIS.js.Vertu"));
+    if (st.bonus.road > 0) bonus.push({ label: loc("NOCTIS.js.Voie"), kind: loc("NOCTIS.js.Voie"), detail: `+${st.bonus.road} × ${C.road}`, cost: st.bonus.road * C.road });
+    if (st.bonus.willpower > 0) bonus.push({ label: loc("NOCTIS.js.Volonte"), kind: loc("NOCTIS.js.Volonte"), detail: `+${st.bonus.willpower} × ${C.willpower}`, cost: st.bonus.willpower * C.willpower });
     const lv = (m) => Number(st.mf?.[m._id]) || m.system.cost || 0;
-    for (const id of st.merits) { const m = cache.merits.find(x => x._id === id); if (m) bonus.push({ label: m.name, kind: "Atout", detail: m.system.levels?.length ? `niveau ${lv(m)}` : "", cost: lv(m) }); }
-    for (const id of st.flaws) { const m = cache.flaws.find(x => x._id === id); if (m) bonus.push({ label: m.name, kind: "Handicap", detail: m.system.levels?.length ? `niveau ${lv(m)}` : "", cost: -lv(m) }); }
+    for (const id of st.merits) { const m = cache.merits.find(x => x._id === id); if (m) bonus.push({ label: m.name, kind: loc("NOCTIS.js.Atout"), detail: m.system.levels?.length ? `niveau ${lv(m)}` : "", cost: lv(m) }); }
+    for (const id of st.flaws) { const m = cache.flaws.find(x => x._id === id); if (m) bonus.push({ label: m.name, kind: loc("NOCTIS.js.Handicap"), detail: m.system.levels?.length ? `niveau ${lv(m)}` : "", cost: -lv(m) }); }
     return {
-      mode: st.mode === "free" ? "libre" : "guidé",
+      mode: st.mode === "free" ? "libre" : loc("NOCTIS.js.Guide"),
       date: new Date().toLocaleDateString("fr-FR"),
       clan: c.clan?.name ?? "", road: c.road?.name ?? "",
       sections, bonus,
       bonusTotal: c.bonusTotal, bonusSpent: c.bonusSpent + c.meritCost, bonusLeft: c.bonusLeft, flawGain: c.flawGain,
       derived: [
-        { label: "Génération", value: NOCTIS.generationNames[c.generation] ?? c.generation },
-        { label: "Voie", value: c.roadValue }, { label: "Volonté", value: c.willValue },
-        { label: "Sang de départ", value: c.bloodStart ?? "—" }
+        { label: loc("NOCTIS.js.Generation"), value: NOCTIS.generationNames[c.generation] ?? c.generation },
+        { label: loc("NOCTIS.js.Voie"), value: c.roadValue }, { label: loc("NOCTIS.js.Volonte"), value: c.willValue },
+        { label: loc("NOCTIS.js.SangDeDepart"), value: c.bloodStart ?? "—" }
       ]
     };
   }
@@ -304,17 +333,17 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const st = this.cs;
     const c = this.#compute(cache);
     const steps = STEPS.map(s => ({ ...s, active: s.id === st.step, done: s.id < st.step, error: !!c.errors[s.id]?.length && s.id < st.step }));
-    const rankChoices = { "": "—", primary: "Primaire", secondary: "Secondaire", tertiary: "Tertiaire" };
+    const rankChoices = { "": "—", primary: loc("NOCTIS.js.Primaire"), secondary: loc("NOCTIS.js.Secondaire"), tertiary: loc("NOCTIS.js.Tertiaire") };
     const strip = (h) => String(h ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
     const mfRow = (m, list, kind) => {
       const checked = list.includes(m._id);
       const level = Number(st.mf?.[m._id]) || m.system.cost;
       const levels = (m.system.levels ?? []).map(l => ({ value: l.value, text: l.text, active: checked && l.value === level }));
-      const desc = strip(m.system.description).replace(/Coût :.*$/, "").trim();
+      const desc = strip(m.system.description).replace(/(Coût :|Cost:).*$/, "").trim();
       return { id: m._id, kind, name: m.name, cost: m.system.cost, costText: m.system.costText, checked, level, levels, multi: levels.length > 1,
         levelText: checked ? (levels.find(l => l.value === level)?.text ?? "") : "", desc, short: desc.length > 180 ? desc.slice(0, 180).replace(/\s\S*$/, "") + "…" : desc };
     };
-    const MF_CATS = [["physical", "💪", "Physiques"], ["mental", "🧠", "Mentaux"], ["social", "👄", "Sociaux"], ["supernatural", "⛤", "Surnaturels"]];
+    const MF_CATS = [["physical", "💪", loc("NOCTIS.js.Physiques")], ["mental", "🧠", loc("NOCTIS.js.Mentaux")], ["social", "👄", loc("NOCTIS.js.Sociaux")], ["supernatural", "⛤", loc("NOCTIS.js.Surnaturels")]];
     const mfSections = MF_CATS.map(([key, icon, label]) => ({
       key, icon, label,
       merits: cache.merits.filter(m => m.system.category === key).sort((a, b) => a.system.cost - b.system.cost || a.name.localeCompare(b.name, "fr")).map(m => mfRow(m, st.merits, "merit")),
@@ -328,16 +357,16 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       clans: cache.clans.map(cl => ({ id: cl._id, name: cl.name, selected: cl._id === st.clanId, bloodline: cl.system.isBloodline })),
       roads: cache.roads.map(r => ({ id: r._id, name: r.name, selected: r._id === st.roadId })),
       clanDiscLabels: (c.clan?.system?.disciplines ?? []).map(k => NOCTIS.disciplines[k] ?? k).join(", "),
-      archetypes: Object.entries(ARCHETYPES).map(([n, d]) => ({ name: n, desc: d })),
-      natureDesc: ARCHETYPES[st.nature] ?? "", demeanorDesc: ARCHETYPES[st.demeanor] ?? "",
+      archetypes: ARCHETYPES.map(a => ({ name: a.name, desc: a.desc })),
+      natureDesc: ARCHETYPES.find(a => a.name === st.nature)?.desc ?? "", demeanorDesc: ARCHETYPES.find(a => a.name === st.demeanor)?.desc ?? "",
       concepts: CONCEPTS, rankChoices,
       mfSections, chosenMF, hasChosenMF: chosenMF.length > 0,
       stepErrors: c.errors[st.step] ?? [],
       allErrors: Object.entries(c.errors).flatMap(([s, list]) => list.map(m => `${STEPS[s].label} : ${m}`)),
       isFirst: st.step === 0, isLast: st.step === 8,
       bonusCosts: NOCTIS.bonusCosts,
-      roadTip: traitTooltip("road", "", "Voie", "Départ : Conscience/Conviction + Maîtrise de soi/Instinct. Bonus : 2 points par point."),
-      willTip: traitTooltip("willpower", "", "Volonté", "Départ : égale au Courage. Bonus : 1 point par point."),
+      roadTip: traitTooltip("road", "", loc("NOCTIS.js.Voie"), loc("NOCTIS.js.DepartConscienceConvictionMaitriseDeSoi")),
+      willTip: traitTooltip("willpower", "", loc("NOCTIS.js.Volonte"), loc("NOCTIS.js.DepartEgaleAuCourageBonus1")),
       generationLabel: NOCTIS.generationNames[c.generation] ?? c.generation
     };
   }
@@ -378,7 +407,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     if (this.guided && s > this.cs.step) {
       const cache = await this.#loadCompendia();
       const c = this.#compute(cache);
-      for (let i = 1; i < s; i++) if (c.errors[i]?.length) return ui.notifications.warn(`Étape « ${STEPS[i].label} » incomplète : ${c.errors[i][0]}`);
+      for (let i = 1; i < s; i++) if (c.errors[i]?.length) return ui.notifications.warn(loc("NOCTIS.js.EtapeIncomplete", { p0: STEPS[i].label, p1: c.errors[i][0] }));
     }
     this.cs.step = s;
     await this.#save();
@@ -432,7 +461,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
   }
 
   static async #onToggleMF(event, target) {
-    if (!target.dataset.level && event.target.closest("details, .mf-levels")) return;
+    if (!target.dataset.level && event.target.closest(`details, .mf-levels`)) return;
     const list = target.dataset.kind === "flaw" ? this.cs.flaws : this.cs.merits;
     const id = target.dataset.id;
     this.cs.mf ??= {};
@@ -450,14 +479,14 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
 
   static async #onRollBlood() {
     const roll = await new Roll("1d10").evaluate();
-    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: "Réserve de sang de départ (1d10 + Domaine + Troupeau)" });
+    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: loc("NOCTIS.js.ReserveDeSangDeDepart1d10") });
     this.cs.bloodRoll = roll.total;
     await this.#save();
     this.render();
   }
 
   static async #onReset() {
-    const ok = await DialogV2.confirm({ window: { title: "Recommencer" }, content: "<p>Effacer toutes les étapes du créateur ?</p>", rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.Recommencer") }, content: loc("NOCTIS.js.EffacerToutesLesEtapesDuCreateur"), rejectClose: false });
     if (!ok) return;
     this.cs = emptyState();
     this.cs.name = this.actor.name;
@@ -470,10 +499,10 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const cache = await this.#loadCompendia();
     const c = this.#compute(cache);
     const all = Object.values(c.errors).flat();
-    if (this.guided && all.length) return ui.notifications.warn(`Création incomplète : ${all[0]}`);
+    if (this.guided && all.length) return ui.notifications.warn(loc("NOCTIS.js.CreationIncomplete", { p0: all[0] }));
     const st = this.cs;
     const actor = this.actor;
-    const ok = await DialogV2.confirm({ window: { title: "Créer le personnage" }, content: `<p>Appliquer la création à <b>${st.name}</b> ? Les traits actuels de la fiche seront remplacés.</p>`, rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.CreerLePersonnage") }, content: loc("NOCTIS.js.AppliquerLaCreationALesTraits", { name: st.name }), rejectClose: false });
     if (!ok) return;
 
     const upd = { name: st.name, "system.identity.concept": st.concept, "system.identity.nature": st.nature, "system.identity.demeanor": st.demeanor, "system.identity.sire": st.sire, "system.identity.player": st.player };
@@ -518,16 +547,18 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       if (o && lv && o.system.levels?.length) {
         o.system.cost = lv;
         const t = o.system.levels.find(l => l.value === lv)?.text;
-        if (t) o.system.description = `<p><b>Niveau ${lv} :</b> ${t}</p>` + o.system.description;
+        if (t) o.system.description = loc("NOCTIS.js.Niveau", { lv, t }) + o.system.description;
       }
       return o;
     };
     for (const id of st.merits) { const m = cache.merits.find(x => x._id === id); if (m) toCreate.push(withLevel(await fromUuid_(m.uuid), id)); }
     for (const id of st.flaws) { const m = cache.flaws.find(x => x._id === id); if (m) toCreate.push(withLevel(await fromUuid_(m.uuid), id)); }
     await actor.createEmbeddedDocuments("Item", toCreate.filter(Boolean));
-    await actor.addXpEntry({ kind: "gain", amount: 0, label: `Création du personnage (${st.mode === "free" ? "mode libre" : "mode guidé"})`, category: "", note: `Points de bonus : ${c.bonusSpent + c.meritCost}/${c.bonusTotal}` });
-    ui.notifications.info(`${st.name} est prêt. La fiche est verrouillée : les progressions passent désormais par l'expérience.`);
+    await actor.addXpEntry({ kind: "gain", amount: 0, label: loc("NOCTIS.js.CreationDuPersonnage", { p0: st.mode === "free" ? loc("NOCTIS.js.ModeLibre") : loc("NOCTIS.js.ModeGuide") }), category: "", note: loc("NOCTIS.js.PointsDeBonus2", { p0: c.bonusSpent + c.meritCost, bonusTotal: c.bonusTotal }) });
+    ui.notifications.info(loc("NOCTIS.js.EstPretLaFicheEstVerrouillee", { name: st.name }));
     this.close();
     actor.sheet.render({ force: true });
   }
 }
+
+registerLocalizable(ARCHETYPES, CONCEPTS, GROUP_LABEL, STEPS, TIP_COST);

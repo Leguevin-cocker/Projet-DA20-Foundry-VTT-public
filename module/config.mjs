@@ -1,3 +1,4 @@
+import { loc, registerLocalizable } from "./i18n.mjs";
 /**
  * Constantes du système : traits, tables et coûts du moteur à d10.
  * Aucun contenu d'univers : clans, disciplines, Voies et atouts sont créés par chaque table (objets du monde ou compendiums).
@@ -11,21 +12,21 @@ NOCTIS.PATH = "systems/noctis";
 /*  Attributs                   */
 /* ---------------------------------------- */
 NOCTIS.attributeGroups = {
-  physical: { label: "Physiques", keys: ["strength", "dexterity", "stamina"] },
-  social: { label: "Sociaux", keys: ["charisma", "manipulation", "appearance"] },
-  mental: { label: "Mentaux", keys: ["perception", "intelligence", "wits"] }
+  physical: { label: "NOCTIS.js.Physiques", keys: ["strength", "dexterity", "stamina"] },
+  social: { label: "NOCTIS.js.Sociaux", keys: ["charisma", "manipulation", "appearance"] },
+  mental: { label: "NOCTIS.js.Mentaux", keys: ["perception", "intelligence", "wits"] }
 };
 
 NOCTIS.attributes = {
-  strength: "Force",
-  dexterity: "Dextérité",
-  stamina: "Vigueur",
-  charisma: "Charisme",
-  manipulation: "Manipulation",
-  appearance: "Apparence",
-  perception: "Perception",
-  intelligence: "Intelligence",
-  wits: "Astuce"
+  strength: "NOCTIS.js.Force",
+  dexterity: "NOCTIS.js.Dexterite",
+  stamina: "NOCTIS.js.Vigueur",
+  charisma: "NOCTIS.js.Charisme",
+  manipulation: "NOCTIS.js.Manipulation",
+  appearance: "NOCTIS.js.Apparence",
+  perception: "NOCTIS.js.Perception",
+  intelligence: "NOCTIS.js.Intelligence",
+  wits: "NOCTIS.js.Astuce"
 };
 
 NOCTIS.physicalAttributes = ["strength", "dexterity", "stamina"];
@@ -35,50 +36,50 @@ NOCTIS.physicalAttributes = ["strength", "dexterity", "stamina"];
 /* ---------------------------------------- */
 NOCTIS.abilityGroups = {
   talents: {
-    label: "Talents",
+    label: "NOCTIS.js.Talents",
     keys: ["legerdemain", "athletics", "brawl", "leadership", "empathy", "expression", "intimidation", "awareness", "subterfuge", "alertness"]
   },
   skills: {
-    label: "Compétences",
+    label: "NOCTIS.js.Competences",
     keys: ["animalken", "crafts", "commerce", "ride", "etiquette", "stealth", "melee", "performance", "survival", "archery"]
   },
   knowledges: {
-    label: "Connaissances",
+    label: "NOCTIS.js.Connaissances",
     keys: ["law", "enigmas", "academics", "investigation", "medicine", "occult", "politics", "hearthwisdom", "seneschal", "theology"]
   }
 };
 
 NOCTIS.abilities = {
-  legerdemain: "Adresse",
-  athletics: "Athlétisme",
-  brawl: "Bagarre",
-  leadership: "Commandement",
-  empathy: "Empathie",
-  expression: "Expression",
-  intimidation: "Intimidation",
-  awareness: "Intuition",
-  subterfuge: "Subterfuge",
-  alertness: "Vigilance",
-  animalken: "Animaux",
-  crafts: "Artisanats",
-  commerce: "Commerce",
-  ride: "Équitation",
-  etiquette: "Étiquette",
-  stealth: "Furtivité",
-  melee: "Mêlée",
-  performance: "Représentation",
-  survival: "Survie",
-  archery: "Tir à l'arc",
-  law: "Droit",
-  enigmas: "Énigmes",
-  academics: "Érudition",
-  investigation: "Investigation",
-  medicine: "Médecine",
-  occult: "Occultisme",
-  politics: "Politique",
-  hearthwisdom: "Sagesse populaire",
-  seneschal: "Sénéchal",
-  theology: "Théologie"
+  legerdemain: "NOCTIS.js.Adresse",
+  athletics: "NOCTIS.js.Athletisme",
+  brawl: "NOCTIS.js.Bagarre",
+  leadership: "NOCTIS.js.Commandement",
+  empathy: "NOCTIS.js.Empathie",
+  expression: "NOCTIS.js.Expression",
+  intimidation: "NOCTIS.js.Intimidation",
+  awareness: "NOCTIS.js.Intuition",
+  subterfuge: "NOCTIS.js.Subterfuge",
+  alertness: "NOCTIS.js.Vigilance",
+  animalken: "NOCTIS.js.Animaux",
+  crafts: "NOCTIS.js.Artisanats",
+  commerce: "NOCTIS.js.Commerce",
+  ride: "NOCTIS.js.Equitation",
+  etiquette: "NOCTIS.js.Etiquette",
+  stealth: "NOCTIS.js.Furtivite",
+  melee: "NOCTIS.js.Melee",
+  performance: "NOCTIS.js.Representation",
+  survival: "NOCTIS.js.Survie",
+  archery: "NOCTIS.js.TirALArc",
+  law: "NOCTIS.js.Droit",
+  enigmas: "NOCTIS.js.Enigmes",
+  academics: "NOCTIS.js.Erudition",
+  investigation: "NOCTIS.js.Investigation",
+  medicine: "NOCTIS.js.Medecine",
+  occult: "NOCTIS.js.Occultisme",
+  politics: "NOCTIS.js.Politique",
+  hearthwisdom: "NOCTIS.js.SagessePopulaire",
+  seneschal: "NOCTIS.js.Senechal",
+  theology: "NOCTIS.js.Theologie"
 };
 
 /** Attribut proposé par défaut quand on clique sur une capacité. */
@@ -95,48 +96,48 @@ NOCTIS.abilityDefaultAttr = {
 /*  Historiques                 */
 /* ---------------------------------------- */
 NOCTIS.backgrounds = {
-  allies: "Alliés",
-  contacts: "Contacts",
-  domain: "Domaine",
-  falseidentity: "Fausse identité",
-  generation: "Génération",
-  influence: "Influence",
-  mentor: "Mentor",
-  fame: "Renommée",
-  resources: "Ressources",
-  retainers: "Servants",
-  status: "Statut",
-  herd: "Troupeau"
+  allies: "NOCTIS.js.Allies",
+  contacts: "NOCTIS.js.Contacts",
+  domain: "NOCTIS.js.Domaine",
+  falseidentity: "NOCTIS.js.FausseIdentite",
+  generation: "NOCTIS.js.Generation",
+  influence: "NOCTIS.js.Influence",
+  mentor: "NOCTIS.js.Mentor",
+  fame: "NOCTIS.js.Renommee",
+  resources: "NOCTIS.js.Ressources",
+  retainers: "NOCTIS.js.Servants",
+  status: "NOCTIS.js.Statut",
+  herd: "NOCTIS.js.Troupeau"
 };
 
 /* ---------------------------------------- */
 /*  Vertus                      */
 /* ---------------------------------------- */
 NOCTIS.virtueLabels = {
-  conscience: "Conscience",
-  conviction: "Conviction",
-  selfcontrol: "Maîtrise de soi",
-  instinct: "Instinct",
-  courage: "Courage"
+  conscience: "NOCTIS.js.Conscience",
+  conviction: "NOCTIS.js.Conviction",
+  selfcontrol: "NOCTIS.js.MaitriseDeSoi",
+  instinct: "NOCTIS.js.Instinct",
+  courage: "NOCTIS.js.Courage"
 };
 
 /* ---------------------------------------- */
 /*  Santé              */
 /* ---------------------------------------- */
 NOCTIS.healthLevels = [
-  { key: "bruised", label: "Contusion", penalty: 0 },
-  { key: "hurt", label: "Blessure légère", penalty: -1 },
-  { key: "injured", label: "Blessure moyenne", penalty: -1 },
-  { key: "wounded", label: "Blessure grave", penalty: -2 },
-  { key: "mauled", label: "Handicap", penalty: -2 },
-  { key: "crippled", label: "Infirmité", penalty: -5 },
-  { key: "incapacitated", label: "Invalidité", penalty: null }
+  { key: "bruised", label: "NOCTIS.js.Contusion", penalty: 0 },
+  { key: "hurt", label: "NOCTIS.js.BlessureLegere", penalty: -1 },
+  { key: "injured", label: "NOCTIS.js.BlessureMoyenne", penalty: -1 },
+  { key: "wounded", label: "NOCTIS.js.BlessureGrave", penalty: -2 },
+  { key: "mauled", label: "NOCTIS.js.Handicap", penalty: -2 },
+  { key: "crippled", label: "NOCTIS.js.Infirmite", penalty: -5 },
+  { key: "incapacitated", label: "NOCTIS.js.Invalidite", penalty: null }
 ];
 
 NOCTIS.damageTypes = {
-  bashing: { label: "Contondants", short: "C", symbol: "/" },
-  lethal: { label: "Létaux", short: "L", symbol: "X" },
-  aggravated: { label: "Aggravés", short: "A", symbol: "✱" }
+  bashing: { label: "NOCTIS.js.Contondants", short: "C", symbol: "/" },
+  lethal: { label: "NOCTIS.js.Letaux", short: "L", symbol: "X" },
+  aggravated: { label: "NOCTIS.js.Aggraves", short: "A", symbol: "✱" }
 };
 
 /* ---------------------------------------- */
@@ -157,8 +158,8 @@ NOCTIS.generationTable = {
 };
 
 NOCTIS.generationNames = {
-  3: "Troisième", 4: "Quatrième", 5: "Cinquième", 6: "Sixième", 7: "Septième", 8: "Huitième",
-  9: "Neuvième", 10: "Dixième", 11: "Onzième", 12: "Douzième", 13: "Treizième", 14: "Quatorzième", 15: "Quinzième"
+  3: "NOCTIS.js.Troisieme", 4: "NOCTIS.js.Quatrieme", 5: "NOCTIS.js.Cinquieme", 6: "NOCTIS.js.Sixieme", 7: "NOCTIS.js.Septieme", 8: "NOCTIS.js.Huitieme",
+  9: "NOCTIS.js.Neuvieme", 10: "NOCTIS.js.Dixieme", 11: "NOCTIS.js.Onzieme", 12: "NOCTIS.js.Douzieme", 13: "NOCTIS.js.Treizieme", 14: "NOCTIS.js.Quatorzieme", 15: "NOCTIS.js.Quinzieme"
 };
 
 export function generationStats(gen) {
@@ -197,21 +198,21 @@ NOCTIS.bonusCosts = {
 /*  Expérience                      */
 /* ---------------------------------------- */
 NOCTIS.xpCategories = {
-  attribute: "Attribut",
-  ability: "Capacité",
-  newAbility: "Nouvelle capacité",
-  specialty: "Domaine d'expertise (spécialité)",
-  clanDiscipline: "Discipline de clan",
-  otherDiscipline: "Autre discipline",
-  newDiscipline: "Nouvelle discipline",
-  newPath: "Nouvelle voie de sorcellerie",
-  secondaryPath: "Voie secondaire",
-  ritual: "Rituel de sorcellerie de sang",
-  virtue: "Vertu",
-  willpower: "Volonté",
-  road: "Voie",
-  background: "Historique (avec accord du conteur)",
-  other: "Autre"
+  attribute: "NOCTIS.js.Attribut",
+  ability: "NOCTIS.js.Capacite",
+  newAbility: "NOCTIS.js.NouvelleCapacite",
+  specialty: "NOCTIS.js.DomaineDExpertiseSpecialite",
+  clanDiscipline: "NOCTIS.js.DisciplineDeClan",
+  otherDiscipline: "NOCTIS.js.AutreDiscipline",
+  newDiscipline: "NOCTIS.js.NouvelleDiscipline",
+  newPath: "NOCTIS.js.NouvelleVoieDeSorcellerie",
+  secondaryPath: "NOCTIS.js.VoieSecondaire",
+  ritual: "NOCTIS.js.RituelDeSorcellerieDeSang",
+  virtue: "NOCTIS.js.Vertu",
+  willpower: "NOCTIS.js.Volonte",
+  road: "NOCTIS.js.Voie",
+  background: "NOCTIS.js.HistoriqueAvecAccordDuConteur",
+  other: "NOCTIS.js.Autre"
 };
 
 /**
@@ -248,15 +249,15 @@ export function xpCost(category, current = 0, opts = {}) {
 /*  Difficultés et réussites    */
 /* ---------------------------------------- */
 NOCTIS.difficulties = {
-  3: "Routinier", 4: "Facile", 5: "Simple", 6: "Moyen", 7: "Ardu", 8: "Difficile", 9: "Extrêmement difficile", 10: "Quasi impossible"
+  3: "NOCTIS.js.Routinier", 4: "NOCTIS.js.Facile", 5: "NOCTIS.js.Simple", 6: "NOCTIS.js.Moyen", 7: "NOCTIS.js.Ardu", 8: "NOCTIS.js.Difficile", 9: "NOCTIS.js.ExtremementDifficile", 10: "NOCTIS.js.QuasiImpossible"
 };
 
 NOCTIS.successDegrees = [
-  { min: 1, label: "Réussite marginale" },
-  { min: 2, label: "Réussite modérée" },
-  { min: 3, label: "Réussite complète" },
-  { min: 4, label: "Réussite exceptionnelle" },
-  { min: 5, label: "Réussite phénoménale" }
+  { min: 1, label: "NOCTIS.js.ReussiteMarginale" },
+  { min: 2, label: "NOCTIS.js.ReussiteModeree" },
+  { min: 3, label: "NOCTIS.js.ReussiteComplete" },
+  { min: 4, label: "NOCTIS.js.ReussiteExceptionnelle" },
+  { min: 5, label: "NOCTIS.js.ReussitePhenomenale" }
 ];
 
 export function successLabel(n) {
@@ -269,30 +270,30 @@ export function successLabel(n) {
 /*  Armes et armures            */
 /* ---------------------------------------- */
 NOCTIS.weaponAbilities = {
-  brawl: "Bagarre",
-  melee: "Mêlée",
-  archery: "Tir à l'arc",
-  athletics: "Athlétisme (jet)"
+  brawl: "NOCTIS.js.Bagarre",
+  melee: "NOCTIS.js.Melee",
+  archery: "NOCTIS.js.TirALArc",
+  athletics: "NOCTIS.js.AthletismeJet"
 };
 
-NOCTIS.concealment = { P: "Poche", A: "Vêtements amples", L: "Long manteau", N: "Impossible" };
+NOCTIS.concealment = { P: "NOCTIS.js.Poche", A: "NOCTIS.js.VetementsAmples", L: "NOCTIS.js.LongManteau", N: "NOCTIS.js.Impossible" };
 
 NOCTIS.armorClasses = {
-  1: { label: "Classe 1 (vêtements lourds)", rating: 1, penalty: 0 },
-  2: { label: "Classe 2 (étoffe/armure textile)", rating: 2, penalty: 1 },
-  3: { label: "Classe 3 (armure composite)", rating: 3, penalty: 1 },
-  4: { label: "Classe 4 (armure lourde)", rating: 4, penalty: 2 },
-  5: { label: "Classe 5 (armure de chevalier)", rating: 5, penalty: 3 }
+  1: { label: "NOCTIS.js.Classe1VetementsLourds", rating: 1, penalty: 0 },
+  2: { label: "NOCTIS.js.Classe2EtoffeArmureTextile", rating: 2, penalty: 1 },
+  3: { label: "NOCTIS.js.Classe3ArmureComposite", rating: 3, penalty: 1 },
+  4: { label: "NOCTIS.js.Classe4ArmureLourde", rating: 4, penalty: 2 },
+  5: { label: "NOCTIS.js.Classe5ArmureDeChevalier", rating: 5, penalty: 3 }
 };
 
 /* ---------------------------------------- */
 /*  Atouts et handicaps         */
 /* ---------------------------------------- */
 NOCTIS.meritCategories = {
-  physical: "Physique",
-  mental: "Mental",
-  social: "Social",
-  supernatural: "Surnaturel"
+  physical: "NOCTIS.js.Physique",
+  mental: "NOCTIS.js.Mental",
+  social: "NOCTIS.js.Social",
+  supernatural: "NOCTIS.js.Surnaturel"
 };
 
 /* ---------------------------------------- */
@@ -311,40 +312,40 @@ NOCTIS.disciplines = {};
  *  - might : réussites automatiques sur les jets de Force (dégâts et prouesses)
  */
 NOCTIS.disciplineMechanics = {
-  "": "Aucun (pouvoirs à lancer)",
-  speed: "Vélocité : actions supplémentaires, bonus de Dextérité et d'initiative",
-  resilience: "Résilience : dés d'absorption, y compris contre les aggravés",
-  might: "Vigueur surnaturelle : réussites automatiques aux jets de Force"
+  "": "NOCTIS.js.AucunPouvoirsALancer",
+  speed: "NOCTIS.js.VelociteActionsSupplementairesBonusDeDex",
+  resilience: "NOCTIS.js.ResilienceDesDAbsorptionYCompris",
+  might: "NOCTIS.js.VigueurSurnaturelleReussitesAutomatiques"
 };
-NOCTIS.mechanicNames = { speed: "Vélocité", resilience: "Résilience", might: "Vigueur surnaturelle" };
+NOCTIS.mechanicNames = { speed: "NOCTIS.js.Velocite", resilience: "NOCTIS.js.Resilience", might: "NOCTIS.js.VigueurSurnaturelle" };
 
 /* ---------------------------------------- */
 /*  Archétypes                  */
 /* ---------------------------------------- */
 NOCTIS.archetypes = [
-  "Ange gardien", "Architecte", "Autocrate", "Battant", "Bête", "Bon vivant", "Bouffon", "Brute", "Caméléon",
-  "Casse-cou", "Célébrant", "Conformiste", "Défenseur", "Déviant", "Dilettante", "Dirigiste", "Enfant", "Énigme",
-  "Fanatique", "Gourou", "Grand-guignol", "Idéaliste", "Individualiste", "Juge", "Martyr", "Masochiste", "Mercenaire",
-  "Monstre", "Œil du cyclone", "Opportuniste", "Pédagogue", "Pénitent", "Perfectionniste", "Philosophe", "Râleur",
-  "Rebelle", "Sadique", "Séducteur", "Soldat", "Solitaire", "Survivant", "Traditionaliste", "Visionnaire"
+  "NOCTIS.js.AngeGardien", "NOCTIS.js.Architecte", "NOCTIS.js.Autocrate", "NOCTIS.js.Battant", "NOCTIS.js.Bete", "NOCTIS.js.BonVivant", "NOCTIS.js.Bouffon", "NOCTIS.js.Brute", "NOCTIS.js.Cameleon",
+  "NOCTIS.js.CasseCou", "NOCTIS.js.Celebrant", "NOCTIS.js.Conformiste", "NOCTIS.js.Defenseur", "NOCTIS.js.Deviant", "NOCTIS.js.Dilettante", "NOCTIS.js.Dirigiste", "NOCTIS.js.Enfant", "NOCTIS.js.Enigme",
+  "NOCTIS.js.Fanatique", "NOCTIS.js.Gourou", "NOCTIS.js.GrandGuignol", "NOCTIS.js.Idealiste", "NOCTIS.js.Individualiste", "NOCTIS.js.Juge", "NOCTIS.js.Martyr", "NOCTIS.js.Masochiste", "NOCTIS.js.Mercenaire",
+  "NOCTIS.js.Monstre", "NOCTIS.js.IlDuCyclone", "NOCTIS.js.Opportuniste", "NOCTIS.js.Pedagogue", "NOCTIS.js.Penitent", "NOCTIS.js.Perfectionniste", "NOCTIS.js.Philosophe", "NOCTIS.js.Raleur",
+  "NOCTIS.js.Rebelle", "NOCTIS.js.Sadique", "NOCTIS.js.Seducteur", "NOCTIS.js.Soldat", "NOCTIS.js.Solitaire", "NOCTIS.js.Survivant", "NOCTIS.js.Traditionaliste", "NOCTIS.js.Visionnaire"
 ];
 
 /* ---------------------------------------- */
 /*  Types d'acteurs                           */
 /* ---------------------------------------- */
 NOCTIS.actorTypes = {
-  vampire: "Vampire",
-  ghoul: "Goule",
-  mortal: "Mortel",
+  vampire: "NOCTIS.js.Vampire",
+  ghoul: "NOCTIS.js.Goule",
+  mortal: "NOCTIS.js.Mortel",
   npc: "PNJ"
 };
 
 /** Cibles possibles pour les bonus de jets portés par les objets. */
 export function rollTargetChoices() {
-  const out = { all: "Tous les jets", physical: "Jets physiques", social: "Jets sociaux", mental: "Jets mentaux", discipline: "Jets de discipline", conscience: "Conscience / Conviction", attack: "Jets d'attaque", damage: "Jets de dégâts", soak: "Jets d'absorption", initiative: "Initiative", frenzy: "Frénésie", panic: "Panique", willpower: "Volonté", road: "Voie" };
-  for (const [k, v] of Object.entries(NOCTIS.attributes)) out[`attr.${k}`] = `Attribut : ${v}`;
-  for (const [k, v] of Object.entries(NOCTIS.abilities)) out[`abil.${k}`] = `Capacité : ${v}`;
-  for (const [k, v] of Object.entries(NOCTIS.disciplines)) out[`disc.${k}`] = `Discipline : ${v}`;
+  const out = { all: loc("NOCTIS.js.TousLesJets"), physical: loc("NOCTIS.js.JetsPhysiques"), social: loc("NOCTIS.js.JetsSociaux"), mental: loc("NOCTIS.js.JetsMentaux"), discipline: loc("NOCTIS.js.JetsDeDiscipline"), conscience: loc("NOCTIS.js.ConscienceConviction"), attack: loc("NOCTIS.js.JetsDAttaque"), damage: loc("NOCTIS.js.JetsDeDegats"), soak: loc("NOCTIS.js.JetsDAbsorption"), initiative: loc("NOCTIS.js.Initiative"), frenzy: loc("NOCTIS.js.Frenesie"), panic: loc("NOCTIS.js.Panique"), willpower: loc("NOCTIS.js.Volonte"), road: loc("NOCTIS.js.Voie") };
+  for (const [k, v] of Object.entries(NOCTIS.attributes)) out[`attr.${k}`] = loc("NOCTIS.js.Attribut2", { v });
+  for (const [k, v] of Object.entries(NOCTIS.abilities)) out[`abil.${k}`] = loc("NOCTIS.js.Capacite2", { v });
+  for (const [k, v] of Object.entries(NOCTIS.disciplines)) out[`disc.${k}`] = loc("NOCTIS.js.Discipline2", { v });
   return out;
 }
 
@@ -352,28 +353,30 @@ export function rollTargetChoices() {
 /*  Relations et domaine                     */
 /* ---------------------------------------- */
 NOCTIS.relationKinds = {
-  ally: { label: "Allié", background: "allies", icon: "fa-solid fa-handshake" },
-  contact: { label: "Contact majeur", background: "contacts", icon: "fa-solid fa-ear-listen" },
-  mentor: { label: "Mentor", background: "mentor", icon: "fa-solid fa-chess-king" },
-  retainer: { label: "Servant", background: "retainers", icon: "fa-solid fa-user-shield" },
-  herd: { label: "Calice (troupeau)", background: "herd", icon: "fa-solid fa-droplet" },
-  sire: { label: "Sire / lignée", background: null, icon: "fa-solid fa-sitemap" },
-  rival: { label: "Rival / ennemi", background: null, icon: "fa-solid fa-skull" },
-  other: { label: "Autre", background: null, icon: "fa-solid fa-user" }
+  ally: { label: "NOCTIS.js.Allie", background: "allies", icon: "fa-solid fa-handshake" },
+  contact: { label: "NOCTIS.js.ContactMajeur", background: "contacts", icon: "fa-solid fa-ear-listen" },
+  mentor: { label: "NOCTIS.js.Mentor", background: "mentor", icon: "fa-solid fa-chess-king" },
+  retainer: { label: "NOCTIS.js.Servant", background: "retainers", icon: "fa-solid fa-user-shield" },
+  herd: { label: "NOCTIS.js.CaliceTroupeau", background: "herd", icon: "fa-solid fa-droplet" },
+  sire: { label: "NOCTIS.js.SireLignee", background: null, icon: "fa-solid fa-sitemap" },
+  rival: { label: "NOCTIS.js.RivalEnnemi", background: null, icon: "fa-solid fa-skull" },
+  other: { label: "NOCTIS.js.Autre", background: null, icon: "fa-solid fa-user" }
 };
-NOCTIS.attitudes = { friendly: "Amical", neutral: "Neutre", wary: "Méfiant", hostile: "Hostile" };
-NOCTIS.trustLevels = { "-2": "Ennemi", "-1": "Méfiance", "0": "Neutre", "1": "Confiance", "2": "Fidélité" };
+NOCTIS.attitudes = { friendly: "NOCTIS.js.Amical", neutral: "NOCTIS.js.Neutre", wary: "NOCTIS.js.Mefiant", hostile: "NOCTIS.js.Hostile" };
+NOCTIS.trustLevels = { "-2": "NOCTIS.js.Ennemi", "-1": "NOCTIS.js.Mefiance", "0": "NOCTIS.js.Neutre", "1": "NOCTIS.js.Confiance", "2": "NOCTIS.js.Fidelite" };
 /** Zones de chasse. */
 NOCTIS.huntingZones = {
-  slums: { label: "Bas-fonds", difficulty: 4 },
-  lower: { label: "Quartier des classes inférieures", difficulty: 5 },
-  market: { label: "Quartier du marché", difficulty: 6 },
-  middle: { label: "Quartier des classes moyennes", difficulty: 7 },
-  patrolled: { label: "Zone fréquemment patrouillée", difficulty: 8 }
+  slums: { label: "NOCTIS.js.BasFonds", difficulty: 4 },
+  lower: { label: "NOCTIS.js.QuartierDesClassesInferieures", difficulty: 5 },
+  market: { label: "NOCTIS.js.QuartierDuMarche", difficulty: 6 },
+  middle: { label: "NOCTIS.js.QuartierDesClassesMoyennes", difficulty: 7 },
+  patrolled: { label: "NOCTIS.js.ZoneFrequemmentPatrouillee", difficulty: 8 }
 };
 /** Techniques de chasse proposées. */
 NOCTIS.huntingMethods = {
-  seduce: { label: "Séduction dans les tavernes", attr: "appearance", abil: "subterfuge" },
-  stalk: { label: "Traque (chat et souris)", attr: "wits", abil: "stealth" },
-  free: { label: "Autre technique (choisir dans la fenêtre)", attr: "perception", abil: "alertness" }
+  seduce: { label: "NOCTIS.js.SeductionDansLesTavernes", attr: "appearance", abil: "subterfuge" },
+  stalk: { label: "NOCTIS.js.TraqueChatEtSouris", attr: "wits", abil: "stealth" },
+  free: { label: "NOCTIS.js.AutreTechniqueChoisirDansLaFenetre", attr: "perception", abil: "alertness" }
 };
+
+registerLocalizable(NOCTIS);

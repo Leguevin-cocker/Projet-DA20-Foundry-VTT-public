@@ -3,6 +3,7 @@
  * Les clés servent à relier clans, voies de sorcellerie et fiches ; par défaut, la clé vient du nom.
  */
 import { NOCTIS } from "./config.mjs";
+import { loc } from "./i18n.mjs";
 
 /** Clé technique tirée d'un nom : « Ombre Vive » → « ombre-vive ». */
 export const slugKey = (s) => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
@@ -22,7 +23,7 @@ export async function refreshDisciplineRegistry() {
     try {
       const idx = await pack.getIndex({ fields: ["system.key", "system.isPath"] });
       for (const e of idx) if (e.type === "discipline" && !e.system?.isPath) out[disciplineKey(e)] ??= e.name;
-    } catch (err) { console.warn(`NOCTIS | index de ${pack.collection}`, err); }
+    } catch (err) { console.warn(loc("NOCTIS.js.NoctisIndexDe", { collection: pack.collection }), err); }
   }
   for (const k of Object.keys(NOCTIS.disciplines)) delete NOCTIS.disciplines[k];
   for (const [k, v] of Object.entries(out).sort((a, b) => a[1].localeCompare(b[1], "fr"))) NOCTIS.disciplines[k] = v;
@@ -44,13 +45,13 @@ export async function gatherItems(types, fields = []) {
   const seen = new Set();
   for (const it of game.items ?? []) {
     if (!types.includes(it.type)) continue;
-    out.push({ _id: it.id, uuid: it.uuid, name: it.name, img: it.img, type: it.type, system: it.system.toObject?.() ?? foundry.utils.deepClone(it.system), source: "Monde" });
+    out.push({ _id: it.id, uuid: it.uuid, name: it.name, img: it.img, type: it.type, system: it.system.toObject?.() ?? foundry.utils.deepClone(it.system), source: loc("NOCTIS.js.Monde") });
     seen.add(`${it.type}|${it.name}`);
   }
   for (const pack of game.packs ?? []) {
     if (pack.documentName !== "Item") continue;
     let idx;
-    try { idx = await pack.getIndex({ fields }); } catch (err) { console.warn(`NOCTIS | index de ${pack.collection}`, err); continue; }
+    try { idx = await pack.getIndex({ fields }); } catch (err) { console.warn(loc("NOCTIS.js.NoctisIndexDe", { collection: pack.collection }), err); continue; }
     for (const e of idx) {
       if (!types.includes(e.type) || seen.has(`${e.type}|${e.name}`)) continue;
       seen.add(`${e.type}|${e.name}`);

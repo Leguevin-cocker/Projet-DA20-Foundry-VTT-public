@@ -1,5 +1,5 @@
 <div class="tabs-wrap">
-{{#unless creationDone}}<div class="creation-banner"><i class="fa-solid fa-wand-magic-sparkles"></i> Personnage en création. <a data-action="openCreator">Ouvrir le créateur de personnage</a> (guidé ou libre), ou remplissez la fiche à la main puis cliquez sur le sablier.</div>{{/unless}}
+{{#unless creationDone}}<div class="creation-banner"><i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "NOCTIS.ui.PersonnageEnCreation"}} <a data-action="openCreator">{{localize "NOCTIS.ui.OuvrirLeCreateurDePersonnage"}}</a> {{localize "NOCTIS.ui.GuideOuLibreOuRemplissezLa"}}</div>{{/unless}}
 <div class="tabs-row">
 <nav class="noctis-tabs">
   {{#each tabs}}
@@ -7,7 +7,7 @@
   {{/each}}
 </nav>
 <nav class="noctis-tabs noctis-tabs-side">
-  <a class="tab-link {{variantsTab.cssClass}}" data-action="switchTab" data-tab="variants" data-tooltip="Règles en vigueur dans cette chronique : {{variants.active.length}} variante(s) active(s)"><i class="{{variantsTab.icon}}"></i> <span>{{variantsTab.label}}</span>{{#if variants.active.length}}<b class="tab-badge">{{variants.active.length}}</b>{{/if}}</a>
+  <a class="tab-link {{variantsTab.cssClass}}" data-action="switchTab" data-tab="variants" data-tooltip="{{localize "NOCTIS.ui.ReglesEnVigueurDansCetteChronique" length=variants.active.length}}"><i class="{{variantsTab.icon}}"></i> <span>{{variantsTab.label}}</span>{{#if variants.active.length}}<b class="tab-badge">{{variants.active.length}}</b>{{/if}}</a>
 </nav>
 </div>
 </div>

@@ -3,6 +3,7 @@ import { rollPool } from "./dice/roll.mjs";
 import { handleSocket, bindClashCard } from "./combat/clash.mjs";
 import { handleBeastSocket, bindBeastCard } from "./beast.mjs";
 import { rule } from "./variants.mjs";
+import { loc } from "./i18n.mjs";
 
 const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.noctis";
@@ -28,9 +29,9 @@ export function registerSocket() {
 /** Applique des dégâts à un acteur, via le MJ si nécessaire. */
 export async function requestDamage(actor, payload) {
   if (actor.isOwner) return actor.receiveDamage(payload);
-  if (!game.users.activeGM) return ui.notifications.error("Aucun MJ connecté pour appliquer les dégâts.");
+  if (!game.users.activeGM) return ui.notifications.error(loc("NOCTIS.js.AucunMjConnectePourAppliquerLes"));
   game.socket.emit(SOCKET, { action: "receiveDamage", actorUuid: actor.uuid, payload });
-  ui.notifications.info(`Dégâts envoyés au MJ pour ${actor.name}.`);
+  ui.notifications.info(loc("NOCTIS.js.DegatsEnvoyesAuMjPour", { name: actor.name }));
 }
 
 /** Acteurs visés : cibles du joueur, sinon jetons sélectionnés. */
@@ -63,31 +64,21 @@ async function handleChatAction(message, action, dataset) {
   const actor = f.actorUuid ? await fromUuid(f.actorUuid) : null;
 
   if (action === "rollDamage") {
-    if (actor && !actor.isOwner) return ui.notifications.warn("Seul le propriétaire du personnage peut lancer ces dégâts.");
+    if (actor && !actor.isOwner) return ui.notifications.warn(loc("NOCTIS.js.SeulLeProprietaireDuPersonnagePeut"));
     const atk = f.attack ?? {};
     const extra = Math.max(0, (f.successes ?? 1) - (game.settings.get("noctis", "damageAllSuccesses") ? 0 : 1));
-    const content = `
-      <div class="noctis-mini-form">
-        <p>Dégâts de l'arme : <b>${atk.damageLabel ?? atk.damageBase}</b> (${atk.damageTypeLabel ?? ""})</p>
-        <label>Dés de l'arme <input type="number" name="base" value="${atk.damageBase ?? 0}"></label>
-        <label>Réussites excédentaires <input type="number" name="extra" value="${extra}"></label>
-        <p class="hint">Retirez les réussites annulées par une manœuvre défensive de la cible.</p>
-        <label>Modificateur <input type="number" name="mod" value="0"></label>
-        <label>Type <select name="type">
-          ${Object.entries(NOCTIS.damageTypes).map(([k, v]) => `<option value="${k}" ${k === atk.damageType ? "selected" : ""}>${v.label}</option>`).join("")}
-        </select></label>
-      </div>`;
+    const content = loc("NOCTIS.js.DegatsDeLArmeDesDe", { p0: atk.damageLabel ?? atk.damageBase, p1: atk.damageTypeLabel ?? "", p2: atk.damageBase ?? 0, extra, p4: Object.entries(NOCTIS.damageTypes).map(([k, v]) => `<option value="${k}" ${k === atk.damageType ? "selected" : ""}>${v.label}</option>`).join("") });
     const data = await DialogV2.prompt({
-      window: { title: `Dégâts — ${atk.weaponName ?? ""}` },
+      window: { title: loc("NOCTIS.js.Degats", { p0: atk.weaponName ?? "" }) },
       content,
-      ok: { label: "Lancer les dégâts", icon: "fa-solid fa-burst", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object }
+      ok: { label: loc("NOCTIS.js.LancerLesDegats"), icon: "fa-solid fa-burst", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object }
     }).catch(() => null);
     if (!data) return;
     const pool = (Number(data.base) || 0) + (Number(data.extra) || 0) + (Number(data.mod) || 0);
     const res = await rollPool({
       actor, pool, difficulty: 6, kind: "damage", noBotch: true, minOne: rule("minDamage"),
-      label: `Dégâts — ${atk.weaponName ?? ""}`,
-      parts: [`Arme ${data.base}`, `Réussites excédentaires ${data.extra}`, ...(Number(data.mod) ? [`Mod. ${data.mod}`] : []), ...(rule("minDamage") ? ["Minimum 1 réussite (variante)"] : []), ...(atk.fire ? ["Feu ou soleil"] : [])],
+      label: loc("NOCTIS.js.Degats", { p0: atk.weaponName ?? "" }),
+      parts: [loc("NOCTIS.js.Arme2", { base: data.base }), loc("NOCTIS.js.ReussitesExcedentaires", { extra: data.extra }), ...(Number(data.mod) ? [loc("NOCTIS.js.Mod", { mod: data.mod })] : []), ...(rule("minDamage") ? [loc("NOCTIS.js.Minimum1ReussiteVariante")] : []), ...(atk.fire ? [loc("NOCTIS.js.FeuOuSoleil")] : [])],
       flags: { damage: { type: data.type, typeLabel: NOCTIS.damageTypes[data.type].label.toLowerCase(), armorPiercing: atk.armorPiercing ?? 0, fire: !!atk.fire } }
     });
     return res;
@@ -98,7 +89,7 @@ async function handleChatAction(message, action, dataset) {
     const amount = Number(dataset.amount ?? f.successes) || 0;
     const soak = dataset.soak !== "0";
     const targets = damageTargets();
-    if (!targets.length) return ui.notifications.warn("Ciblez (T) ou sélectionnez le jeton qui reçoit les dégâts.");
+    if (!targets.length) return ui.notifications.warn(loc("NOCTIS.js.CiblezTOuSelectionnezLeJeton"));
     for (const t of targets) {
       await requestDamage(t, { amount, type: dmg.type ?? "lethal", soak, armorPiercing: dmg.armorPiercing ?? 0, fire: !!dmg.fire, source: actor?.name ?? "" });
     }
@@ -111,21 +102,11 @@ async function handleChatAction(message, action, dataset) {
 
 export async function manualDamageDialog(actors) {
   const names = actors.map(a => a.name).join(", ");
-  const content = `
-    <div class="noctis-mini-form">
-      <p>Cible : <b>${names}</b></p>
-      <label>Niveaux de dégâts <input type="number" name="amount" value="1" min="0"></label>
-      <label>Type <select name="type">
-        ${Object.entries(NOCTIS.damageTypes).map(([k, v]) => `<option value="${k}" ${k === "lethal" ? "selected" : ""}>${v.label}</option>`).join("")}
-      </select></label>
-      <label class="check"><input type="checkbox" name="soak" checked> Lancer l'absorption</label>
-      <label>Perforation d'armure <input type="number" name="ap" value="0" min="0"></label>
-      <label class="check"><input type="checkbox" name="fire"> Feu ou soleil${rule("armorVsFire") ? " (l'armure n'absorbe pas)" : ""}</label>
-    </div>`;
+  const content = loc("NOCTIS.js.CibleNiveauxDeDegatsTypeLancer", { names, p1: Object.entries(NOCTIS.damageTypes).map(([k, v]) => `<option value="${k}" ${k === "lethal" ? "selected" : ""}>${v.label}</option>`).join(""), p2: rule("armorVsFire") ? loc("NOCTIS.js.LArmureNAbsorbePas") : "" });
   const data = await DialogV2.prompt({
-    window: { title: "Appliquer des dégâts", icon: "fa-solid fa-heart-crack" },
+    window: { title: loc("NOCTIS.js.AppliquerDesDegats"), icon: "fa-solid fa-heart-crack" },
     content,
-    ok: { label: "Appliquer", icon: "fa-solid fa-check", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object }
+    ok: { label: loc("NOCTIS.js.Appliquer"), icon: "fa-solid fa-check", callback: (event, button) => new foundry.applications.ux.FormDataExtended(button.form).object }
   }).catch(() => null);
   if (!data) return;
   for (const a of actors) {

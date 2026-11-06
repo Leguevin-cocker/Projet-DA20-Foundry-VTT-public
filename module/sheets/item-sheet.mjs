@@ -1,5 +1,6 @@
 import { slugKey } from "../registry.mjs";
 import { NOCTIS, rollTargetChoices } from "../config.mjs";
+import { loc } from "../i18n.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -35,12 +36,12 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       targets: rollTargetChoices(),
       modifierTargets: {
         "": "—",
-        ...Object.fromEntries(Object.entries(NOCTIS.attributes).map(([k, v]) => [`attr.${k}`, `Attribut : ${v}`])),
-        ...Object.fromEntries(Object.entries(NOCTIS.abilities).map(([k, v]) => [`abil.${k}`, `Capacité : ${v}`])),
-        generation: "Génération (+ = plus faible)", bloodMax: "Réserve de sang max.", willpowerMax: "Volonté max.",
-        health: "Niveaux de santé", soak: "Absorption", initiative: "Initiative"
+        ...Object.fromEntries(Object.entries(NOCTIS.attributes).map(([k, v]) => [`attr.${k}`, loc("NOCTIS.js.Attribut2", { v })])),
+        ...Object.fromEntries(Object.entries(NOCTIS.abilities).map(([k, v]) => [`abil.${k}`, loc("NOCTIS.js.Capacite2", { v })])),
+        generation: loc("NOCTIS.js.GenerationPlusFaible"), bloodMax: loc("NOCTIS.js.ReserveDeSangMax"), willpowerMax: loc("NOCTIS.js.VolonteMax"),
+        health: loc("NOCTIS.js.NiveauxDeSante"), soak: loc("NOCTIS.js.Absorption2"), initiative: loc("NOCTIS.js.Initiative")
       },
-      abilityChoices: { ...NOCTIS.abilities, willpower: "Volonté", "": "—" },
+      abilityChoices: { ...NOCTIS.abilities, willpower: loc("NOCTIS.js.Volonte"), "": "—" },
       attributeChoices: { "": "—", ...NOCTIS.attributes },
       disciplineChoices: { "": "—", ...NOCTIS.disciplines },
       weaponAbilities: NOCTIS.weaponAbilities,
@@ -48,10 +49,10 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       concealment: NOCTIS.concealment,
       meritCategories: NOCTIS.meritCategories,
       abilityGroups: Object.fromEntries(Object.entries(NOCTIS.abilityGroups).map(([k, v]) => [k, v.label])),
-      virtue1: { conscience: "Conscience", conviction: "Conviction" },
-      virtue2: { selfcontrol: "Maîtrise de soi", instinct: "Instinct" },
-      armorKinds: { armor: "Armure", shield: "Bouclier / arme de parade" },
-      sorceries: { ...Object.fromEntries(Object.entries(NOCTIS.disciplines)), other: "Autre" },
+      virtue1: { conscience: loc("NOCTIS.js.Conscience"), conviction: loc("NOCTIS.js.Conviction") },
+      virtue2: { selfcontrol: loc("NOCTIS.js.MaitriseDeSoi"), instinct: loc("NOCTIS.js.Instinct") },
+      armorKinds: { armor: loc("NOCTIS.js.Armure"), shield: loc("NOCTIS.js.BouclierArmeDeParade") },
+      sorceries: { ...Object.fromEntries(Object.entries(NOCTIS.disciplines)), other: loc("NOCTIS.js.Autre") },
       mechanicChoices: NOCTIS.disciplineMechanics,
       discKey: item.type === "discipline" ? (item.system.key || slugKey(item.name)) : "",
       clanDisciplinesText: (s.disciplines ?? []).map(k => NOCTIS.disciplines[k] ?? k).join(", "),
@@ -95,7 +96,7 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const defaults = {
       "system.modifiers": { target: "", value: 1 },
       "system.bonuses": { id: foundry.utils.randomID(), label: "", target: "all", dice: 1, difficulty: 0, auto: false },
-      "system.powers": { level: (arr.at(-1)?.level ?? 0) + 1, name: "Nouveau pouvoir", attribute: "", ability: "", difficulty: "", cost: "", duration: "", summary: "" },
+      "system.powers": { level: (arr.at(-1)?.level ?? 0) + 1, name: loc("NOCTIS.js.NouveauPouvoir"), attribute: "", ability: "", difficulty: "", cost: "", duration: "", summary: "" },
       "system.sins": { level: (arr.at(-1)?.level ?? 11) - 1, sin: "" },
       "system.levels": { value: (arr.at(-1)?.value ?? 0) + 1, text: "" }
     };

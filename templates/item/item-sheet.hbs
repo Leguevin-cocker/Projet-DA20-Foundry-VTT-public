@@ -1,6 +1,6 @@
 <div class="noctis-item-sheet type-{{type}}">
   <header class="item-header">
-    <img class="item-portrait" src="{{item.img}}" alt="" data-action="editImage" data-tooltip="Changer l'image">
+    <img class="item-portrait" src="{{item.img}}" alt="" data-action="editImage" data-tooltip="{{localize "NOCTIS.ui.ChangerLImage"}}">
     <div class="item-title">
       <input class="item-name" type="text" name="name" value="{{item.name}}">
       <span class="item-type">{{typeLabel}}{{#if system.source}} · {{system.source}}{{/if}}</span>
@@ -11,96 +11,96 @@
   <div class="item-body">
     <div class="fields-grid">
       {{#if isClan}}
-        <label><span>Surnom</span><input type="text" name="system.nickname" value="{{system.nickname}}"></label>
-        <label><span>Lignée</span><input type="checkbox" name="system.isBloodline" {{#if system.isBloodline}}checked{{/if}}></label>
-        <label class="wide"><span>Disciplines de clan</span><input type="text" name="system.disciplinesText" value="{{clanDisciplinesText}}" placeholder="noms des disciplines, séparés par des virgules"></label>
-        <label class="wide"><span>Précision</span><input type="text" name="system.disciplineNote" value="{{system.disciplineNote}}"></label>
-        <label class="wide"><span>Faiblesse</span><textarea name="system.weakness" rows="4">{{system.weakness}}</textarea></label>
-        <label><span>Apparence à 0</span><input type="checkbox" name="system.appearanceZero" {{#if system.appearanceZero}}checked{{/if}}></label>
-        <label><span>Voies courantes</span><input type="text" name="system.roads" value="{{system.roads}}"></label>
-        <label class="wide"><span>Blason (image)</span><span class="file-pick"><input type="text" name="system.emblem" value="{{system.emblem}}"><a data-action="pickEmblem" data-tooltip="Choisir une image"><i class="fa-solid fa-folder-open"></i></a></span></label>
-        <label class="wide" data-tooltip="Faiblesse mécanique : l'XP de Conscience/Conviction et de Voie coûte le double"><span>XP de morale doublée</span><input type="checkbox" name="flags.noctis.doubleConscienceXp" {{#if item.flags.noctis.doubleConscienceXp}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.Surnom"}}</span><input type="text" name="system.nickname" value="{{system.nickname}}"></label>
+        <label><span>{{localize "NOCTIS.ui.Lignee"}}</span><input type="checkbox" name="system.isBloodline" {{#if system.isBloodline}}checked{{/if}}></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.DisciplinesDeClan2"}}</span><input type="text" name="system.disciplinesText" value="{{clanDisciplinesText}}" placeholder="{{localize "NOCTIS.ui.NomsDesDisciplinesSeparesParDes"}}"></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.Precision"}}</span><input type="text" name="system.disciplineNote" value="{{system.disciplineNote}}"></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.Faiblesse3"}}</span><textarea name="system.weakness" rows="4">{{system.weakness}}</textarea></label>
+        <label><span>{{localize "NOCTIS.ui.ApparenceA0"}}</span><input type="checkbox" name="system.appearanceZero" {{#if system.appearanceZero}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.VoiesCourantes"}}</span><input type="text" name="system.roads" value="{{system.roads}}"></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.BlasonImage"}}</span><span class="file-pick"><input type="text" name="system.emblem" value="{{system.emblem}}"><a data-action="pickEmblem" data-tooltip="{{localize "NOCTIS.ui.ChoisirUneImage"}}"><i class="fa-solid fa-folder-open"></i></a></span></label>
+        <label class="wide" data-tooltip="{{localize "NOCTIS.ui.FaiblesseMecaniqueLXpDeConscience"}}"><span>{{localize "NOCTIS.ui.XpDeMoraleDoublee"}}</span><input type="checkbox" name="flags.noctis.doubleConscienceXp" {{#if item.flags.noctis.doubleConscienceXp}}checked{{/if}}></label>
       {{/if}}
 
       {{#if isDiscipline}}
-        <label data-tooltip="Identifiant qui relie clans, voies et fiches. Laissez vide : il est tiré du nom ({{discKey}})."><span>Clé</span><input type="text" name="system.key" value="{{system.key}}" placeholder="{{discKey}}"></label>
-        <label class="wide" data-tooltip="Si la discipline tient l'un de ces rôles, ses points sont appliqués automatiquement (actions, absorption, Force)."><span>Rôle mécanique</span><select name="system.mechanic">{{noctisOptions mechanicChoices system.mechanic}}</select></label>
-        <label><span>Niveau</span><input type="number" name="system.value" value="{{system.value}}" min="0" max="10"></label>
-        <label><span>Voie de sorcellerie</span><input type="checkbox" name="system.isPath" {{#if system.isPath}}checked{{/if}}></label>
+        <label data-tooltip="{{localize "NOCTIS.ui.IdentifiantQuiRelieClansVoiesEt" discKey=discKey}}"><span>{{localize "NOCTIS.ui.Cle"}}</span><input type="text" name="system.key" value="{{system.key}}" placeholder="{{discKey}}"></label>
+        <label class="wide" data-tooltip="{{localize "NOCTIS.ui.SiLaDisciplineTientLUn"}}"><span>{{localize "NOCTIS.ui.RoleMecanique"}}</span><select name="system.mechanic">{{noctisOptions mechanicChoices system.mechanic}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.Niveau4"}}</span><input type="number" name="system.value" value="{{system.value}}" min="0" max="10"></label>
+        <label><span>{{localize "NOCTIS.ui.VoieDeSorcellerie"}}</span><input type="checkbox" name="system.isPath" {{#if system.isPath}}checked{{/if}}></label>
         {{#if system.isPath}}
-          <label><span>Discipline mère</span><select name="system.parent">{{noctisOptions disciplineChoices system.parent}}</select></label>
-          <label><span>Voie primaire</span><input type="checkbox" name="system.primary" {{#if system.primary}}checked{{/if}}></label>
+          <label><span>{{localize "NOCTIS.ui.DisciplineMere"}}</span><select name="system.parent">{{noctisOptions disciplineChoices system.parent}}</select></label>
+          <label><span>{{localize "NOCTIS.ui.VoiePrimaire"}}</span><input type="checkbox" name="system.primary" {{#if system.primary}}checked{{/if}}></label>
         {{/if}}
-        <label><span>Toujours de clan</span><input type="checkbox" name="system.inClan" {{#if system.inClan}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.ToujoursDeClan"}}</span><input type="checkbox" name="system.inClan" {{#if system.inClan}}checked{{/if}}></label>
       {{/if}}
 
       {{#if isMerit}}
-        <label><span>Coût</span><input type="number" name="system.cost" value="{{system.cost}}" min="0"></label>
-        <label><span>Coût (texte)</span><input type="text" name="system.costText" value="{{system.costText}}" placeholder="ex. 1 à 5"></label>
-        <label><span>Catégorie</span><select name="system.category">{{noctisOptions meritCategories system.category}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.Cout"}}</span><input type="number" name="system.cost" value="{{system.cost}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.CoutTexte"}}</span><input type="text" name="system.costText" value="{{system.costText}}" placeholder="{{localize "NOCTIS.ui.Ex1A5"}}"></label>
+        <label><span>{{localize "NOCTIS.ui.Categorie"}}</span><select name="system.category">{{noctisOptions meritCategories system.category}}</select></label>
       {{/if}}
 
       {{#if isAbility}}
-        <label><span>Catégorie</span><select name="system.group">{{noctisOptions abilityGroups system.group}}</select></label>
-        <label><span>Niveau</span><input type="number" name="system.value" value="{{system.value}}" min="0" max="10"></label>
-        <label><span>Spécialité</span><input type="text" name="system.spec" value="{{system.spec}}"></label>
+        <label><span>{{localize "NOCTIS.ui.Categorie"}}</span><select name="system.group">{{noctisOptions abilityGroups system.group}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.Niveau4"}}</span><input type="number" name="system.value" value="{{system.value}}" min="0" max="10"></label>
+        <label><span>{{localize "NOCTIS.ui.Specialite3"}}</span><input type="text" name="system.spec" value="{{system.spec}}"></label>
       {{/if}}
 
       {{#if isRoad}}
-        <label><span>Nom latin</span><input type="text" name="system.latin" value="{{system.latin}}"></label>
-        <label><span>Surnom des adeptes</span><input type="text" name="system.nickname" value="{{system.nickname}}"></label>
-        <label><span>Première vertu</span><select name="system.virtue1">{{noctisOptions virtue1 system.virtue1}}</select></label>
-        <label><span>Deuxième vertu</span><select name="system.virtue2">{{noctisOptions virtue2 system.virtue2}}</select></label>
-        <label class="wide"><span>Aura</span><input type="text" name="system.aura" value="{{system.aura}}"></label>
+        <label><span>{{localize "NOCTIS.ui.NomLatin"}}</span><input type="text" name="system.latin" value="{{system.latin}}"></label>
+        <label><span>{{localize "NOCTIS.ui.SurnomDesAdeptes"}}</span><input type="text" name="system.nickname" value="{{system.nickname}}"></label>
+        <label><span>{{localize "NOCTIS.ui.PremiereVertu"}}</span><select name="system.virtue1">{{noctisOptions virtue1 system.virtue1}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.DeuxiemeVertu"}}</span><select name="system.virtue2">{{noctisOptions virtue2 system.virtue2}}</select></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.Aura"}}</span><input type="text" name="system.aura" value="{{system.aura}}"></label>
       {{/if}}
 
       {{#if isWeapon}}
-        <label><span>Capacité</span><select name="system.ability">{{noctisOptions weaponAbilities system.ability}}</select></label>
-        <label><span>Attribut d'attaque</span><select name="system.attribute">{{noctisOptions attributeChoices system.attribute}}</select></label>
-        <label><span>Dégâts : attribut</span><select name="system.damageAttribute">{{noctisOptions attributeChoices system.damageAttribute}}</select></label>
-        <label><span>Dégâts : bonus</span><input type="number" name="system.damageBonus" value="{{system.damageBonus}}"></label>
-        <label><span>Type de dégâts</span><select name="system.damageType">{{noctisOptions damageTypes system.damageType}}</select></label>
-        <label><span>Difficulté</span><input type="number" name="system.difficulty" value="{{system.difficulty}}" min="2" max="10"></label>
-        <label><span>Portée (m)</span><input type="number" name="system.range" value="{{system.range}}" min="0"></label>
-        <label><span>Dissimulation</span><select name="system.conceal">{{noctisOptions concealment system.conceal}}</select></label>
-        <label><span>Force minimale</span><input type="number" name="system.strength" value="{{system.strength}}" min="0"></label>
-        <label><span>Perforation d'armure</span><input type="number" name="system.armorPiercing" value="{{system.armorPiercing}}" min="0"></label>
-        <label><span>Deux mains</span><input type="checkbox" name="system.twoHanded" {{#if system.twoHanded}}checked{{/if}}></label>
-        <label data-tooltip="Torche, brandon, huile enflammée… Avec la variante, l'armure n'absorbe pas ces dégâts."><span>Feu ou soleil</span><input type="checkbox" name="system.fire" {{#if system.fire}}checked{{/if}}></label>
-        <label><span>Équipée</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
-        <label class="wide"><span>Notes</span><input type="text" name="system.notes" value="{{system.notes}}"></label>
+        <label><span>{{localize "NOCTIS.ui.Capacite"}}</span><select name="system.ability">{{noctisOptions weaponAbilities system.ability}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.AttributDAttaque"}}</span><select name="system.attribute">{{noctisOptions attributeChoices system.attribute}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.DegatsAttribut"}}</span><select name="system.damageAttribute">{{noctisOptions attributeChoices system.damageAttribute}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.DegatsBonus"}}</span><input type="number" name="system.damageBonus" value="{{system.damageBonus}}"></label>
+        <label><span>{{localize "NOCTIS.ui.TypeDeDegats"}}</span><select name="system.damageType">{{noctisOptions damageTypes system.damageType}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.Difficulte3"}}</span><input type="number" name="system.difficulty" value="{{system.difficulty}}" min="2" max="10"></label>
+        <label><span>{{localize "NOCTIS.ui.PorteeM"}}</span><input type="number" name="system.range" value="{{system.range}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.Dissimulation"}}</span><select name="system.conceal">{{noctisOptions concealment system.conceal}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.ForceMinimale"}}</span><input type="number" name="system.strength" value="{{system.strength}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.PerforationDArmure"}}</span><input type="number" name="system.armorPiercing" value="{{system.armorPiercing}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.DeuxMains"}}</span><input type="checkbox" name="system.twoHanded" {{#if system.twoHanded}}checked{{/if}}></label>
+        <label data-tooltip="{{localize "NOCTIS.ui.TorcheBrandonHuileEnflammeeAvecLa"}}"><span>{{localize "NOCTIS.ui.FeuOuSoleil"}}</span><input type="checkbox" name="system.fire" {{#if system.fire}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.Equipee"}}</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
+        <label class="wide"><span>{{localize "NOCTIS.ui.Notes"}}</span><input type="text" name="system.notes" value="{{system.notes}}"></label>
       {{/if}}
 
       {{#if isArmor}}
-        <label><span>Type</span><select name="system.kind">{{noctisOptions armorKinds system.kind}}</select></label>
-        <label><span>Niveau de protection</span><input type="number" name="system.rating" value="{{system.rating}}" min="0"></label>
-        <label><span>Pénalité (Dex, init.)</span><input type="number" name="system.penalty" value="{{system.penalty}}" min="0"></label>
-        <label><span>Difficulté de parade</span><input type="number" name="system.parryDifficulty" value="{{system.parryDifficulty}}" min="2" max="10"></label>
-        <label><span>Difficulté pour l'attaquant</span><input type="number" name="system.attackDifficulty" value="{{system.attackDifficulty}}"></label>
-        <label><span>Portée</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.Type"}}</span><select name="system.kind">{{noctisOptions armorKinds system.kind}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.NiveauDeProtection"}}</span><input type="number" name="system.rating" value="{{system.rating}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.PenaliteDexInit"}}</span><input type="number" name="system.penalty" value="{{system.penalty}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.DifficulteDeParade"}}</span><input type="number" name="system.parryDifficulty" value="{{system.parryDifficulty}}" min="2" max="10"></label>
+        <label><span>{{localize "NOCTIS.ui.DifficultePourLAttaquant"}}</span><input type="number" name="system.attackDifficulty" value="{{system.attackDifficulty}}"></label>
+        <label><span>{{localize "NOCTIS.ui.Portee"}}</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
       {{/if}}
 
       {{#if isGear}}
-        <label><span>Quantité</span><input type="number" name="system.quantity" value="{{system.quantity}}" min="0"></label>
-        <label><span>Porté (bonus actifs)</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
+        <label><span>{{localize "NOCTIS.ui.Quantite"}}</span><input type="number" name="system.quantity" value="{{system.quantity}}" min="0"></label>
+        <label><span>{{localize "NOCTIS.ui.PorteBonusActifs"}}</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
       {{/if}}
 
       {{#if isRitual}}
-        <label><span>Niveau</span><input type="number" name="system.level" value="{{system.level}}" min="1" max="10"></label>
-        <label><span>Sorcellerie</span><select name="system.sorcery">{{noctisOptions sorceries system.sorcery}}</select></label>
+        <label><span>{{localize "NOCTIS.ui.Niveau4"}}</span><input type="number" name="system.level" value="{{system.level}}" min="1" max="10"></label>
+        <label><span>{{localize "NOCTIS.ui.Sorcellerie"}}</span><select name="system.sorcery">{{noctisOptions sorceries system.sorcery}}</select></label>
       {{/if}}
 
-      <label class="wide"><span>Source</span><input type="text" name="system.source" value="{{system.source}}" placeholder="ex. supplément maison"></label>
+      <label class="wide"><span>{{localize "NOCTIS.ui.Source"}}</span><input type="text" name="system.source" value="{{system.source}}" placeholder="{{localize "NOCTIS.ui.ExSupplementMaison"}}"></label>
     </div>
 
     {{#if isClan}}
-      <div class="clan-weakness-preview"><b>Disciplines :</b> {{clanDisciplinesText}}{{#if system.disciplineNote}} — {{system.disciplineNote}}{{/if}}</div>
+      <div class="clan-weakness-preview">{{{localize "NOCTIS.ui.Disciplines2" clanDisciplinesText=clanDisciplinesText}}}{{#if system.disciplineNote}} — {{system.disciplineNote}}{{/if}}</div>
     {{/if}}
 
     {{#if isDiscipline}}
-      <h3 class="noctis-subsection">Pouvoirs</h3>
+      <h3 class="noctis-subsection">{{localize "NOCTIS.ui.Pouvoirs"}}</h3>
       <table class="powers-editor">
-        <thead><tr><th>Niv.</th><th>Nom</th><th>Attribut</th><th>Capacité</th><th>Diff.</th><th>Coût</th><th>Durée</th><th></th></tr></thead>
+        <thead><tr><th>{{localize "NOCTIS.ui.Niv"}}</th><th>{{localize "NOCTIS.ui.Nom"}}</th><th>{{localize "NOCTIS.ui.Attribut"}}</th><th>{{localize "NOCTIS.ui.Capacite"}}</th><th>{{localize "NOCTIS.ui.Diff"}}</th><th>{{localize "NOCTIS.ui.Cout"}}</th><th>{{localize "NOCTIS.ui.Duree"}}</th><th></th></tr></thead>
         <tbody>
           {{#each system.powers}}
             <tr>
@@ -110,21 +110,21 @@
               <td><select name="system.powers.{{@index}}.ability">{{noctisOptions ../abilityChoices ability}}</select></td>
               <td><input type="text" name="system.powers.{{@index}}.difficulty" value="{{difficulty}}"></td>
               <td><input type="text" name="system.powers.{{@index}}.cost" value="{{cost}}"></td>
-              <td><input type="text" name="system.powers.{{@index}}.duration" value="{{duration}}" placeholder="scène, tour…"></td>
+              <td><input type="text" name="system.powers.{{@index}}.duration" value="{{duration}}" placeholder="{{localize "NOCTIS.ui.SceneTour"}}"></td>
               <td><a data-action="deleteRow" data-field="system.powers" data-idx="{{@index}}"><i class="fa-solid fa-trash"></i></a></td>
             </tr>
-            <tr class="summary-row"><td></td><td colspan="7"><textarea name="system.powers.{{@index}}.summary" rows="2" placeholder="Résumé">{{summary}}</textarea></td></tr>
+            <tr class="summary-row"><td></td><td colspan="7"><textarea name="system.powers.{{@index}}.summary" rows="2" placeholder="{{localize "NOCTIS.ui.Resume"}}">{{summary}}</textarea></td></tr>
           {{/each}}
         </tbody>
       </table>
-      <a class="add-row" data-action="addRow" data-field="system.powers"><i class="fa-solid fa-plus"></i> pouvoir</a>
+      <a class="add-row" data-action="addRow" data-field="system.powers"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Pouvoir"}}</a>
     {{/if}}
 
     {{#if isMerit}}
-      <h3 class="noctis-subsection">Niveaux</h3>
-      <p class="hint">Facultatif. Pour un atout ou un handicap à plusieurs niveaux (ex. un rival plus ou moins puissant) : le créateur de personnage proposera chaque niveau avec son texte et son coût.</p>
+      <h3 class="noctis-subsection">{{localize "NOCTIS.ui.Niveaux"}}</h3>
+      <p class="hint">{{localize "NOCTIS.ui.FacultatifPourUnAtoutOuUn"}}</p>
       <table class="sins-editor levels-editor">
-        <thead><tr><th>Coût</th><th>Effet de ce niveau</th><th></th></tr></thead>
+        <thead><tr><th>{{localize "NOCTIS.ui.Cout"}}</th><th>{{localize "NOCTIS.ui.EffetDeCeNiveau"}}</th><th></th></tr></thead>
         {{#each system.levels}}
           <tr>
             <td><input type="number" name="system.levels.{{@index}}.value" value="{{value}}" min="0"></td>
@@ -133,11 +133,11 @@
           </tr>
         {{/each}}
       </table>
-      <a class="add-row" data-action="addRow" data-field="system.levels"><i class="fa-solid fa-plus"></i> niveau</a>
+      <a class="add-row" data-action="addRow" data-field="system.levels"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Niveau5"}}</a>
     {{/if}}
 
     {{#if isRoad}}
-      <h3 class="noctis-subsection">Hiérarchie des péchés</h3>
+      <h3 class="noctis-subsection">{{localize "NOCTIS.ui.HierarchieDesPeches"}}</h3>
       <table class="sins-editor">
         {{#each system.sins}}
           <tr>
@@ -147,18 +147,18 @@
           </tr>
         {{/each}}
       </table>
-      <a class="add-row" data-action="addRow" data-field="system.sins"><i class="fa-solid fa-plus"></i> péché</a>
+      <a class="add-row" data-action="addRow" data-field="system.sins"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Peche"}}</a>
     {{/if}}
 
-    <h3 class="noctis-subsection">Description</h3>
+    <h3 class="noctis-subsection">{{localize "NOCTIS.ui.Description"}}</h3>
     <prose-mirror name="system.description" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.description}}">{{{enrichedDescription}}}</prose-mirror>
 
     <details class="automation" {{#if system.bonuses.length}}open{{/if}}>
-      <summary><i class="fa-solid fa-gears"></i> Automatisation</summary>
-      <h4>Bonus proposés dans la fenêtre de jet</h4>
-      <p class="hint">Ex. Sens commun : +1 dé quand le conteur l'autorise ; Faiblesse de lignée : difficulté +2 en frénésie (« auto » = coché d'office quand la cible correspond).</p>
+      <summary><i class="fa-solid fa-gears"></i> {{localize "NOCTIS.ui.Automatisation"}}</summary>
+      <h4>{{localize "NOCTIS.ui.BonusProposesDansLaFenetreDe"}}</h4>
+      <p class="hint">{{localize "NOCTIS.ui.ExSensCommun1DeQuand"}}</p>
       <table class="bonus-editor">
-        <thead><tr><th>Libellé</th><th>S'applique à</th><th>Dés</th><th>Diff.</th><th>Auto</th><th></th></tr></thead>
+        <thead><tr><th>{{localize "NOCTIS.ui.Libelle"}}</th><th>{{localize "NOCTIS.ui.SAppliqueA"}}</th><th>{{localize "NOCTIS.ui.Des4"}}</th><th>{{localize "NOCTIS.ui.Diff"}}</th><th>{{localize "NOCTIS.ui.Auto"}}</th><th></th></tr></thead>
         {{#each system.bonuses}}
           <tr>
             <td><input type="text" name="system.bonuses.{{@index}}.label" value="{{label}}"><input type="hidden" name="system.bonuses.{{@index}}.id" value="{{id}}"></td>
@@ -170,9 +170,9 @@
           </tr>
         {{/each}}
       </table>
-      <a class="add-row" data-action="addRow" data-field="system.bonuses"><i class="fa-solid fa-plus"></i> bonus de jet</a>
+      <a class="add-row" data-action="addRow" data-field="system.bonuses"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.BonusDeJet"}}</a>
 
-      <h4>Modificateurs permanents de la fiche</h4>
+      <h4>{{localize "NOCTIS.ui.ModificateursPermanentsDeLaFiche"}}</h4>
       <table class="modifier-editor">
         {{#each system.modifiers}}
           <tr>
@@ -182,7 +182,7 @@
           </tr>
         {{/each}}
       </table>
-      <a class="add-row" data-action="addRow" data-field="system.modifiers"><i class="fa-solid fa-plus"></i> modificateur</a>
+      <a class="add-row" data-action="addRow" data-field="system.modifiers"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Modificateur"}}</a>
     </details>
   </div>
 </div>

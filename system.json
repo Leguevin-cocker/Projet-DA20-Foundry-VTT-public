@@ -2,7 +2,7 @@
   "id": "noctis",
   "title": "Noctis — chroniques de vampires médiévales",
   "description": "Système générique pour Foundry VTT : une chronique de vampires dans un Moyen Âge sombre, sur un moteur à d10 (groupements de dés, difficultés, santé à 7 niveaux, sang, Volonté, vertus). Fiches modernes, créateur de personnage guidé, combat automatisé avec manœuvres, la Bête, calendrier et temps de la chronique, expérience, variantes de règles. Aucun contenu d'univers : créez vos lignées, disciplines, Voies et atouts avec les éditeurs intégrés.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14.370"
@@ -23,6 +23,11 @@
       "lang": "fr",
       "name": "Français",
       "path": "lang/fr.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
     }
   ],
   "documentTypes": {
@@ -119,7 +124,7 @@
   "socket": true,
   "url": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public",
   "manifest": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json",
-  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/download/v1.0.0/noctis.zip",
+  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/download/v1.1.0/noctis.zip",
   "license": "LICENSE.txt",
   "readme": "README.md",
   "bugs": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/issues"

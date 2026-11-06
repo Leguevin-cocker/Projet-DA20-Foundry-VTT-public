@@ -1,0 +1,136 @@
+[
+ {
+  "name": "Light Sleeper",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Examples — Merits",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "physical",
+   "levels": [],
+   "description": "<p>You wake at the slightest noise, even in broad daylight, and act normally on the first turn.</p>"
+  }
+ },
+ {
+  "name": "Merchant's Eye",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Examples — Merits",
+  "system": {
+   "cost": 1,
+   "costText": "",
+   "category": "mental",
+   "levels": [],
+   "description": "<p>You judge the worth of an object or goods at a glance: −2 difficulty to appraise them.</p>"
+  }
+ },
+ {
+  "name": "Network of Watchers",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Examples — Merits",
+  "system": {
+   "cost": 1,
+   "costText": "1 to 3",
+   "category": "social",
+   "levels": [
+    {
+     "value": 1,
+     "text": "A district."
+    },
+    {
+     "value": 2,
+     "text": "A city."
+    },
+    {
+     "value": 3,
+     "text": "A region."
+    }
+   ],
+   "description": "<p>Common folk warn you when someone is looking for you.</p>"
+  }
+ },
+ {
+  "name": "Tenacious Blood",
+  "type": "merit",
+  "img": "systems/noctis/assets/icons/merit.svg",
+  "folder": "Examples — Merits",
+  "system": {
+   "cost": 3,
+   "costText": "",
+   "category": "supernatural",
+   "levels": [],
+   "description": "<p>Your blood keeps its potency outside the body: it stays good for a whole night in a vessel.</p>"
+  }
+ },
+ {
+  "name": "Bad Reputation",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Examples — Flaws",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "social",
+   "levels": [],
+   "description": "<p>People whisper about you: +1 difficulty to social rolls against those who know you by name.</p>"
+  }
+ },
+ {
+  "name": "Rival",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Examples — Flaws",
+  "system": {
+   "cost": 1,
+   "costText": "1 to 4",
+   "category": "social",
+   "levels": [
+    {
+     "value": 1,
+     "text": "A rival of little weight."
+    },
+    {
+     "value": 2,
+     "text": "A rival of your rank."
+    },
+    {
+     "value": 3,
+     "text": "A rival more powerful than you."
+    },
+    {
+     "value": 4,
+     "text": "A formidable rival, surrounded by allies."
+    }
+   ],
+   "description": "<p>Someone opposes you and seeks to harm you.</p>"
+  }
+ },
+ {
+  "name": "Phobia",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Examples — Flaws",
+  "system": {
+   "cost": 2,
+   "costText": "",
+   "category": "mental",
+   "levels": [],
+   "description": "<p>An irrational fear (choose it): a Courage roll not to flee when confronted with it.</p>"
+  }
+ },
+ {
+  "name": "Burning Thirst",
+  "type": "flaw",
+  "img": "systems/noctis/assets/icons/flaw.svg",
+  "folder": "Examples — Flaws",
+  "system": {
+   "cost": 3,
+   "costText": "",
+   "category": "supernatural",
+   "levels": [],
+   "description": "<p>You lose 2 blood points on waking instead of one.</p>"
+  }
+ }
+]

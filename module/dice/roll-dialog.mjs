@@ -4,6 +4,7 @@ import { rule } from "../variants.mjs";
 import { targetsByRange, tokenFor, participant, startClash } from "../combat/clash.mjs";
 import { MANEUVERS, TARGETING, POSITIONS, COVERS, maneuversFor, maneuverTooltip, maneuverDamage } from "../combat/maneuvers.mjs";
 import { hasStatus } from "../status.mjs";
+import { loc } from "../i18n.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -35,7 +36,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     classes: ["noctis", "noctis-window", "noctis-roll-dialog"],
-    window: { title: "Jet de dés", icon: "fa-solid fa-dice-d10", resizable: false },
+    window: { title: loc("NOCTIS.js.JetDeDes"), icon: "fa-solid fa-dice-d10", resizable: false },
     position: { width: 460, height: "auto" },
     form: { handler: RollDialog.#onSubmit, submitOnChange: false, closeOnSubmit: false },
     actions: {
@@ -51,7 +52,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     form: { template: "systems/noctis/templates/dialog/roll-dialog.hbs" }
   };
 
-  get title() { return this.preset.label ? `Jet — ${this.preset.label}` : "Jet de dés"; }
+  get title() { return this.preset.label ? loc("NOCTIS.js.Jet", { label: this.preset.label }) : loc("NOCTIS.js.JetDeDes"); }
 
   /** Ouvre la fenêtre et renvoie une promesse résolue après le jet (ou null). */
   static async prompt(actor, preset = {}) {
@@ -175,7 +176,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     if (t1) { pool += t1.value; parts.push(`${t1.label} ${t1.value}`); }
     if (t2) { pool += t2.value; parts.push(`${t2.label} ${t2.value}`); }
     const bonusDice = Number(fd.bonusDice) || 0;
-    if (bonusDice) { pool += bonusDice; parts.push(`Modificateur ${bonusDice > 0 ? "+" : ""}${bonusDice}`); }
+    if (bonusDice) { pool += bonusDice; parts.push(loc("NOCTIS.js.Modificateur", { p0: bonusDice > 0 ? "+" : "", bonusDice })); }
 
     let difficulty = Number(fd.difficulty) || 6;
 
@@ -183,8 +184,8 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     for (const b of (s.mods?.rollBonuses ?? [])) {
       const key = `${b.itemId}.${b.id}`;
       if (!fd[`bonus.${key}`]) continue;
-      if (b.dice) { pool += b.dice; parts.push(`${b.label || b.source} ${b.dice > 0 ? "+" : ""}${b.dice} dé${Math.abs(b.dice) > 1 ? "s" : ""}`); }
-      if (b.difficulty) { difficulty += b.difficulty; parts.push(`${b.label || b.source} : difficulté ${b.difficulty > 0 ? "+" : ""}${b.difficulty}`); }
+      if (b.dice) { pool += b.dice; parts.push(loc("NOCTIS.js.De", { p0: b.label || b.source, p1: b.dice > 0 ? "+" : "", dice: b.dice, p3: Math.abs(b.dice) > 1 ? "s" : "" })); }
+      if (b.difficulty) { difficulty += b.difficulty; parts.push(loc("NOCTIS.js.Difficulte2", { p0: b.label || b.source, p1: b.difficulty > 0 ? "+" : "", difficulty: b.difficulty })); }
     }
 
     // Amplification par le sang (ajoutée avant le jet)
@@ -193,20 +194,20 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Pénalité de blessures
     const ignoreWounds = !!fd.ignoreWounds;
-    if (!p.noWoundPenalty && s.health.penalty && !ignoreWounds) { pool += s.health.penalty; parts.push(`Blessures ${s.health.penalty}`); }
+    if (!p.noWoundPenalty && s.health.penalty && !ignoreWounds) { pool += s.health.penalty; parts.push(loc("NOCTIS.js.Blessures", { penalty: s.health.penalty })); }
 
     // Vélocité : son score s'ajoute aux groupements basés sur la Dextérité
     const cel = s.celerityBonus ?? 0;
     const celUsed = s.combat?.celerityActive ?? 0;
-    if (t1?.dex && cel) { pool += cel; parts.push(`${s.mechanicNames?.speed ?? "Vélocité"} +${cel}${celUsed ? ` (${celUsed} point${celUsed > 1 ? "s" : ""} utilisé${celUsed > 1 ? "s" : ""} en actions)` : ""}`); }
+    if (t1?.dex && cel) { pool += cel; parts.push(`${s.mechanicNames?.speed ?? loc("NOCTIS.js.Velocite")} +${cel}${celUsed ? loc("NOCTIS.js.PointUtiliseEnActions", { celUsed, p1: celUsed > 1 ? "s" : "", p2: celUsed > 1 ? "s" : "" }) : ""}`); }
 
     // Pénalité d'armure (jets basés sur la Dextérité)
-    if (t1?.dex && s.armorPenalty) { pool -= s.armorPenalty; parts.push(`Armure −${s.armorPenalty}`); }
+    if (t1?.dex && s.armorPenalty) { pool -= s.armorPenalty; parts.push(loc("NOCTIS.js.Armure2", { armorPenalty: s.armorPenalty })); }
 
     // Variante « défense au prix d'un dé » : chaque défense du tour retire 1 dé à l'attaque suivante
     let defPenalty = 0;
     if (p.kind === "attack" && actor.inActiveCombat && rule("defenseRule") === "dicePenalty") defPenalty = s.combat?.defensePenalty ?? 0;
-    if (defPenalty) { pool -= defPenalty; parts.push(`Défenses précédentes −${defPenalty}`); }
+    if (defPenalty) { pool -= defPenalty; parts.push(loc("NOCTIS.js.DefensesPrecedentes", { defPenalty })); }
 
     // Manœuvre et situation (jet opposé uniquement)
     let maneuver = null;
@@ -214,43 +215,43 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       const m = MANEUVERS[fd.maneuver];
       if (m) {
         maneuver = { key: fd.maneuver, ...m };
-        if (m.dice) { pool += m.dice; parts.push(`${m.label} +${m.dice} dé`); }
-        if (m.diff) { difficulty += m.diff; parts.push(`${m.label} : difficulté ${m.diff > 0 ? "+" : ""}${m.diff}`); }
-        if (m.minArchery && (s.abilities.archery?.total ?? 0) < m.minArchery) parts.push(`⚠ ${m.label} demande Tir à l'arc ${m.minArchery}`);
+        if (m.dice) { pool += m.dice; parts.push(loc("NOCTIS.js.De2", { label: m.label, dice: m.dice })); }
+        if (m.diff) { difficulty += m.diff; parts.push(loc("NOCTIS.js.Difficulte3", { label: m.label, p1: m.diff > 0 ? "+" : "", diff: m.diff })); }
+        if (m.minArchery && (s.abilities.archery?.total ?? 0) < m.minArchery) parts.push(loc("NOCTIS.js.DemandeTirALArc", { label: m.label, minArchery: m.minArchery }));
       }
       const tg = TARGETING[fd.targeting];
-      if (tg?.diff) { difficulty += tg.diff; parts.push(`Ciblage ${tg.label.split(" (")[0].toLowerCase()} +${tg.diff} diff.${tg.dmg ? `, +${tg.dmg} dégâts` : ""}`); }
+      if (tg?.diff) { difficulty += tg.diff; parts.push(loc("NOCTIS.js.CiblageDiff", { p0: tg.label.split(" (")[0].toLowerCase(), diff: tg.diff, p2: tg.dmg ? loc("NOCTIS.js.Degats2", { dmg: tg.dmg }) : "" })); }
       const pos = POSITIONS[fd.position];
-      if (pos?.dice) { pool += pos.dice; parts.push(`${pos.label} +${pos.dice} dé${pos.dice > 1 ? "s" : ""}`); }
+      if (pos?.dice) { pool += pos.dice; parts.push(loc("NOCTIS.js.De3", { label: pos.label, dice: pos.dice, p2: pos.dice > 1 ? "s" : "" })); }
       const cov = COVERS[fd.cover];
-      if (cov?.diff) { difficulty += cov.diff; parts.push(`Couvert ${cov.label.split(" (")[0].toLowerCase()} +${cov.diff} diff.`); }
+      if (cov?.diff) { difficulty += cov.diff; parts.push(loc("NOCTIS.js.CouvertDiff", { p0: cov.label.split(" (")[0].toLowerCase(), diff: cov.diff })); }
       const aim = Math.min(Number(fd.aim) || 0, s.attributes.perception.total);
-      if (aim) { pool += aim; parts.push(`Visée +${aim}`); }
+      if (aim) { pool += aim; parts.push(loc("NOCTIS.js.Visee", { aim })); }
       const opp = Math.min(4, Math.max(0, (Number(fd.opponents) || 1) - 1));
-      if (opp) { difficulty += opp; parts.push(`Adversaires multiples +${opp} diff.`); }
+      if (opp) { difficulty += opp; parts.push(loc("NOCTIS.js.AdversairesMultiplesDiff", { opp })); }
       // États de la cible
       const ta = this.#targetActor(fd);
-      if (hasStatus(ta, "blinded")) { pool += 2; parts.push("Cible aveuglée +2 dés"); }
-      if (hasStatus(ta, "grappled")) { pool += 2; parts.push("Cible immobilisée +2 dés"); }
-      if (maneuver?.needsHold && ta && !hasStatus(ta, "grappled")) parts.push("⚠ la cible n'est pas agrippée");
+      if (hasStatus(ta, "blinded")) { pool += 2; parts.push(loc("NOCTIS.js.CibleAveuglee2Des")); }
+      if (hasStatus(ta, "grappled")) { pool += 2; parts.push(loc("NOCTIS.js.CibleImmobilisee2Des")); }
+      if (maneuver?.needsHold && ta && !hasStatus(ta, "grappled")) parts.push(loc("NOCTIS.js.LaCibleNEstPasAgrippee"));
     }
     // États de l'attaquant
-    if (hasStatus(actor, "blinded")) { difficulty += 2; parts.push("Aveuglé : difficulté +2"); }
+    if (hasStatus(actor, "blinded")) { difficulty += 2; parts.push(loc("NOCTIS.js.AveugleDifficulte2")); }
 
     // Vigueur surnaturelle : réussites automatiques aux jets de Force
     let bonusSuccesses = 0;
     const might = s.mechanics?.might ?? 0;
     if (might && (fd.trait1 === "attr.strength" || fd.trait2 === "attr.strength")) {
       bonusSuccesses = might;
-      parts.push(`${s.mechanicNames?.might ?? "Vigueur surnaturelle"} : +${might} réussite${might > 1 ? "s" : ""} automatique${might > 1 ? "s" : ""}`);
+      parts.push(loc("NOCTIS.js.ReussiteAutomatique", { p0: s.mechanicNames?.might ?? loc("NOCTIS.js.VigueurSurnaturelle"), might, p2: might > 1 ? "s" : "", p3: might > 1 ? "s" : "" }));
     }
 
     // Actions multiples
     const multi = Number(fd.multi) || 0;
-    if (multi > 0) { pool -= multi; difficulty += multi; parts.push(`Action multiple : −${multi} dé${multi > 1 ? "s" : ""}, +${multi} diff.`); }
+    if (multi > 0) { pool -= multi; difficulty += multi; parts.push(loc("NOCTIS.js.ActionMultipleDeDiff", { multi, p1: multi > 1 ? "s" : "" })); }
 
     // Plafond par la réserve de sang (Maîtrise de soi/Instinct)
-    if (p.capByBlood && s.usesBlood && pool > s.blood.value) { parts.push(`Plafonné par la réserve de sang (${s.blood.value})`); pool = s.blood.value; }
+    if (p.capByBlood && s.usesBlood && pool > s.blood.value) { parts.push(loc("NOCTIS.js.PlafonneParLaReserveDeSang", { value: s.blood.value })); pool = s.blood.value; }
 
     if (difficulty > 10) { pool -= (difficulty - 10); difficulty = 10; }
     pool = Math.max(0, pool);
@@ -262,12 +263,12 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     const c = this.#compute();
     const el = this.element;
     const sum = el.querySelector("[data-summary]");
-    if (sum) sum.innerHTML = `<span class="pool">${c.pool}</span> dé${c.pool > 1 ? "s" : ""} &middot; difficulté <span class="diff">${c.difficulty}</span> <em>${NOCTIS.difficulties[c.difficulty] ?? ""}</em>`;
+    if (sum) sum.innerHTML = loc("NOCTIS.js.DeMiddotDifficulte", { pool: c.pool, p1: c.pool > 1 ? "s" : "", difficulty: c.difficulty, p3: NOCTIS.difficulties[c.difficulty] ?? "" });
     const det = el.querySelector("[data-parts]");
     if (det) det.textContent = c.parts.join(" · ");
     const spec = el.querySelector("[data-specs]");
     if (spec) {
-      spec.textContent = c.specs.length ? `(${c.specs.join(" ; ")})` : "(aucune spécialité sur ces traits)";
+      spec.textContent = c.specs.length ? `(${c.specs.join(" ; ")})` : loc("NOCTIS.js.AucuneSpecialiteSurCesTraits");
       const box = el.querySelector("input[name=specialty]");
       if (box && !box.dataset.touched) box.checked = false;
     }
@@ -285,7 +286,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     const mode = target.dataset.mode;
     const el = this.element;
     el.querySelector("input[name=mode]").value = mode;
-    el.querySelectorAll(".roll-tabs a").forEach(a => a.classList.toggle("active", a.dataset.mode === mode));
+    el.querySelectorAll(`.roll-tabs a`).forEach(a => a.classList.toggle("active", a.dataset.mode === mode));
     el.querySelector(".opposed-box")?.classList.toggle("hidden", mode !== "opposed");
     this.setPosition({ height: "auto" });
   }
@@ -322,17 +323,17 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     let targetToken = null;
     if (opposed) {
       const uuid = c.fd["target.melee"] || c.fd["target.close"] || c.fd["target.far"];
-      if (!uuid) { return ui.notifications.warn("Choisissez une cible dans l'une des trois listes."); }
+      if (!uuid) { return ui.notifications.warn(loc("NOCTIS.js.ChoisissezUneCibleDansLUne")); }
       targetToken = await fromUuid(uuid);
-      if (!targetToken?.actor) { return ui.notifications.warn("Cible introuvable."); }
+      if (!targetToken?.actor) { return ui.notifications.warn(loc("NOCTIS.js.CibleIntrouvable")); }
       if (actor.inActiveCombat && !(await actor.useAction({ attack: true }))) {
-        return ui.notifications.warn(`${actor.name} n'a plus d'action (ou plus d'attaque) ce tour.`);
+        return ui.notifications.warn(loc("NOCTIS.js.NAPlusDActionOu", { name: actor.name }));
       }
     }
 
     // Dépenses préalables
     if (c.willpower && !(await actor.spendWillpower(1))) return;
-    if (c.ignoreWounds && !(await actor.spendWillpower(1, "ignorer les pénalités de blessures"))) return;
+    if (c.ignoreWounds && !(await actor.spendWillpower(1, loc("NOCTIS.js.IgnorerLesPenalitesDeBlessures")))) return;
     for (const k of NOCTIS.physicalAttributes) {
       const n = Number(c.fd[`boost.${k}`]) || 0;
       for (let i = 0; i < n; i++) await actor.bloodBoost(k);
@@ -342,12 +343,12 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     if (c.bloodBoost) {
       for (const k of NOCTIS.physicalAttributes) {
         const n = Number(c.fd[`boost.${k}`]) || 0;
-        if (n && (c.fd.trait1 === `attr.${k}` || c.fd.trait2 === `attr.${k}`)) { pool += n; c.parts.push(`Amplification ${NOCTIS.attributes[k]} +${n}`); }
+        if (n && (c.fd.trait1 === `attr.${k}` || c.fd.trait2 === `attr.${k}`)) { pool += n; c.parts.push(loc("NOCTIS.js.Amplification", { p0: NOCTIS.attributes[k], n })); }
       }
     }
 
     if (c.defPenalty) await actor.update({ "system.combat.defensePenalty": 0 });
-    const label = p.label || [c.t1?.label, c.t2?.label].filter(Boolean).join(" + ") || "Jet";
+    const label = p.label || [c.t1?.label, c.t2?.label].filter(Boolean).join(" + ") || loc("NOCTIS.js.Jet2");
     const flags = foundry.utils.deepClone(p.flags ?? {});
     if (p.kind === "attack" && p.weaponId) {
       const w = actor.items.get(p.weaponId);
@@ -376,7 +377,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         name: w.name, damageType: w.system.damageType, armorPiercing: w.system.armorPiercing ?? 0, fire: !!w.system.fire,
         damageBase: (w.system.damageAttribute ? (actor.system.attributes[w.system.damageAttribute]?.total ?? 0) : 0) + (w.system.damageBonus ?? 0),
         damageLabel: flags.attack?.damageLabel ?? ""
-      } : { name: "Mains nues", damageType: "bashing", armorPiercing: 0, damageBase: str, damageLabel: `Force (${str})` };
+      } : { name: loc("NOCTIS.js.MainsNues"), damageType: "bashing", armorPiercing: 0, damageBase: str, damageLabel: loc("NOCTIS.js.Force2", { str }) };
       // La manœuvre fixe la base et le type de dégâts
       let noDamage = false;
       if (m) {
@@ -395,7 +396,7 @@ export class RollDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       const state = {
         attacker: participant(actor, tokenFor(actor)),
         defender: participant(targetToken.actor, targetToken),
-        attackKind, attackKindLabel: { brawl: "corps à corps (Bagarre)", melee: "corps à corps (Mêlée)", ranged: "à distance" }[attackKind],
+        attackKind, attackKindLabel: { brawl: loc("NOCTIS.js.CorpsACorpsBagarre"), melee: loc("NOCTIS.js.CorpsACorpsMelee"), ranged: loc("NOCTIS.js.ADistance") }[attackKind],
         weapon, noDamage,
         maneuver: m ? { key: m.key, label: m.label, short: m.short, effect: m.effect ?? "", needsHold: !!m.needsHold,
           ignoreArmor: !!TARGETING[c.fd.targeting]?.ignoreArmor, targeting: c.fd.targeting !== "none" ? TARGETING[c.fd.targeting]?.label : "",

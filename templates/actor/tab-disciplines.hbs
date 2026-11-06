@@ -1,7 +1,7 @@
 <section class="tab tab-disciplines {{tab.cssClass}}" data-tab="disciplines">
-  <h2 class="noctis-section"><span>Disciplines</span></h2>
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Disciplines"}}</span></h2>
   {{#unless hasDisciplines}}
-    <p class="drop-hint"><i class="fa-solid fa-hand-pointer"></i> Glissez une discipline ou une voie depuis l'onglet Objets ou un compendium. Le clan ajoute automatiquement ses disciplines.</p>
+    <p class="drop-hint"><i class="fa-solid fa-hand-pointer"></i> {{localize "NOCTIS.ui.GlissezUneDisciplineOuUneVoie"}}</p>
   {{/unless}}
   <div class="discipline-list">
     {{#each disciplines}}
@@ -12,25 +12,25 @@
           <div class="disc-title">
             <a class="disc-name" data-action="select" data-kind="discipline">{{name}}</a>
             <span class="disc-tags">
-              {{#if isClan}}<span class="tag clan" data-tooltip="Discipline de clan : progression à niveau × 5 XP">Clan</span>{{/if}}
-              {{#if isPath}}<span class="tag path">Voie de {{parentLabel}}</span>{{/if}}
+              {{#if isClan}}<span class="tag clan" data-tooltip="{{localize "NOCTIS.ui.DisciplineDeClanProgressionANiveau"}}">{{localize "NOCTIS.ui.Clan"}}</span>{{/if}}
+              {{#if isPath}}<span class="tag path">{{localize "NOCTIS.ui.VoieDe" parentLabel=parentLabel}}</span>{{/if}}
             </span>
           </div>
           {{noctisDots value=value max=max path=path}}
           <span class="mini-controls">
-            <a data-action="rollTrait" data-ref="item.{{id}}" data-tooltip="Jet libre avec cette discipline"><i class="fa-solid fa-dice-d10"></i></a>
-            <a data-action="itemChat" data-tooltip="Montrer dans le chat"><i class="fa-solid fa-comment"></i></a>
-            <a data-action="itemDelete" data-tooltip="Supprimer"><i class="fa-solid fa-trash"></i></a>
+            <a data-action="rollTrait" data-ref="item.{{id}}" data-tooltip="{{localize "NOCTIS.ui.JetLibreAvecCetteDiscipline"}}"><i class="fa-solid fa-dice-d10"></i></a>
+            <a data-action="itemChat" data-tooltip="{{localize "NOCTIS.ui.MontrerDansLeChat"}}"><i class="fa-solid fa-comment"></i></a>
+            <a data-action="itemDelete" data-tooltip="{{localize "NOCTIS.ui.Supprimer"}}"><i class="fa-solid fa-trash"></i></a>
           </span>
         </header>
         <ol class="powers">
           {{#each powers}}
             <li class="power {{#if unlocked}}unlocked{{else}}locked{{/if}} {{#if advanced}}advanced{{/if}}">
               <span class="power-level">{{dotsLabel}}</span>
-              <a class="power-name" data-action="select" data-kind="power" data-idx="{{idx}}" {{#if unlocked}}data-roll="power"{{/if}} data-tooltip="Clic : détails{{#if unlocked}} · double-clic : utiliser{{/if}}">{{name}}</a>
-              <span class="power-pool">{{#if poolLabel}}{{poolLabel}}{{/if}}{{#if difficulty}} · diff. {{difficulty}}{{/if}}{{#if cost}} · <i class="fa-solid fa-droplet"></i> {{cost}}{{/if}}</span>
+              <a class="power-name" data-action="select" data-kind="power" data-idx="{{idx}}" {{#if unlocked}}data-roll="power"{{/if}} data-tooltip="{{localize "NOCTIS.ui.ClicDetails"}}{{#if unlocked}} {{localize "NOCTIS.ui.DoubleClicUtiliser"}}{{/if}}">{{name}}</a>
+              <span class="power-pool">{{#if poolLabel}}{{poolLabel}}{{/if}}{{#if difficulty}} {{localize "NOCTIS.ui.Diff2" difficulty=difficulty}}{{/if}}{{#if cost}} · <i class="fa-solid fa-droplet"></i> {{cost}}{{/if}}</span>
               {{#if page}}<span class="power-page">p. {{page}}</span>{{/if}}
-              {{#if unlocked}}<a class="power-roll" data-action="rollPower" data-idx="{{idx}}" data-tooltip="Utiliser ce pouvoir"><i class="fa-solid fa-dice-d10"></i></a>{{/if}}
+              {{#if unlocked}}<a class="power-roll" data-action="rollPower" data-idx="{{idx}}" data-tooltip="{{localize "NOCTIS.ui.UtiliserCePouvoir"}}"><i class="fa-solid fa-dice-d10"></i></a>{{/if}}
             </li>
           {{/each}}
         </ol>
@@ -39,20 +39,20 @@
   </div>
 
   {{#if rituals.length}}
-    <h2 class="noctis-section"><span>Rituels</span></h2>
+    <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Rituels"}}</span></h2>
     <ul class="item-list">
       {{#each rituals}}
         <li class="item-row draggable" data-item-id="{{id}}">
           <img class="item-img" src="{{img}}" alt="">
           <a class="item-name" data-action="select" data-kind="item">{{name}}</a>
-          <span class="item-cost">Niveau {{system.level}}</span>
+          <span class="item-cost">{{localize "NOCTIS.ui.Niveau" level=system.level}}</span>
           <span class="item-controls"><a data-action="itemChat"><i class="fa-solid fa-comment"></i></a><a data-action="itemDelete"><i class="fa-solid fa-trash"></i></a></span>
         </li>
       {{/each}}
     </ul>
   {{/if}}
   <div class="add-buttons">
-    <a class="add-row" data-action="itemCreate" data-type="discipline"><i class="fa-solid fa-plus"></i> discipline personnalisée</a>
-    <a class="add-row" data-action="itemCreate" data-type="ritual"><i class="fa-solid fa-plus"></i> rituel</a>
+    <a class="add-row" data-action="itemCreate" data-type="discipline"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.DisciplinePersonnalisee"}}</a>
+    <a class="add-row" data-action="itemCreate" data-type="ritual"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Rituel"}}</a>
   </div>
 </section>

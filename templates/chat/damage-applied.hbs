@@ -3,17 +3,17 @@
     <header>
       <img class="portrait" src="{{actor.img}}" alt="">
       <div class="titles">
-        <h3>{{actor.name}} est touché</h3>
-        <span class="sub">{{amount}} niveau{{#if (noctisGt amount 1)}}x{{/if}} {{type}}{{#if source}} · {{source}}{{/if}}</span>
+        <h3>{{localize "NOCTIS.ui.EstTouche" name=actor.name}}</h3>
+        <span class="sub">{{localize "NOCTIS.ui.Niveau3" amount=amount}}{{#if (noctisGt amount 1)}}x{{/if}} {{type}}{{#if source}} · {{source}}{{/if}}</span>
       </div>
     </header>
     <ul class="dmg-steps">
-      {{#if soaked}}<li>Absorption : <b>{{soakSuccesses}}</b></li>{{else}}<li>Sans absorption</li>{{/if}}
-      {{#if halved}}<li>Contondants divisés par deux (vampire)</li>{{/if}}
-      <li class="result">Niveaux perdus : <b>{{remaining}}</b></li>
+      {{#if soaked}}<li>{{{localize "NOCTIS.ui.Absorption2" soakSuccesses=soakSuccesses}}}</li>{{else}}<li>{{localize "NOCTIS.ui.SansAbsorption"}}</li>{{/if}}
+      {{#if halved}}<li>{{localize "NOCTIS.ui.ContondantsDivisesParDeuxVampire2"}}</li>{{/if}}
+      <li class="result">{{{localize "NOCTIS.ui.NiveauxPerdus" remaining=remaining}}}</li>
     </ul>
-    <div class="outcome {{#if remaining}}failure{{else}}success{{/if}}"><span class="label">État : {{status}}</span></div>
-    {{#if torpor}}<p class="alert">Le vampire sombre dans la torpeur.</p>{{/if}}
-    {{#if finalDeath}}<p class="alert death">Mort ultime.</p>{{/if}}
+    <div class="outcome {{#if remaining}}failure{{else}}success{{/if}}"><span class="label">{{localize "NOCTIS.ui.Etat2" status=status}}</span></div>
+    {{#if torpor}}<p class="alert">{{localize "NOCTIS.ui.LeVampireSombreDansLaTorpeur"}}</p>{{/if}}
+    {{#if finalDeath}}<p class="alert death">{{localize "NOCTIS.ui.MortUltime2"}}</p>{{/if}}
   </div>
 </div>

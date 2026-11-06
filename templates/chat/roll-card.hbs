@@ -4,14 +4,14 @@
       {{#if clanEmblem}}<img class="emblem" src="{{clanEmblem}}" alt="">{{/if}}
       <div class="titles">
         <h3>{{label}}</h3>
-        <span class="sub">{{pool}} dé{{#if (noctisGt pool 1)}}s{{/if}} · difficulté {{difficulty}}{{#if specialty}} · spécialité{{/if}}{{#if willpower}} · Volonté{{/if}}</span>
+        <span class="sub">{{localize "NOCTIS.ui.De" pool=pool}}{{#if (noctisGt pool 1)}}s{{/if}} {{localize "NOCTIS.ui.Difficulte2" difficulty=difficulty}}{{#if specialty}} {{localize "NOCTIS.ui.Specialite2"}}{{/if}}{{#if willpower}} {{localize "NOCTIS.ui.Volonte3"}}{{/if}}</span>
       </div>
     </header>
     {{#if parts.length}}<div class="parts">{{#each parts}}<span>{{this}}</span>{{/each}}</div>{{/if}}
     <div class="dice">
-      {{#if noDice}}<span class="no-dice">Aucun dé</span>{{/if}}
+      {{#if noDice}}<span class="no-dice">{{localize "NOCTIS.ui.AucunDe"}}</span>{{/if}}
       {{#each faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}
-      {{#if willpower}}<span class="d10 wp" data-tooltip="Réussite automatique (Volonté)"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}
+      {{#if willpower}}<span class="d10 wp" data-tooltip="{{localize "NOCTIS.ui.ReussiteAutomatiqueVolonte"}}"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}
     </div>
     <div class="outcome {{outcomeClass}}">
       {{#if (noctisEq outcomeClass "success")}}<span class="count">{{successes}}</span>{{/if}}
@@ -22,17 +22,17 @@
     {{#if attack}}
       {{#if (noctisGt successes 0)}}
         <div class="card-buttons">
-          <button type="button" data-noctis-action="rollDamage"><i class="fa-solid fa-burst"></i> Dégâts : {{attack.damageLabel}} + réussites excédentaires ({{attack.damageTypeLabel}})</button>
+          <button type="button" data-noctis-action="rollDamage"><i class="fa-solid fa-burst"></i> {{localize "NOCTIS.ui.DegatsReussitesExcedentaires" damageLabel=attack.damageLabel damageTypeLabel=attack.damageTypeLabel}}</button>
         </div>
       {{/if}}
     {{/if}}
     {{#if damage}}
       {{#if (noctisGt successes 0)}}
         <div class="card-buttons">
-          <button type="button" data-noctis-action="applyDamage" data-soak="1" data-tooltip="Applique aux jetons ciblés (T) ou sélectionnés, avec leur jet d'absorption"><i class="fa-solid fa-shield-halved"></i> Appliquer avec absorption</button>
-          <button type="button" data-noctis-action="applyDamage" data-soak="0"><i class="fa-solid fa-heart-crack"></i> Sans absorption</button>
+          <button type="button" data-noctis-action="applyDamage" data-soak="1" data-tooltip="{{localize "NOCTIS.ui.AppliqueAuxJetonsCiblesTOu"}}"><i class="fa-solid fa-shield-halved"></i> {{localize "NOCTIS.ui.AppliquerAvecAbsorption"}}</button>
+          <button type="button" data-noctis-action="applyDamage" data-soak="0"><i class="fa-solid fa-heart-crack"></i> {{localize "NOCTIS.ui.SansAbsorption"}}</button>
         </div>
-        <p class="hint">{{damage.typeLabel}}{{#if damage.armorPiercing}} · perforation d'armure {{damage.armorPiercing}}{{/if}}</p>
+        <p class="hint">{{damage.typeLabel}}{{#if damage.armorPiercing}} {{localize "NOCTIS.ui.PerforationDArmure2" armorPiercing=damage.armorPiercing}}{{/if}}</p>
       {{/if}}
     {{/if}}
   </div>

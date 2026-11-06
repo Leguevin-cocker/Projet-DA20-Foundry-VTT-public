@@ -3,6 +3,10 @@
 Système **générique** pour Foundry VTT (v14) : jouer des vampires dans un Moyen Âge sombre, sur un moteur à d10 classique
 (groupements de dés, difficultés, réussites annulées par les 1, santé à 7 niveaux, sang, Volonté, vertus, Voies morales).
 
+**Bilingue : français et anglais / French and English.** L'interface suit la langue choisie dans Foundry, et les
+compendiums d'exemple sont construits dans cette langue. *The interface follows Foundry's language setting; example
+compendiums are built in that language (English for any language other than French).*
+
 **Aucun contenu d'univers n'est inclus.** Pas de clans, de disciplines, de sectes ni de textes tirés d'un livre :
 chaque table crée son propre contenu avec les éditeurs intégrés. Quelques exemples originaux, écrits pour ce système,
 montrent comment faire.
@@ -64,3 +68,12 @@ Au premier chargement d'un monde, le MJ construit les compendiums d'exemple (« 
 ## Licence
 
 Code sous licence MIT (voir `LICENSE.txt`). Polices sous SIL Open Font License 1.1.
+
+## Traductions / Translations
+
+Les textes sont dans `lang/fr.json` et `lang/en.json` (clés `NOCTIS.ui.*` pour les gabarits, `NOCTIS.js.*` pour le
+code). Les exemples de compendium sont dans `data/` (français) et `data/en/` (anglais). Pour ajouter une langue :
+copier `lang/en.json`, le traduire et le déclarer dans `system.json`.
+
+*All strings live in `lang/fr.json` and `lang/en.json`. To add a language, copy `lang/en.json`, translate it and declare
+it in `system.json`.*

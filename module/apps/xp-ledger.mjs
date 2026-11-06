@@ -1,15 +1,16 @@
 import { NOCTIS } from "../config.mjs";
+import { loc, registerLocalizable } from "../i18n.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
 /** Familles de dépenses pour le graphique (clés de NOCTIS.xpCategories). */
 const FAMILIES = [
-  { key: "attr", label: "Attributs", cats: ["attribute"] },
-  { key: "abil", label: "Capacités", cats: ["ability", "newAbility", "specialty"] },
-  { key: "disc", label: "Disciplines et rituels", cats: ["clanDiscipline", "otherDiscipline", "newDiscipline", "newPath", "secondaryPath", "ritual"] },
-  { key: "moral", label: "Vertus, Volonté, Voie", cats: ["virtue", "willpower", "road"] },
-  { key: "bg", label: "Historiques", cats: ["background"] },
-  { key: "other", label: "Autre", cats: [] }
+  { key: "attr", label: "NOCTIS.js.Attributs", cats: ["attribute"] },
+  { key: "abil", label: "NOCTIS.js.Capacites", cats: ["ability", "newAbility", "specialty"] },
+  { key: "disc", label: "NOCTIS.js.DisciplinesEtRituels", cats: ["clanDiscipline", "otherDiscipline", "newDiscipline", "newPath", "secondaryPath", "ritual"] },
+  { key: "moral", label: "NOCTIS.js.VertusVolonteVoie", cats: ["virtue", "willpower", "road"] },
+  { key: "bg", label: "NOCTIS.js.Historiques", cats: ["background"] },
+  { key: "other", label: "NOCTIS.js.Autre", cats: [] }
 ];
 const familyOf = (cat) => (FAMILIES.find(f => f.cats.includes(cat)) ?? FAMILIES.at(-1)).key;
 export const XP_FAMILIES = FAMILIES.map(f => ({ key: f.key, label: f.label }));
@@ -25,7 +26,7 @@ export function xpBreakdown(actor, scale) {
   for (const e of x.log) if (e.kind === "spend" && !e.free) byFam[familyOf(e.category)] += e.amount;
   const ref = Math.max(1, scale ?? Math.max(x.total, x.spent));
   const segments = FAMILIES.filter(f => byFam[f.key] > 0).map(f => ({ cls: f.key, amount: byFam[f.key], label: f.label, pct: (byFam[f.key] / ref * 100).toFixed(2), tip: `${f.label} : ${byFam[f.key]} XP` }));
-  if (x.available > 0) segments.push({ cls: "avail", amount: x.available, label: "Disponible", pct: (x.available / ref * 100).toFixed(2), tip: `Disponible : ${x.available} XP` });
+  if (x.available > 0) segments.push({ cls: "avail", amount: x.available, label: loc("NOCTIS.js.Disponible"), pct: (x.available / ref * 100).toFixed(2), tip: loc("NOCTIS.js.DisponibleXp", { available: x.available }) });
   return segments;
 }
 
@@ -47,7 +48,7 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "noctis-xp-ledger",
     tag: "div",
     classes: ["noctis", "noctis-window", "noctis-xp-ledger"],
-    window: { title: "Tableau de bord MJ", icon: "fa-solid fa-chess-king", resizable: true },
+    window: { title: loc("NOCTIS.js.TableauDeBordMj"), icon: "fa-solid fa-chess-king", resizable: true },
     position: { width: 1000, height: 760 },
     actions: {
       setTab: XpLedger.#onSetTab,
@@ -67,7 +68,7 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
   _tab = "xp";
 
   static open() {
-    if (!game.user.isGM) return ui.notifications.warn("Le tableau de bord est réservé au MJ.");
+    if (!game.user.isGM) return ui.notifications.warn(loc("NOCTIS.js.LeTableauDeBordEstReserve"));
     const existing = foundry.applications.instances?.get?.("noctis-xp-ledger");
     return (existing ?? new XpLedger()).render({ force: true });
   }
@@ -82,15 +83,15 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
       const segments = xpBreakdown(a, maxGained);
       // Alertes
       const alerts = [];
-      if (x.available < 0) alerts.push(`Solde négatif (${x.available})`);
+      if (x.available < 0) alerts.push(loc("NOCTIS.js.SoldeNegatif", { available: x.available }));
       const freeCount = spends.filter(e => e.free).length;
-      if (freeCount >= 3) alerts.push(`${freeCount} dépenses gratuites`);
+      if (freeCount >= 3) alerts.push(loc("NOCTIS.js.DepensesGratuites", { freeCount }));
       const seen = new Map();
       for (const e of spends) {
         if (!e.trait) continue;
         const k = `${e.trait}|${e.date}`;
         seen.set(k, (seen.get(k) ?? 0) + 1);
-        if (seen.get(k) === 2) alerts.push(`« ${e.label.split(" ")[0]} » a pris deux points le ${e.date} (1 point par scénario)`);
+        if (seen.get(k) === 2) alerts.push(loc("NOCTIS.js.APrisDeuxPointsLe1", { p0: e.label.split(" ")[0], date: e.date }));
       }
       const owner = game.users.find(u => !u.isGM && a.testUserPermission(u, "OWNER"));
       const lastGain = [...x.log].reverse().find(e => e.kind === "gain");
@@ -113,8 +114,8 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
         id: a.id, name: a.name, img: a.img, player: owner?.name ?? a.system.identity?.player ?? "—", online: !!owner?.active,
         value: b.value, max: b.max, perTurn: b.perTurn, pct, missing: Math.max(0, b.max - b.value),
         level: pct <= 25 ? "low" : (pct <= 50 ? "mid" : "ok"),
-        hunger: b.value <= 0 ? "À sec : frénésie de faim imminente" : (pct <= 25 ? "Affamé" : ""),
-        kind: a.type === "ghoul" ? "Goule" : (a.system.generationLabel ? `${a.system.generationLabel} génération` : "Vampire")
+        hunger: b.value <= 0 ? loc("NOCTIS.js.ASecFrenesieDeFaimImminente") : (pct <= 25 ? loc("NOCTIS.js.Affame") : ""),
+        kind: a.type === "ghoul" ? loc("NOCTIS.js.Goule") : (a.system.generationLabel ? loc("NOCTIS.js.Generation2", { generationLabel: a.system.generationLabel }) : loc("NOCTIS.js.Vampire"))
       };
     });
     return {
@@ -131,7 +132,7 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** Lignes cochées de l'onglet Sang. */
   #bloodRows() {
-    return [...this.element.querySelectorAll(".blood-table [data-actor-id]")].filter(r => r.querySelector("input.pc-check")?.checked)
+    return [...this.element.querySelectorAll(`.blood-table [data-actor-id]`)].filter(r => r.querySelector("input.pc-check")?.checked)
       .map(r => game.actors.get(r.dataset.actorId)).filter(Boolean);
   }
 
@@ -146,8 +147,8 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #notifyBlood(actor, delta, reason, whisper) {
     if (!whisper || !delta) return;
     const ids = game.users.filter(u => actor.testUserPermission(u, "OWNER")).map(u => u.id);
-    const verb = delta > 0 ? `récupère <b>${delta}</b> point${delta > 1 ? "s" : ""} de sang` : `perd <b>${-delta}</b> point${delta < -1 ? "s" : ""} de sang`;
-    await ChatMessage.create({ speaker: { alias: "Conteur" }, whisper: ids, content: `<div class="noctis-xp-msg noctis-blood-msg"><i class="fa-solid fa-droplet"></i> <b>${actor.name}</b> ${verb}${reason ? ` — ${foundry.utils.escapeHTML(reason)}` : ""} (${actor.system.blood.value}/${actor.system.blood.max})</div>` });
+    const verb = delta > 0 ? loc("NOCTIS.js.RecuperePointDeSang", { delta, p1: delta > 1 ? "s" : "" }) : loc("NOCTIS.js.PerdPointDeSang", { p0: -delta, p1: delta < -1 ? "s" : "" });
+    await ChatMessage.create({ speaker: { alias: loc("NOCTIS.js.Conteur") }, whisper: ids, content: `<div class="noctis-xp-msg noctis-blood-msg"><i class="fa-solid fa-droplet"></i> <b>${actor.name}</b> ${verb}${reason ? ` — ${foundry.utils.escapeHTML(reason)}` : ""} (${actor.system.blood.value}/${actor.system.blood.max})</div>` });
   }
 
   static async #onBloodStep(event, target) {
@@ -162,7 +163,7 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
     if (!actor) return;
     const whisper = this.element.querySelector("[name='blood.whisper']")?.checked;
     const d = await XpLedger.#setBlood(actor, actor.system.blood.max);
-    await XpLedger.#notifyBlood(actor, d, "réserve pleine", whisper);
+    await XpLedger.#notifyBlood(actor, d, loc("NOCTIS.js.ReservePleine"), whisper);
     this.render();
   }
 
@@ -173,25 +174,25 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
     const reason = el.querySelector("[name='blood.reason']").value.trim();
     const whisper = el.querySelector("[name='blood.whisper']").checked;
     const actors = this.#bloodRows();
-    if (!actors.length) return ui.notifications.warn("Cochez au moins un personnage.");
-    if (mode !== "fill" && !amount) return ui.notifications.warn("Indiquez un nombre de points de sang.");
+    if (!actors.length) return ui.notifications.warn(loc("NOCTIS.js.CochezAuMoinsUnPersonnage"));
+    if (mode !== "fill" && !amount) return ui.notifications.warn(loc("NOCTIS.js.IndiquezUnNombreDePointsDe"));
     const lines = [];
     for (const a of actors) {
       const delta = mode === "fill" ? a.system.blood.max : (mode === "remove" ? -amount : amount);
       const d = await XpLedger.#setBlood(a, delta);
-      await XpLedger.#notifyBlood(a, d, reason || (mode === "fill" ? "réserve pleine" : ""), whisper);
+      await XpLedger.#notifyBlood(a, d, reason || (mode === "fill" ? loc("NOCTIS.js.ReservePleine") : ""), whisper);
       if (d) lines.push(`${a.name} ${d > 0 ? "+" : ""}${d}`);
     }
-    ui.notifications.info(lines.length ? `Sang : ${lines.join(", ")}.` : "Aucun changement (réserves déjà pleines ou vides).");
+    ui.notifications.info(lines.length ? loc("NOCTIS.js.Sang", { p0: lines.join(", ") }) : loc("NOCTIS.js.AucunChangementReservesDejaPleinesOu"));
     this.render();
   }
 
   static async #onBloodNightfall() {
     const actors = this.#bloodRows();
-    if (!actors.length) return ui.notifications.warn("Cochez au moins un personnage.");
+    if (!actors.length) return ui.notifications.warn(loc("NOCTIS.js.CochezAuMoinsUnPersonnage"));
     const ok = await DialogV2.confirm({
-      window: { title: "Tombée de la nuit" },
-      content: `<p>Réveil de ${actors.map(a => `<b>${a.name}</b>`).join(", ")} : les vampires perdent 1 point de sang, et chacun regagne 1 point de Volonté.</p>`,
+      window: { title: loc("NOCTIS.js.TombeeDeLaNuit") },
+      content: loc("NOCTIS.js.ReveilDeLesVampiresPerdent1", { p0: actors.map(a => `<b>${a.name}</b>`).join(", ") }),
       rejectClose: false
     });
     if (!ok) return;
@@ -212,17 +213,17 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #onAward() {
     const el = this.element;
     const base = Number(el.querySelector("[name='award.amount']").value) || 0;
-    const label = el.querySelector("[name='award.label']").value.trim() || "Fin de séance";
+    const label = el.querySelector("[name='award.label']").value.trim() || loc("NOCTIS.js.FinDeSeance");
     const whisper = el.querySelector("[name='award.whisper']").checked;
     const rows = [...el.querySelectorAll("[data-actor-id]")].filter(r => r.querySelector("input.pc-check")?.checked);
     const plan = rows.map(r => {
       const bonus = Number(r.querySelector("input.pc-bonus")?.value) || 0;
       return { actor: game.actors.get(r.dataset.actorId), bonus, amount: base + bonus };
     }).filter(p => p.actor && p.amount > 0);
-    if (!plan.length) return ui.notifications.warn("Rien à attribuer : cochez des personnages et indiquez un montant.");
+    if (!plan.length) return ui.notifications.warn(loc("NOCTIS.js.RienAAttribuerCochezDesPersonnages"));
     const ok = await DialogV2.confirm({
-      window: { title: "Attribuer l'expérience" },
-      content: `<p><b>${label}</b></p><ul>${plan.map(p => `<li>${p.actor.name} : <b>${p.amount} XP</b>${p.bonus ? ` (dont ${p.bonus > 0 ? "+" : ""}${p.bonus} individuel)` : ""}</li>`).join("")}</ul>`,
+      window: { title: loc("NOCTIS.js.AttribuerLExperience") },
+      content: loc("NOCTIS.js.Text", { label, p1: plan.map(p => loc("NOCTIS.js.Xp", { name: p.actor.name, amount: p.amount, p2: p.bonus ? loc("NOCTIS.js.DontIndividuel", { p0: p.bonus > 0 ? "+" : "", bonus: p.bonus }) : "" })).join("") }),
       rejectClose: false
     });
     if (!ok) return;
@@ -239,16 +240,16 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
     if (!plan.length) return;
     const batch = foundry.utils.randomID();
     for (const p of plan) {
-      await p.actor.addXpEntry({ kind: "gain", amount: p.amount, label, note: p.bonus ? `dont ${p.bonus > 0 ? "+" : ""}${p.bonus} individuel` : "", batch });
+      await p.actor.addXpEntry({ kind: "gain", amount: p.amount, label, note: p.bonus ? loc("NOCTIS.js.DontIndividuel2", { p0: p.bonus > 0 ? "+" : "", bonus: p.bonus }) : "", batch });
       if (whisper) {
         const ids = game.users.filter(u => p.actor.testUserPermission(u, "OWNER")).map(u => u.id);
-        await ChatMessage.create({ speaker: { alias: "Conteur" }, whisper: ids, content: `<div class="noctis-xp-msg"><b>${p.actor.name}</b> reçoit <b>${p.amount} XP</b> — ${foundry.utils.escapeHTML(label)}</div>` });
+        await ChatMessage.create({ speaker: { alias: loc("NOCTIS.js.Conteur") }, whisper: ids, content: loc("NOCTIS.js.RecoitXp", { name: p.actor.name, amount: p.amount, p2: foundry.utils.escapeHTML(label) }) });
       }
     }
     const batches = foundry.utils.deepClone(game.settings.get("noctis", "xpBatches") ?? []);
     batches.push({ id: batch, date: new Date().toLocaleDateString("fr-FR"), label, entries: plan.map(p => ({ actorId: p.actor.id, name: p.actor.name, amount: p.amount })) });
     await game.settings.set("noctis", "xpBatches", batches.slice(-40));
-    ui.notifications.info(`${plan.length} personnage(s) ont reçu de l'expérience.`);
+    ui.notifications.info(loc("NOCTIS.js.PersonnageSOntRecuDeL", { length: plan.length }));
   }
 
   static async #onUndoBatch(event, target) {
@@ -256,7 +257,7 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
     const batches = foundry.utils.deepClone(game.settings.get("noctis", "xpBatches") ?? []);
     const b = batches.find(x => x.id === id);
     if (!b) return;
-    const ok = await DialogV2.confirm({ window: { title: "Annuler la distribution" }, content: `<p>Retirer « ${b.label} » (${b.date}) des fiches concernées ?</p>`, rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.AnnulerLaDistribution") }, content: loc("NOCTIS.js.RetirerDesFichesConcernees", { label: b.label, date: b.date }), rejectClose: false });
     if (!ok) return;
     for (const e of b.entries) {
       const a = game.actors.get(e.actorId);
@@ -265,7 +266,9 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
       await a.update({ "system.experience.log": log });
     }
     await game.settings.set("noctis", "xpBatches", batches.filter(x => x.id !== id));
-    ui.notifications.info("Distribution annulée.");
+    ui.notifications.info(loc("NOCTIS.js.DistributionAnnulee"));
     this.render();
   }
 }
+
+registerLocalizable(FAMILIES);

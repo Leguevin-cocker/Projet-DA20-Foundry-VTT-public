@@ -1,6 +1,6 @@
 <div class="trait-row {{#if trait.mod}}modded{{/if}}">
-  <a class="trait-label" data-action="select" data-kind="trait" data-ref="{{trait.ref}}" data-roll="trait" data-tooltip="Clic : détails · double-clic : lancer">{{trait.label}}</a>
-  {{#if showSpec}}<input class="spec" type="text" name="{{trait.specPath}}" value="{{trait.spec}}" placeholder="spécialité" data-tooltip="Spécialité (à partir de 4 points) : les 10 comptent double">{{/if}}
+  <a class="trait-label" data-action="select" data-kind="trait" data-ref="{{trait.ref}}" data-roll="trait" data-tooltip="{{localize "NOCTIS.ui.ClicDetailsDoubleClicLancer"}}">{{trait.label}}</a>
+  {{#if showSpec}}<input class="spec" type="text" name="{{trait.specPath}}" value="{{trait.spec}}" placeholder="{{localize "NOCTIS.ui.Specialite"}}" data-tooltip="{{localize "NOCTIS.ui.SpecialiteAPartirDe4Points"}}">{{/if}}
   {{noctisDots value=trait.value max=trait.max path=trait.path mod=trait.mod locked=trait.locked}}
-  {{#if trait.boost}}<span class="boost" data-tooltip="Amplifié par le sang">+{{trait.boost}}</span>{{/if}}
+  {{#if trait.boost}}<span class="boost" data-tooltip="{{localize "NOCTIS.ui.AmplifieParLeSang"}}">+{{trait.boost}}</span>{{/if}}
 </div>

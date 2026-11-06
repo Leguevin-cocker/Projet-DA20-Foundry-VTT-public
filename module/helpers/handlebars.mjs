@@ -1,3 +1,4 @@
+import { loc } from "../i18n.mjs";
 /** Helpers Handlebars du système. */
 export function registerHandlebars() {
   const H = Handlebars;
@@ -31,7 +32,7 @@ export function registerHandlebars() {
     <header><span class="mf-check"><i class="fa-regular {{#if checked}}fa-square-check{{else}}fa-square{{/if}}"></i></span><b class="mf-name">{{name}}</b>
       {{#if multi}}<span class="mf-cost">{{costText}} pts</span>{{else}}<span class="mf-cost">{{cost}} pt{{#if (noctisGt cost 1)}}s{{/if}}</span>{{/if}}</header>
     {{#if multi}}<div class="mf-levels">{{#each levels}}<button type="button" class="mf-lv {{#if active}}active{{/if}}" data-action="toggleMF" data-kind="{{../kind}}" data-id="{{../id}}" data-level="{{value}}" data-tooltip="{{text}}">{{value}}</button>{{/each}}</div>
-      {{#if levelText}}<p class="mf-level-text"><b>Niveau {{level}} :</b> {{levelText}}</p>{{/if}}{{/if}}
+      {{#if levelText}}<p class="mf-level-text"><b>{{localize "NOCTIS.ui.NiveauColon" level=level}}</b> {{levelText}}</p>{{/if}}{{/if}}
     <details><summary>{{short}}</summary><p>{{desc}}</p></details>
   </article>`);
 

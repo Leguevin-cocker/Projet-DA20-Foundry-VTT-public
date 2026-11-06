@@ -1,4 +1,5 @@
 import { NOCTIS, successLabel } from "../config.mjs";
+import { loc } from "../i18n.mjs";
 
 /**
  * Lance un groupement de d10 selon les règles du Conteur.
@@ -58,9 +59,9 @@ export async function rollPool(o) {
   if (minApplied) successes = 1;
 
   let outcome, outcomeClass;
-  if (botch) { outcome = "Échec critique"; outcomeClass = "botch"; }
-  else if (successes <= 0) { outcome = "Échec"; outcomeClass = "failure"; }
-  else { outcome = kind === "damage" ? `${successes} niveau${successes > 1 ? "x" : ""} de dégâts` : (kind === "soak" ? `${successes} niveau${successes > 1 ? "x" : ""} absorbé${successes > 1 ? "s" : ""}` : successLabel(successes)); outcomeClass = "success"; }
+  if (botch) { outcome = loc("NOCTIS.js.EchecCritique"); outcomeClass = "botch"; }
+  else if (successes <= 0) { outcome = loc("NOCTIS.js.Echec"); outcomeClass = "failure"; }
+  else { outcome = kind === "damage" ? loc("NOCTIS.js.NiveauDeDegats", { successes, p1: successes > 1 ? "x" : "" }) : (kind === "soak" ? loc("NOCTIS.js.NiveauAbsorbe", { successes, p1: successes > 1 ? "x" : "", p2: successes > 1 ? "s" : "" }) : successLabel(successes)); outcomeClass = "success"; }
 
   const result = { pool, difficulty, dice, faces, hits, ones, successes, botch, outcome, outcomeClass, specialty: !!o.specialty, willpower: !!o.willpower, kind, minApplied };
 
@@ -70,7 +71,7 @@ export async function rollPool(o) {
   const template = `${NOCTIS.PATH}/templates/chat/roll-card.hbs`;
   const ctx = {
     ...result,
-    label: o.label ?? "Jet",
+    label: o.label ?? loc("NOCTIS.js.Jet2"),
     parts: o.parts ?? [],
     actorName: actor?.name ?? "",
     actorImg: actor?.img ?? "",

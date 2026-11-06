@@ -2,79 +2,79 @@
   <div class="card-frame">
     <header class="clash-head">
       <div class="fighter attacker"><img src="{{attacker.img}}" alt=""><span>{{attacker.name}}</span></div>
-      <div class="vs">VS</div>
+      <div class="vs">{{localize "NOCTIS.ui.Vs"}}</div>
       <div class="fighter defender"><img src="{{defender.img}}" alt=""><span>{{defender.name}}</span></div>
     </header>
-    <p class="clash-weapon">{{#if maneuver}}<b class="clash-maneuver" data-tooltip="{{maneuver.short}}">{{maneuver.label}}</b> · {{/if}}{{weapon.name}} · attaque {{attackKindLabel}}{{#unless noDamage}} · dégâts {{weapon.damageTypeLabel}}{{/unless}}{{#if maneuver.targeting}} · ciblage : {{maneuver.targeting}}{{/if}}</p>
+    <p class="clash-weapon">{{#if maneuver}}<b class="clash-maneuver" data-tooltip="{{maneuver.short}}">{{maneuver.label}}</b> · {{/if}}{{localize "NOCTIS.ui.Attaque" name=weapon.name attackKindLabel=attackKindLabel}}{{#unless noDamage}} {{localize "NOCTIS.ui.Degats2" damageTypeLabel=weapon.damageTypeLabel}}{{/unless}}{{#if maneuver.targeting}} {{localize "NOCTIS.ui.Ciblage" targeting=maneuver.targeting}}{{/if}}</p>
 
     <section class="clash-step">
-      <h4><i class="fa-solid fa-khanda"></i> Attaque <span class="res">{{attack.successes}} réussite(s)</span></h4>
+      <h4><i class="fa-solid fa-khanda"></i> {{localize "NOCTIS.ui.Attaque2"}} <span class="res">{{localize "NOCTIS.ui.ReussiteS" successes=attack.successes}}</span></h4>
       <div class="dice">{{#each attack.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}{{#if attack.willpower}}<span class="d10 wp"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}</div>
-      <small>{{attack.pool}} dés, diff. {{attack.difficulty}}{{#if attack.parts}} · {{attack.parts}}{{/if}}</small>
+      {{{localize "NOCTIS.ui.DesDiff" pool=attack.pool difficulty=attack.difficulty}}}{{#if attack.parts}} · {{attack.parts}}{{/if}}</small>
     </section>
 
     {{#if defense}}
     <section class="clash-step">
-      <h4><i class="fa-solid fa-shield"></i> Défense : {{defense.label}} <span class="res">{{defense.successes}} réussite(s)</span></h4>
-      {{#if defense.faces}}<div class="dice">{{#each defense.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div><small>{{defense.pool}} dés, diff. {{defense.difficulty}}{{#if (noctisGt defense.difficulty 6)}} (difficulté accrue){{/if}}{{#if defense.parts}} · {{defense.parts}}{{/if}}</small>{{/if}}
+      <h4><i class="fa-solid fa-shield"></i> {{localize "NOCTIS.ui.Defense" label=defense.label}} <span class="res">{{localize "NOCTIS.ui.ReussiteS" successes=defense.successes}}</span></h4>
+      {{#if defense.faces}}<div class="dice">{{#each defense.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div>{{{localize "NOCTIS.ui.DesDiff" pool=defense.pool difficulty=defense.difficulty}}}{{#if (noctisGt defense.difficulty 6)}} {{localize "NOCTIS.ui.DifficulteAccrue"}}{{/if}}{{#if defense.parts}} · {{defense.parts}}{{/if}}</small>{{/if}}
     </section>
     {{/if}}
 
     {{#if waitingDefense}}
     <section class="clash-wait" data-clash-owner="defender">
-      <p><b>{{defender.name}}</b>, comment vous défendez-vous ?{{#if defenseCost}} <em>({{defenseCost}})</em>{{/if}}</p>
+      <p>{{{localize "NOCTIS.ui.CommentVousDefendezVous" name=defender.name}}}{{#if defenseCost}} <em>({{defenseCost}})</em>{{/if}}</p>
       <div class="card-buttons">
-        {{#each defenseChoices}}<button type="button" data-clash-step="defend" data-choice="{{key}}" data-tooltip="{{parts}}"><i class="fa-solid fa-shield-halved"></i> {{label}} ({{pool}} dés)</button>{{/each}}
-        <button type="button" data-clash-step="defend" data-choice="none"><i class="fa-solid fa-person"></i> Ne pas se défendre</button>
+        {{#each defenseChoices}}<button type="button" data-clash-step="defend" data-choice="{{key}}" data-tooltip="{{parts}}"><i class="fa-solid fa-shield-halved"></i> {{localize "NOCTIS.ui.Des3" label=label pool=pool}}</button>{{/each}}
+        <button type="button" data-clash-step="defend" data-choice="none"><i class="fa-solid fa-person"></i> {{localize "NOCTIS.ui.NePasSeDefendre"}}</button>
       </div>
     </section>
-    <p class="clash-pending" data-clash-pending="defender">En attente de la défense de {{defender.name}}…</p>
+    <p class="clash-pending" data-clash-pending="defender">{{localize "NOCTIS.ui.EnAttenteDeLaDefenseDe" name=defender.name}}</p>
     {{/if}}
 
     {{#if (noctisGt net 0)}}
-    <p class="clash-net">Touché : <b>{{net}}</b> réussite(s) nette(s) → <b>{{damagePool}}</b> dés de dégâts ({{damageFormula}})</p>
+    <p class="clash-net">{{{localize "NOCTIS.ui.ToucheReussiteSNetteSDes" net=net damagePool=damagePool damageFormula=damageFormula}}}</p>
     {{/if}}
 
     {{#if waitingDamage}}
     <section class="clash-wait" data-clash-owner="attacker">
       <div class="card-buttons">
-        <button type="button" data-clash-step="damage" data-choice="full"><i class="fa-solid fa-burst"></i> Lancer les dégâts ({{damagePool}} dés)</button>
-        <button type="button" data-clash-step="damage" data-choice="half" data-tooltip="Retenir son coup : niveaux de dégâts divisés par deux, arrondi au supérieur"><i class="fa-solid fa-hand"></i> Dégâts ½</button>
+        <button type="button" data-clash-step="damage" data-choice="full"><i class="fa-solid fa-burst"></i> {{localize "NOCTIS.ui.LancerLesDegatsDes" damagePool=damagePool}}</button>
+        <button type="button" data-clash-step="damage" data-choice="half" data-tooltip="{{localize "NOCTIS.ui.RetenirSonCoupNiveauxDeDegats"}}"><i class="fa-solid fa-hand"></i> {{localize "NOCTIS.ui.Degats3"}}</button>
       </div>
     </section>
-    <p class="clash-pending" data-clash-pending="attacker">En attente des dégâts de {{attacker.name}}…</p>
+    <p class="clash-pending" data-clash-pending="attacker">{{localize "NOCTIS.ui.EnAttenteDesDegatsDe" name=attacker.name}}</p>
     {{/if}}
 
     {{#if damage}}
     <section class="clash-step">
-      <h4><i class="fa-solid fa-burst"></i> Dégâts <span class="res">{{damage.levels}} niveau(x) {{damage.typeLabel}}</span></h4>
+      <h4><i class="fa-solid fa-burst"></i> {{localize "NOCTIS.ui.Degats"}} <span class="res">{{localize "NOCTIS.ui.NiveauX" levels=damage.levels typeLabel=damage.typeLabel}}</span></h4>
       <div class="dice">{{#each damage.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}</div>
-      {{#if damage.average}}<p class="clash-average">Résultat moyen du PNJ, sans jet : {{damage.pool}} dés ÷ 2 = <b>{{damage.successes}}</b></p>{{/if}}
-      <small>{{damage.pool}} dés, diff. 6{{#if damage.parts}} · {{damage.parts}}{{/if}}{{#if damage.minApplied}} · minimum 1 réussite (variante){{/if}}{{#if damage.half}} · {{damage.halfReason}} : {{damage.before}} → {{damage.levels}} (moitié, arrondi au supérieur){{/if}}</small>
+      {{#if damage.average}}<p class="clash-average">{{{localize "NOCTIS.ui.ResultatMoyenDuPnjSansJet" pool=damage.pool successes=damage.successes}}}</p>{{/if}}
+      {{{localize "NOCTIS.ui.DesDiff6" pool=damage.pool}}}{{#if damage.parts}} · {{damage.parts}}{{/if}}{{#if damage.minApplied}} {{localize "NOCTIS.ui.Minimum1ReussiteVariante"}}{{/if}}{{#if damage.half}} {{localize "NOCTIS.ui.MoitieArrondiAuSuperieur" halfReason=damage.halfReason before=damage.before levels=damage.levels}}{{/if}}</small>
     </section>
     {{/if}}
 
     {{#if waitingSoak}}
     <section class="clash-wait" data-clash-owner="defender">
-      <p><b>{{defender.name}}</b> encaisse {{damage.levels}} niveau(x) {{damage.typeLabel}}.</p>
+      <p>{{{localize "NOCTIS.ui.EncaisseNiveauX" name=defender.name levels=damage.levels typeLabel=damage.typeLabel}}}</p>
       <div class="card-buttons">
-        <button type="button" data-clash-step="soak" data-choice="full"><i class="fa-solid fa-shield-heart"></i> Absorber</button>
-        <button type="button" data-clash-step="soak" data-choice="half" data-tooltip="Après absorption, ne subir que la moitié des niveaux (arrondi au supérieur)"><i class="fa-solid fa-scale-balanced"></i> Absorber et prendre la moitié</button>
+        <button type="button" data-clash-step="soak" data-choice="full"><i class="fa-solid fa-shield-heart"></i> {{localize "NOCTIS.ui.Absorber"}}</button>
+        <button type="button" data-clash-step="soak" data-choice="half" data-tooltip="{{localize "NOCTIS.ui.ApresAbsorptionNeSubirQueLa"}}"><i class="fa-solid fa-scale-balanced"></i> {{localize "NOCTIS.ui.AbsorberEtPrendreLaMoitie"}}</button>
         {{#if wpSoak}}
-        <button type="button" data-clash-step="soak" data-choice="wp" data-tooltip="Dépense 1 point de Volonté : 1 réussite automatique d'absorption (variante)"><i class="fa-solid fa-shield-heart"></i> Absorber + Volonté</button>
-        <button type="button" data-clash-step="soak" data-choice="wpHalf" data-tooltip="1 point de Volonté (+1 réussite), puis moitié des niveaux restants"><i class="fa-solid fa-scale-balanced"></i> Volonté et moitié</button>
+        <button type="button" data-clash-step="soak" data-choice="wp" data-tooltip="{{localize "NOCTIS.ui.Depense1PointDeVolonte1"}}"><i class="fa-solid fa-shield-heart"></i> {{localize "NOCTIS.ui.AbsorberVolonte"}}</button>
+        <button type="button" data-clash-step="soak" data-choice="wpHalf" data-tooltip="{{localize "NOCTIS.ui.1PointDeVolonte1Reussite"}}"><i class="fa-solid fa-scale-balanced"></i> {{localize "NOCTIS.ui.VolonteEtMoitie"}}</button>
         {{/if}}
       </div>
     </section>
-    <p class="clash-pending" data-clash-pending="defender">En attente de l'absorption de {{defender.name}}…</p>
+    <p class="clash-pending" data-clash-pending="defender">{{localize "NOCTIS.ui.EnAttenteDeLAbsorptionDe" name=defender.name}}</p>
     {{/if}}
 
     {{#if soak}}
     <section class="clash-step">
-      <h4><i class="fa-solid fa-shield-heart"></i> Absorption <span class="res">{{soak.successes}} niveau(x)</span></h4>
+      <h4><i class="fa-solid fa-shield-heart"></i> {{localize "NOCTIS.ui.Absorption"}} <span class="res">{{localize "NOCTIS.ui.NiveauX2" successes=soak.successes}}</span></h4>
       <div class="dice">{{#each soak.faces}}<span class="d10 {{cls}}">{{value}}</span>{{/each}}{{#if soak.willpower}}<span class="d10 wp"><i class="fa-solid fa-shield-heart"></i></span>{{/if}}</div>
-      {{#if soak.average}}<p class="clash-average">Résultat moyen du PNJ, sans jet : {{soak.pool}} dés ÷ 2 = <b>{{soak.successes}}</b></p>{{/if}}
-      <small>{{soak.pool}} dés, diff. 6{{#if soak.parts}} · {{soak.parts}}{{/if}}</small>
+      {{#if soak.average}}<p class="clash-average">{{{localize "NOCTIS.ui.ResultatMoyenDuPnjSansJet" pool=soak.pool successes=soak.successes}}}</p>{{/if}}
+      {{{localize "NOCTIS.ui.DesDiff6" pool=soak.pool}}}{{#if soak.parts}} · {{soak.parts}}{{/if}}</small>
     </section>
     {{/if}}
 
@@ -85,21 +85,21 @@
       {{#if hit}}
         {{#if result}}
         <div class="outcome {{#if result.remaining}}failure{{else}}success{{/if}}">
-          <span class="label">{{defender.name}} perd <b>{{result.remaining}}</b> niveau(x) de santé{{#if result.typeLabel}} ({{result.typeLabel}}){{/if}}</span>
+          <span class="label">{{{localize "NOCTIS.ui.PerdNiveauXDeSante" name=defender.name remaining=result.remaining}}}{{#if result.typeLabel}} ({{result.typeLabel}}){{/if}}</span>
         </div>
         <ul class="clash-notes">
-          {{#if result.halved}}<li>Contondants divisés par deux (vampire).</li>{{/if}}
+          {{#if result.halved}}<li>{{localize "NOCTIS.ui.ContondantsDivisesParDeuxVampire"}}</li>{{/if}}
           {{#if result.half}}<li>{{result.halfReason}}</li>{{/if}}
           {{#if result.note}}<li>{{result.note}}</li>{{/if}}
-          {{#if result.status}}<li>État : <b>{{result.status}}</b></li>{{/if}}
-          {{#if result.torpor}}<li class="alert">Torpeur.</li>{{/if}}
-          {{#if result.finalDeath}}<li class="alert">Mort ultime.</li>{{/if}}
+          {{#if result.status}}<li>{{{localize "NOCTIS.ui.Etat" status=result.status}}}</li>{{/if}}
+          {{#if result.torpor}}<li class="alert">{{localize "NOCTIS.ui.Torpeur3"}}</li>{{/if}}
+          {{#if result.finalDeath}}<li class="alert">{{localize "NOCTIS.ui.MortUltime2"}}</li>{{/if}}
         </ul>
         {{else}}
-        <div class="outcome success"><span class="label">{{#if maneuver}}{{maneuver.label}} réussie{{else}}Touché{{/if}}</span></div>
+        <div class="outcome success"><span class="label">{{#if maneuver}}{{localize "NOCTIS.ui.Reussie" label=maneuver.label}}{{else}}{{localize "NOCTIS.ui.Touche"}}{{/if}}</span></div>
         {{/if}}
       {{else}}
-        <div class="outcome failure"><span class="label">Raté — {{missReason}}</span></div>
+        <div class="outcome failure"><span class="label">{{localize "NOCTIS.ui.Rate" missReason=missReason}}</span></div>
       {{/if}}
     {{/if}}
     {{#if error}}<p class="alert">{{error}}</p>{{/if}}

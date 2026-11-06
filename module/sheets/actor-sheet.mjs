@@ -8,19 +8,20 @@ import { variantList } from "../variants.mjs";
 import { STATUSES, hasStatus, setStatus, hungerThreshold } from "../status.mjs";
 import { provocationDialog, lucidTurn, endCrisis } from "../beast.mjs";
 import { ATTRIBUTE_HELP, ABILITY_HELP, BACKGROUND_HELP, VIRTUE_HELP } from "../trait-help.mjs";
+import { loc, registerLocalizable } from "../i18n.mjs";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const TABS = [
-  { id: "traits", label: "Traits", icon: "fa-solid fa-user" },
-  { id: "disciplines", label: "Disciplines", icon: "fa-solid fa-droplet" },
+  { id: "traits", label: "NOCTIS.js.Traits", icon: "fa-solid fa-user" },
+  { id: "disciplines", label: "NOCTIS.js.Disciplines", icon: "fa-solid fa-droplet" },
   { id: "combat", label: "Combat", icon: "fa-solid fa-khanda" },
-  { id: "advantages", label: "Avantages", icon: "fa-solid fa-crown" },
-  { id: "experience", label: "Expérience", icon: "fa-solid fa-scroll" },
-  { id: "relations", label: "Relations", icon: "fa-solid fa-people-group" },
-  { id: "domain", label: "Domaine", icon: "fa-solid fa-chess-rook" },
-  { id: "biography", label: "Chronique", icon: "fa-solid fa-feather" }
+  { id: "advantages", label: "NOCTIS.js.Avantages", icon: "fa-solid fa-crown" },
+  { id: "experience", label: "NOCTIS.js.Experience", icon: "fa-solid fa-scroll" },
+  { id: "relations", label: "NOCTIS.js.Relations", icon: "fa-solid fa-people-group" },
+  { id: "domain", label: "NOCTIS.js.Domaine", icon: "fa-solid fa-chess-rook" },
+  { id: "biography", label: "NOCTIS.js.Chronique", icon: "fa-solid fa-feather" }
 ];
 
 export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
@@ -105,7 +106,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Titre de la fenêtre : « Personnage joueur : Nom / Joueur ». */
   get title() {
     const a = this.actor;
-    const kinds = { vampire: a.hasPlayerOwner ? "Personnage joueur" : "Vampire", ghoul: "Goule", mortal: "Mortel", npc: "Personnage non joueur" };
+    const kinds = { vampire: a.hasPlayerOwner ? loc("NOCTIS.js.PersonnageJoueur") : loc("NOCTIS.js.Vampire"), ghoul: loc("NOCTIS.js.Goule"), mortal: loc("NOCTIS.js.Mortel"), npc: loc("NOCTIS.js.PersonnageNonJoueur") };
     const player = a.system.identity?.player;
     return `${kinds[a.type] ?? a.type} : ${a.name}${player ? ` / ${player}` : ""}`;
   }
@@ -131,7 +132,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       // On l'enregistre une fois pour qu'il ne dépende plus du brouillon ni des compendiums.
       if (log && this.actor.isOwner && log.clan) this.actor.setFlag("noctis", "creationLog", log);
       return log;
-    } catch (err) { console.warn("NOCTIS | récapitulatif de création", err); return null; }
+    } catch (err) { console.warn(loc("NOCTIS.js.NoctisRecapitulatifDeCreation"), err); return null; }
   }
 
   async _prepareContext(options) {
@@ -161,9 +162,9 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const backgrounds = Object.entries(NOCTIS.backgrounds).map(([k, label]) => ({ key: k, label, value: s.backgrounds[k].value, path: `system.backgrounds.${k}.value`, notesPath: `system.backgrounds.${k}.notes`, notes: s.backgrounds[k].notes, max: 5 }));
 
     const virtues = [
-      { key: "conscience", label: s.virtues.conscience.label, value: s.virtues.conscience.value, path: "system.virtues.conscience.value", typePath: "system.virtues.conscience.type", type: s.virtues.conscience.type, choices: { conscience: "Conscience", conviction: "Conviction" } },
-      { key: "selfcontrol", label: s.virtues.selfcontrol.label, value: s.virtues.selfcontrol.value, path: "system.virtues.selfcontrol.value", typePath: "system.virtues.selfcontrol.type", type: s.virtues.selfcontrol.type, choices: { selfcontrol: "Maîtrise de soi", instinct: "Instinct" } },
-      { key: "courage", label: "Courage", value: s.virtues.courage.value, path: "system.virtues.courage.value" }
+      { key: "conscience", label: s.virtues.conscience.label, value: s.virtues.conscience.value, path: "system.virtues.conscience.value", typePath: "system.virtues.conscience.type", type: s.virtues.conscience.type, choices: { conscience: loc("NOCTIS.js.Conscience"), conviction: loc("NOCTIS.js.Conviction") } },
+      { key: "selfcontrol", label: s.virtues.selfcontrol.label, value: s.virtues.selfcontrol.value, path: "system.virtues.selfcontrol.value", typePath: "system.virtues.selfcontrol.type", type: s.virtues.selfcontrol.type, choices: { selfcontrol: loc("NOCTIS.js.MaitriseDeSoi"), instinct: loc("NOCTIS.js.Instinct") } },
+      { key: "courage", label: loc("NOCTIS.js.Courage"), value: s.virtues.courage.value, path: "system.virtues.courage.value" }
     ];
 
     // Disciplines et pouvoirs
@@ -178,7 +179,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           ...p, idx, unlocked: p.level <= v, advanced: p.level > 5,
           dotsLabel: "•".repeat(Math.min(p.level, 5)) + (p.level > 5 ? " " + "•".repeat(p.level - 5) : ""),
           rollable: !!(p.attribute || p.ability),
-          poolLabel: [NOCTIS.attributes[p.attribute], NOCTIS.abilities[p.ability] ?? (p.ability === "willpower" ? "Volonté" : p.ability)].filter(Boolean).join(" + ")
+          poolLabel: [NOCTIS.attributes[p.attribute], NOCTIS.abilities[p.ability] ?? (p.ability === "willpower" ? loc("NOCTIS.js.Volonte") : p.ability)].filter(Boolean).join(" + ")
         })).filter(p => p.level <= Math.max(5, v))
       };
     });
@@ -190,7 +191,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const attackPool = (s.attributes[w.system.attribute]?.total ?? 0) + (s.abilities[w.system.ability]?.total ?? 0);
       return { item: w, id: w.id, name: w.name, img: w.img, sys: w.system, attackPool, damagePool: str + w.system.damageBonus,
         abilityLabel: NOCTIS.abilities[w.system.ability] ?? w.system.ability,
-        damageLabel: `${w.system.damageAttribute ? "For" : ""}${w.system.damageAttribute && w.system.damageBonus ? " + " : ""}${w.system.damageBonus || (!w.system.damageAttribute ? "0" : "")}`,
+        damageLabel: `${w.system.damageAttribute ? loc("NOCTIS.js.For") : ""}${w.system.damageAttribute && w.system.damageBonus ? " + " : ""}${w.system.damageBonus || (!w.system.damageAttribute ? "0" : "")}`,
         damageType: NOCTIS.damageTypes[w.system.damageType]?.short };
     });
 
@@ -213,10 +214,10 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       locked: this.locked, creationDone: s.creation.done, isPC: !!actor.getFlag("noctis", "isPC"), inCombat: actor.inActiveCombat,
       tabs: TABS.map(t => ({ ...t, active: t.id === this._activeTab, cssClass: t.id === this._activeTab ? "active" : "" })),
       activeTab: this._activeTab,
-      variantsTab: { id: "variants", label: "Variantes", icon: "fa-solid fa-gear", cssClass: this._activeTab === "variants" ? "active" : "" },
+      variantsTab: { id: "variants", label: loc("NOCTIS.js.Variantes"), icon: "fa-solid fa-gear", cssClass: this._activeTab === "variants" ? "active" : "" },
       variants: variantList(),
       statusChoices: STATUSES.filter(st => st.id !== "dead" || hasStatus(actor, "dead")).map(st => ({ ...st, active: hasStatus(actor, st.id) })),
-      beastActive: hasStatus(actor, "frenzy") ? "Frénésie" : (hasStatus(actor, "panic") ? "Panique" : ""),
+      beastActive: hasStatus(actor, "frenzy") ? loc("NOCTIS.js.Frenesie") : (hasStatus(actor, "panic") ? loc("NOCTIS.js.Panique") : ""),
       hungry: s.isVampire && s.blood.value <= hungerThreshold(),
       attributeGroups, abilityGroups, backgrounds, virtues, disciplines,
       hasDisciplines: disciplines.length > 0,
@@ -234,7 +235,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       clanWeakness: clan?.system.weakness ?? "",
       generationOptions: Array.from({ length: 11 }, (_, i) => i + 3),
       archetypes: NOCTIS.archetypes,
-      npcKinds: { vampire: "Vampire", ghoul: "Goule", mortal: "Mortel", creature: "Créature" },
+      npcKinds: { vampire: loc("NOCTIS.js.Vampire"), ghoul: loc("NOCTIS.js.Goule"), mortal: loc("NOCTIS.js.Mortel"), creature: loc("NOCTIS.js.Creature") },
       enrichedBio: await enrich(s.biography),
       enrichedNotes: await enrich(s.notes),
       bloodFlags: { perTurn: s.blood.perTurn },
@@ -310,18 +311,18 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Quotas d'après les historiques
     const herdCount = [0, 3, 7, 15, 30, 60];
     const quotas = [
-      { kind: "ally", label: "Alliés", bg: "allies", allowed: v => v },
-      { kind: "contact", label: "Contacts majeurs", bg: "contacts", allowed: v => v },
-      { kind: "mentor", label: "Mentor", bg: "mentor", allowed: v => (v > 0 ? 1 : 0) },
-      { kind: "retainer", label: "Servants", bg: "retainers", allowed: v => v },
-      { kind: "herd", label: "Calices", bg: "herd", allowed: v => herdCount[Math.min(5, v)] ?? v }
+      { kind: "ally", label: loc("NOCTIS.js.Allies"), bg: "allies", allowed: v => v },
+      { kind: "contact", label: loc("NOCTIS.js.ContactsMajeurs"), bg: "contacts", allowed: v => v },
+      { kind: "mentor", label: loc("NOCTIS.js.Mentor"), bg: "mentor", allowed: v => (v > 0 ? 1 : 0) },
+      { kind: "retainer", label: loc("NOCTIS.js.Servants"), bg: "retainers", allowed: v => v },
+      { kind: "herd", label: loc("NOCTIS.js.Calices"), bg: "herd", allowed: v => herdCount[Math.min(5, v)] ?? v }
     ];
     const relQuota = quotas.map(q => {
       const v = s.backgrounds[q.bg]?.value ?? 0;
       const count = relations.filter(r => r.kind === q.kind).length;
       const allowed = q.allowed(v);
       return { label: q.label, icon: kinds[q.kind].icon, count, allowed, over: count > allowed, full: allowed > 0 && count === allowed,
-        tip: `${NOCTIS.backgrounds[q.bg]} ${v} : ${allowed} ${q.label.toLowerCase()} selon les règles` };
+        tip: loc("NOCTIS.js.SelonLesRegles", { p0: NOCTIS.backgrounds[q.bg], v, allowed, p3: q.label.toLowerCase() }) };
     }).filter(q => q.allowed > 0 || q.count > 0);
     // Autres personnages joueurs
     const others = playerCharacters().list.filter(a => a.id !== actor.id);
@@ -337,9 +338,9 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       relKindChoices: Object.fromEntries(Object.entries(kinds).map(([k, v]) => [k, v.label])),
       relKindList: Object.entries(kinds).map(([key, v]) => ({ key, label: v.label })),
       attitudeChoices: NOCTIS.attitudes,
-      influenceChoices: { 0: "Influence 0", 1: "Influence 1", 2: "Influence 2", 3: "Influence 3", 4: "Influence 4", 5: "Influence 5" },
+      influenceChoices: { 0: loc("NOCTIS.js.Influence0"), 1: loc("NOCTIS.js.Influence1"), 2: loc("NOCTIS.js.Influence2"), 3: loc("NOCTIS.js.Influence3"), 4: loc("NOCTIS.js.Influence4"), 5: loc("NOCTIS.js.Influence5") },
       trustChoices: NOCTIS.trustLevels,
-      bondChoices: { 0: "Aucun serment", 1: "1re gorgée", 2: "2e gorgée", 3: "3e gorgée : asservi" }
+      bondChoices: { 0: loc("NOCTIS.js.AucunSerment"), 1: loc("NOCTIS.js.1reGorgee"), 2: loc("NOCTIS.js.2eGorgee"), 3: loc("NOCTIS.js.3eGorgeeAsservi") }
     };
   }
 
@@ -368,14 +369,14 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onCelerity() {
-    if (this.actor.celerityAvailable <= 0) return ui.notifications.warn("Vélocité indisponible (sang ou sang par tour insuffisant).");
+    if (this.actor.celerityAvailable <= 0) return ui.notifications.warn(loc("NOCTIS.js.VelociteIndisponibleSangOuSangPar"));
     return game.noctis.promptCelerity([this.actor]);
   }
 
   static #onResetActions() { return this.actor.resetActions(); }
 
   static #onRollUnarmed() {
-    return RollDialog.prompt(this.actor, { label: "Attaque — mains nues", trait1: "attr.dexterity", trait2: "abil.brawl", difficulty: 6, kind: "attack", tags: ["attack"] });
+    return RollDialog.prompt(this.actor, { label: loc("NOCTIS.js.AttaqueMainsNues"), trait1: "attr.dexterity", trait2: "abil.brawl", difficulty: 6, kind: "attack", tags: ["attack"] });
   }
 
   static #onTogglePC() {
@@ -392,7 +393,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onRelDelete(event, target) {
     const i = Number(target.closest("[data-rel-index]").dataset.relIndex);
     const r = this.actor.system.relations[i];
-    const ok = await DialogV2.confirm({ window: { title: "Supprimer le lien" }, content: `<p>Supprimer <b>${r?.name || "ce lien"}</b> ?</p>`, rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.SupprimerLeLien") }, content: loc("NOCTIS.js.Supprimer2", { p0: r?.name || loc("NOCTIS.js.CeLien") }), rejectClose: false });
     if (ok) return this.#updateArray("relations", arr => arr.splice(i, 1));
   }
 
@@ -401,7 +402,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const uuid = this.actor.system.relations[i]?.actorUuid;
     const doc = uuid ? await fromUuid(uuid) : null;
     if (doc?.sheet) doc.sheet.render({ force: true });
-    else ui.notifications.warn("La fiche liée est introuvable ou vous n'y avez pas accès.");
+    else ui.notifications.warn(loc("NOCTIS.js.LaFicheLieeEstIntrouvableOu"));
   }
 
   static #onHunt() {
@@ -410,7 +411,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const methodKey = this.element.querySelector(".hunt-method")?.value ?? "seduce";
     const m = NOCTIS.huntingMethods[methodKey] ?? NOCTIS.huntingMethods.seduce;
     return RollDialog.prompt(this.actor, {
-      label: `Chasse — ${NOCTIS.huntingZones[s.domain.zone]?.label ?? ""}`,
+      label: loc("NOCTIS.js.Chasse", { p0: NOCTIS.huntingZones[s.domain.zone]?.label ?? "" }),
       trait1: `attr.${m.attr}`, trait2: `abil.${m.abil}`,
       difficulty: dom.huntDiff, bonusDice: dom.herd, tags: ["hunt"]
     });
@@ -424,7 +425,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.#updateArray("relations", arr => arr.push({ id: foundry.utils.randomID(), name: actor.name, kind, attitude: "neutral", influence: 1,
       place: actor.system?.identity?.clan ?? "", notes: "", actorUuid: actor.uuid, img: actor.img }));
     this._activeTab = "relations";
-    ui.notifications.info(`${actor.name} ajouté à vos relations.`);
+    ui.notifications.info(loc("NOCTIS.js.AjouteAVosRelations", { name: actor.name }));
     return actor;
   }
 
@@ -451,7 +452,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     for (const a of el.querySelectorAll('[data-action="select"]')) {
       const d = a.dataset;
       const key = NOCTISActorSheet.#selKey({ kind: d.kind, ref: d.ref, key: d.key, itemId: a.closest("[data-item-id]")?.dataset.itemId, idx: d.idx });
-      if (key === want) (a.closest(".trait-row, .item-row, tr, li, .virtue, .discipline-card > header") ?? a).classList.add("is-selected");
+      if (key === want) (a.closest(`.trait-row, .item-row, tr, li, .virtue, .discipline-card > header`) ?? a).classList.add("is-selected");
     }
   }
 
@@ -467,7 +468,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const raise = (path, v, max = 5) => {
       if (!this.isEditable || v >= Math.max(5, max)) return null;
       const cost = this.locked ? actor.describePurchase(path, v, v + 1).cost : null;
-      return { path, value: v, dot: v + 1, cls: "primary", icon: "fa-solid fa-arrow-up", label: cost != null ? `Améliorer (${cost} XP)` : "Ajouter un point" };
+      return { path, value: v, dot: v + 1, cls: "primary", icon: "fa-solid fa-arrow-up", label: cost != null ? loc("NOCTIS.js.AmeliorerXp", { cost }) : loc("NOCTIS.js.AjouterUnPoint") };
     };
     if (!sel) return this.#defaultContext(ctx);
 
@@ -483,24 +484,24 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
           const path = `system.${isAttr ? "attributes" : "abilities"}.${k}.value`;
           const group = Object.values(isAttr ? NOCTIS.attributeGroups : NOCTIS.abilityGroups).find(g => g.keys.includes(k));
           const facts = [];
-          if (t.spec) facts.push({ label: "Spécialité", value: t.spec });
-          if (help?.spec) facts.push({ label: "Spécialités possibles", value: help.spec });
-          if (help?.poss) facts.push({ label: "Possédé par", value: help.poss });
-          if (!isAttr) facts.push({ label: "Attribut proposé", value: NOCTIS.attributes[NOCTIS.abilityDefaultAttr[k]] ?? "—" });
-          if (t.mod) facts.push({ label: "Modificateur", value: (t.mod > 0 ? "+" : "") + t.mod });
+          if (t.spec) facts.push({ label: loc("NOCTIS.js.Specialite"), value: t.spec });
+          if (help?.spec) facts.push({ label: loc("NOCTIS.js.SpecialitesPossibles"), value: help.spec });
+          if (help?.poss) facts.push({ label: loc("NOCTIS.js.PossedePar"), value: help.poss });
+          if (!isAttr) facts.push({ label: loc("NOCTIS.js.AttributPropose"), value: NOCTIS.attributes[NOCTIS.abilityDefaultAttr[k]] ?? "—" });
+          if (t.mod) facts.push({ label: loc("NOCTIS.js.Modificateur2"), value: (t.mod > 0 ? "+" : "") + t.mod });
           return {
             title: isAttr ? NOCTIS.attributes[k] : NOCTIS.abilities[k], initial: (isAttr ? NOCTIS.attributes[k] : NOCTIS.abilities[k]).charAt(0),
-            subtitle: `${isAttr ? "Attribut" : "Capacité"} · ${group?.label ?? ""}`, ...dots(t.value, s.maxTrait),
+            subtitle: `${isAttr ? loc("NOCTIS.js.Attribut") : loc("NOCTIS.js.Capacite")} · ${group?.label ?? ""}`, ...dots(t.value, s.maxTrait),
             desc: help?.desc ?? "", levels: levels(help, t.value), facts,
-            buttons: [{ action: "rollTrait", ref, cls: "", icon: "fa-solid fa-dice-d10", label: "Lancer les dés" }, raise(path, t.value, s.maxTrait)].filter(Boolean)
+            buttons: [{ action: "rollTrait", ref, cls: "", icon: "fa-solid fa-dice-d10", label: loc("NOCTIS.js.LancerLesDes") }, raise(path, t.value, s.maxTrait)].filter(Boolean)
           };
         }
         if (ref.startsWith("item.")) {
           const it = actor.items.get(ref.slice(5));
           if (!it) break;
-          return { itemId: it.id, title: it.name, initial: it.name.charAt(0), subtitle: "Capacité secondaire", ...dots(it.system.value),
-            html: await enrich(it.system.description), facts: it.system.spec ? [{ label: "Spécialité", value: it.system.spec }] : [],
-            buttons: [{ action: "rollTrait", ref, icon: "fa-solid fa-dice-d10", label: "Lancer les dés" }, { action: "itemEdit", icon: "fa-solid fa-pen", label: "Ouvrir" }] };
+          return { itemId: it.id, title: it.name, initial: it.name.charAt(0), subtitle: loc("NOCTIS.js.CapaciteSecondaire"), ...dots(it.system.value),
+            html: await enrich(it.system.description), facts: it.system.spec ? [{ label: loc("NOCTIS.js.Specialite"), value: it.system.spec }] : [],
+            buttons: [{ action: "rollTrait", ref, icon: "fa-solid fa-dice-d10", label: loc("NOCTIS.js.LancerLesDes") }, { action: "itemEdit", icon: "fa-solid fa-pen", label: loc("NOCTIS.js.Ouvrir") }] };
         }
         break;
       }
@@ -508,8 +509,8 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const b = s.backgrounds[sel.key];
         if (!b) break;
         const path = `system.backgrounds.${sel.key}.value`;
-        return { title: NOCTIS.backgrounds[sel.key], initial: NOCTIS.backgrounds[sel.key].charAt(0), subtitle: "Historique", ...dots(b.value),
-          desc: BACKGROUND_HELP[sel.key]?.desc ?? "", levels: levels(BACKGROUND_HELP[sel.key], b.value), facts: b.notes ? [{ label: "Précisions", value: b.notes }] : [],
+        return { title: NOCTIS.backgrounds[sel.key], initial: NOCTIS.backgrounds[sel.key].charAt(0), subtitle: loc("NOCTIS.js.Historique"), ...dots(b.value),
+          desc: BACKGROUND_HELP[sel.key]?.desc ?? "", levels: levels(BACKGROUND_HELP[sel.key], b.value), facts: b.notes ? [{ label: loc("NOCTIS.js.Precisions"), value: b.notes }] : [],
           buttons: [raise(path, b.value)].filter(Boolean) };
       }
       case "virtue": {
@@ -518,37 +519,37 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const type = v.type ?? sel.key;
         const path = `system.virtues.${sel.key}.value`;
         const kind = sel.key === "courage" ? "panic" : sel.key === "conscience" ? "conscience" : "frenzy";
-        return { title: v.label ?? NOCTIS.virtueLabels[type], initial: (v.label ?? "V").charAt(0), subtitle: "Vertu", ...dots(v.value),
+        return { title: v.label ?? NOCTIS.virtueLabels[type], initial: (v.label ?? "V").charAt(0), subtitle: loc("NOCTIS.js.Vertu"), ...dots(v.value),
           desc: VIRTUE_HELP[type]?.desc ?? "", levels: levels(VIRTUE_HELP[type], v.value),
-          buttons: [{ action: "rollVirtue", kind, icon: "fa-solid fa-dice-d10", label: "Lancer" }, raise(path, v.value)].filter(Boolean) };
+          buttons: [{ action: "rollVirtue", kind, icon: "fa-solid fa-dice-d10", label: loc("NOCTIS.js.Lancer") }, raise(path, v.value)].filter(Boolean) };
       }
       case "discipline": {
         const it = actor.items.get(sel.itemId);
         if (!it) break;
         const v = it.system.value;
         const img = it.img;
-        return { itemId: it.id, title: it.name, img, subtitle: it.system.isPath ? "Voie" : it.system.isClan ? "Discipline de clan" : "Discipline", ...dots(v, Math.max(5, v)),
+        return { itemId: it.id, title: it.name, img, subtitle: it.system.isPath ? loc("NOCTIS.js.Voie") : it.system.isClan ? loc("NOCTIS.js.DisciplineDeClan") : loc("NOCTIS.js.Discipline"), ...dots(v, Math.max(5, v)),
           html: await enrich(it.system.description),
           powers: it.system.powers.filter(p => p.level <= Math.max(5, v)).map(p => ({ dots: "●".repeat(Math.min(p.level, 5)), name: p.name, unlocked: p.level <= v })),
-          buttons: [{ action: "rollTrait", ref: `item.${it.id}`, icon: "fa-solid fa-dice-d10", label: "Jet libre" }, raise(`item.${it.id}`, v, Math.max(5, s.maxTrait)), { action: "itemEdit", icon: "fa-solid fa-pen", label: "Ouvrir" }].filter(Boolean) };
+          buttons: [{ action: "rollTrait", ref: `item.${it.id}`, icon: "fa-solid fa-dice-d10", label: loc("NOCTIS.js.JetLibre") }, raise(`item.${it.id}`, v, Math.max(5, s.maxTrait)), { action: "itemEdit", icon: "fa-solid fa-pen", label: loc("NOCTIS.js.Ouvrir") }].filter(Boolean) };
       }
       case "power": {
         const it = actor.items.get(sel.itemId);
         const idx = Number(sel.idx);
         const p = it?.system.powers[idx];
         if (!p) break;
-        const [fluff, system] = (p.summary ?? "").split(/\s+—\s+Système\s*:\s*/);
+        const [fluff, system] = (p.summary ?? "").split(/\s+—\s+(?:Système\s*:|System:)\s*/);
         const img = it.img;
-        const pool = [NOCTIS.attributes[p.attribute], NOCTIS.abilities[p.ability] ?? (p.ability === "willpower" ? "Volonté" : p.ability)].filter(Boolean).join(" + ");
+        const pool = [NOCTIS.attributes[p.attribute], NOCTIS.abilities[p.ability] ?? (p.ability === "willpower" ? loc("NOCTIS.js.Volonte") : p.ability)].filter(Boolean).join(" + ");
         const unlocked = p.level <= it.system.value;
         const facts = [];
-        if (pool) facts.push({ label: "Groupement", value: pool });
-        if (p.difficulty) facts.push({ label: "Difficulté", value: p.difficulty });
-        if (p.cost) facts.push({ label: "Coût", value: p.cost });
-        if (p.duration) facts.push({ label: "Durée", value: p.duration });
-        return { itemId: it.id, title: p.name, img, subtitle: `${it.name} · niveau ${p.level}`, desc: fluff ?? "", system: system ?? "", facts,
-          hint: unlocked ? "" : `Verrouillé : ${it.name} ${p.level} requis.`,
-          buttons: unlocked ? [{ action: "rollPower", idx: String(idx), cls: "primary", icon: "fa-solid fa-hand-sparkles", label: "Utiliser le pouvoir" }] : [] };
+        if (pool) facts.push({ label: loc("NOCTIS.js.Groupement"), value: pool });
+        if (p.difficulty) facts.push({ label: loc("NOCTIS.js.Difficulte4"), value: p.difficulty });
+        if (p.cost) facts.push({ label: loc("NOCTIS.js.Cout"), value: p.cost });
+        if (p.duration) facts.push({ label: loc("NOCTIS.js.Duree"), value: p.duration });
+        return { itemId: it.id, title: p.name, img, subtitle: loc("NOCTIS.js.Niveau2", { name: it.name, level: p.level }), desc: fluff ?? "", system: system ?? "", facts,
+          hint: unlocked ? "" : loc("NOCTIS.js.VerrouilleRequis", { name: it.name, level: p.level }),
+          buttons: unlocked ? [{ action: "rollPower", idx: String(idx), cls: "primary", icon: "fa-solid fa-hand-sparkles", label: loc("NOCTIS.js.UtiliserLePouvoir") }] : [] };
       }
       case "item": {
         const it = actor.items.get(sel.itemId);
@@ -556,17 +557,17 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const typeLabel = game.i18n.localize(CONFIG.Item.typeLabels?.[it.type] ?? "") || it.type;
         const facts = [];
         const sys = it.system;
-        if (it.type === "merit" || it.type === "flaw") facts.push({ label: "Coût", value: `${sys.cost} pt(s)` });
+        if (it.type === "merit" || it.type === "flaw") facts.push({ label: loc("NOCTIS.js.Cout"), value: `${sys.cost} pt(s)` });
         if (it.type === "weapon") {
-          facts.push({ label: "Difficulté", value: sys.difficulty }, { label: "Dégâts", value: `${sys.damageAttribute ? "For + " : ""}${sys.damageBonus} ${NOCTIS.damageTypes[sys.damageType]?.short ?? ""}` });
-          if (sys.range) facts.push({ label: "Portée", value: `${sys.range} m` });
+          facts.push({ label: loc("NOCTIS.js.Difficulte4"), value: sys.difficulty }, { label: loc("NOCTIS.js.Degats3"), value: `${sys.damageAttribute ? loc("NOCTIS.js.For2") : ""}${sys.damageBonus} ${NOCTIS.damageTypes[sys.damageType]?.short ?? ""}` });
+          if (sys.range) facts.push({ label: loc("NOCTIS.js.Portee"), value: `${sys.range} m` });
         }
-        if (it.type === "armor") facts.push({ label: "Protection", value: sys.rating ?? "—" }, { label: "Pénalité", value: `−${sys.penalty ?? 0}` });
-        if (it.type === "ritual") facts.push({ label: "Niveau", value: sys.level });
-        if (it.type === "clan" && sys.weakness) facts.push({ label: "Faiblesse", value: sys.weakness });
+        if (it.type === "armor") facts.push({ label: loc("NOCTIS.js.Protection"), value: sys.rating ?? "—" }, { label: loc("NOCTIS.js.Penalite"), value: `−${sys.penalty ?? 0}` });
+        if (it.type === "ritual") facts.push({ label: loc("NOCTIS.js.Niveau3"), value: sys.level });
+        if (it.type === "clan" && sys.weakness) facts.push({ label: loc("NOCTIS.js.Faiblesse"), value: sys.weakness });
         const buttons = [];
-        if (it.type === "weapon") buttons.push({ action: "rollAttack", cls: "primary", icon: "fa-solid fa-khanda", label: "Attaquer" });
-        buttons.push({ action: "itemChat", icon: "fa-solid fa-comment", label: "Chat" }, { action: "itemEdit", icon: "fa-solid fa-pen", label: "Ouvrir" });
+        if (it.type === "weapon") buttons.push({ action: "rollAttack", cls: "primary", icon: "fa-solid fa-khanda", label: loc("NOCTIS.js.Attaquer") });
+        buttons.push({ action: "itemChat", icon: "fa-solid fa-comment", label: loc("NOCTIS.js.Chat") }, { action: "itemEdit", icon: "fa-solid fa-pen", label: loc("NOCTIS.js.Ouvrir") });
         return { itemId: it.id, title: it.name, img: it.type === "clan" ? (sys.emblem || it.img) : it.img, subtitle: typeLabel, html: await enrich(sys.description), facts, buttons };
       }
     }
@@ -577,15 +578,15 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const s = this.actor.system;
     const clan = ctx.clan;
     const facts = [];
-    if (s.identity?.nature) facts.push({ label: "Nature", value: s.identity.nature });
-    if (s.identity?.demeanor) facts.push({ label: "Attitude", value: s.identity.demeanor });
-    if (s.isVampire) facts.push({ label: "Génération", value: s.generationLabel ?? "" });
-    if (s.road?.name) facts.push({ label: "Voie", value: `${s.road.name} (${s.road.value})` });
-    if (clan?.system?.weakness) facts.push({ label: "Faiblesse du clan", value: clan.system.weakness });
+    if (s.identity?.nature) facts.push({ label: loc("NOCTIS.js.Nature"), value: s.identity.nature });
+    if (s.identity?.demeanor) facts.push({ label: loc("NOCTIS.js.Attitude"), value: s.identity.demeanor });
+    if (s.isVampire) facts.push({ label: loc("NOCTIS.js.Generation"), value: s.generationLabel ?? "" });
+    if (s.road?.name) facts.push({ label: loc("NOCTIS.js.Voie"), value: `${s.road.name} (${s.road.value})` });
+    if (clan?.system?.weakness) facts.push({ label: loc("NOCTIS.js.FaiblesseDuClan"), value: clan.system.weakness });
     return {
       title: clan?.name ?? this.actor.name, img: clan?.system?.emblem || "", initial: this.actor.name.charAt(0),
       subtitle: clan?.system?.nickname ?? "", facts,
-      hint: "Cliquez sur un trait, un pouvoir ou un objet pour afficher ici sa description et ses actions. Double-clic sur un trait ou un pouvoir : lancer directement."
+      hint: loc("NOCTIS.js.CliquezSurUnTraitUnPouvoir")
     };
   }
 
@@ -608,13 +609,13 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const old = actor.items.filter(i => i.type === "road").map(i => i.id);
         if (old.length) await actor.deleteEmbeddedDocuments("Item", old);
         await actor.update({ "system.road.name": item.name, "system.virtues.conscience.type": item.system.virtue1, "system.virtues.selfcontrol.type": item.system.virtue2, "system.road.aura": item.system.aura });
-        ui.notifications.info(`${actor.name} suit désormais la ${item.name}.`);
+        ui.notifications.info(loc("NOCTIS.js.SuitDesormaisLa", { name: actor.name, name2: item.name }));
         return actor.createEmbeddedDocuments("Item", [data]);
       }
       case "discipline": {
         const key = item.system.key;
         if (key && actor.items.some(i => i.type === "discipline" && i.system.key === key)) {
-          ui.notifications.warn(`${actor.name} possède déjà ${item.name}.`);
+          ui.notifications.warn(loc("NOCTIS.js.PossedeDeja", { name: actor.name, name2: item.name }));
           return null;
         }
         data.system.value = 0;
@@ -625,33 +626,33 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
       case "ability": {
         if (item.system.key && NOCTIS.abilities[item.system.key]) {
-          ui.notifications.info(`${item.name} est une capacité de base : elle figure déjà sur la fiche.`);
+          ui.notifications.info(loc("NOCTIS.js.EstUneCapaciteDeBaseElle", { name: item.name }));
           return null;
         }
-        if (actor.items.some(i => i.type === "ability" && i.name === item.name)) return ui.notifications.warn(`${item.name} est déjà sur la fiche.`);
+        if (actor.items.some(i => i.type === "ability" && i.name === item.name)) return ui.notifications.warn(loc("NOCTIS.js.EstDejaSurLaFiche", { name: item.name }));
         return actor.createEmbeddedDocuments("Item", [data]);
       }
       case "merit":
       case "flaw": {
         if (actor.items.some(i => i.type === item.type && i.name === item.name)) {
-          ui.notifications.warn(`${item.name} est déjà sur la fiche.`);
+          ui.notifications.warn(loc("NOCTIS.js.EstDejaSurLaFiche", { name: item.name }));
           return null;
         }
         // Plusieurs niveaux : on demande lequel
         if ((data.system.levels?.length ?? 0) > 1) {
           const opts = data.system.levels.map(l => `<label class="mf-pick"><input type="radio" name="lv" value="${l.value}" ${l.value === data.system.levels[0].value ? "checked" : ""}> <b>${l.value} pt${l.value > 1 ? "s" : ""}</b> — ${l.text}</label>`).join("");
           const lv = await DialogV2.prompt({
-            window: { title: `${item.name} : niveau` }, classes: ["noctis-mf-dialog"],
+            window: { title: loc("NOCTIS.js.Niveau4", { name: item.name }) }, classes: ["noctis-mf-dialog"],
             content: `<div class="mf-pick-list">${opts}</div>`,
-            ok: { label: "Ajouter", callback: (event, button) => Number(new foundry.applications.ux.FormDataExtended(button.form).object.lv) }, rejectClose: false
+            ok: { label: loc("NOCTIS.js.Ajouter"), callback: (event, button) => Number(new foundry.applications.ux.FormDataExtended(button.form).object.lv) }, rejectClose: false
           }).catch(() => null);
           if (!lv) return null;
           data.system.cost = lv;
           const t = data.system.levels.find(l => l.value === lv)?.text;
-          if (t) data.system.description = `<p><b>Niveau ${lv} :</b> ${t}</p>` + (data.system.description ?? "");
+          if (t) data.system.description = loc("NOCTIS.js.Niveau", { lv, t }) + (data.system.description ?? "");
         }
         const created = await actor.createEmbeddedDocuments("Item", [data]);
-        ui.notifications.info(`${item.type === "merit" ? "Atout" : "Handicap"} ajouté : ${item.name} (${data.system.cost} pt${data.system.cost > 1 ? "s" : ""}).`);
+        ui.notifications.info(loc("NOCTIS.js.AjoutePt", { p0: item.type === "merit" ? loc("NOCTIS.js.Atout") : loc("NOCTIS.js.Handicap"), name: item.name, cost: data.system.cost, p3: data.system.cost > 1 ? "s" : "" }));
         return created;
       }
       default:
@@ -677,7 +678,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toCreate.push(d);
     }
     if (toCreate.length) await actor.createEmbeddedDocuments("Item", toCreate);
-    ui.notifications.info(`Clan ${item.name} appliqué${toCreate.length ? ` : ${toCreate.length} discipline(s) de clan ajoutée(s)` : ""}.`);
+    ui.notifications.info(loc("NOCTIS.js.ClanApplique", { name: item.name, p1: toCreate.length ? loc("NOCTIS.js.DisciplineSDeClanAjouteeS", { length: toCreate.length }) : "" }));
     return created;
   }
 
@@ -685,7 +686,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const actor = this.actor;
     const isClan = (actor.clanItem?.system.disciplines ?? []).includes(data.system.key) || (actor.clanItem?.system.disciplines ?? []).includes(data.system.parent);
     const cost = data.system.isPath ? 7 : 10;
-    const choice = await NOCTISActorSheet.#purchaseDialog(`Apprendre ${data.name}`, `Nouvelle ${data.system.isPath ? "voie" : "discipline"}${isClan ? " (de clan)" : ""} : <b>${cost} XP</b> pour le premier point.`, cost, actor.system.experience.available);
+    const choice = await NOCTISActorSheet.#purchaseDialog(loc("NOCTIS.js.Apprendre", { name: data.name }), loc("NOCTIS.js.NouvelleXpPourLePremierPoint", { p0: data.system.isPath ? "voie" : "discipline", p1: isClan ? loc("NOCTIS.js.DeClan") : "", cost }), cost, actor.system.experience.available);
     if (!choice) return;
     data.system.value = 1;
     await actor.createEmbeddedDocuments("Item", [data]);
@@ -727,12 +728,12 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const done = !this.actor.system.creation.done;
     await this.actor.update({ "system.creation.done": done });
     this._unlocked = null;
-    ui.notifications.info(done ? "Création terminée : les progressions se paient désormais en expérience." : "Fiche repassée en mode création.");
+    ui.notifications.info(done ? loc("NOCTIS.js.CreationTermineeLesProgressionsSePaient") : loc("NOCTIS.js.FicheRepasseeEnModeCreation"));
   }
 
   static #onOpenCreator() {
     const cls = game.noctis?.CharacterCreator;
-    if (!cls) return ui.notifications.info("Le créateur de personnage arrive à l'étape 4 du projet.");
+    if (!cls) return ui.notifications.info(loc("NOCTIS.js.LeCreateurDePersonnageArriveA"));
     return cls.open(this.actor);
   }
 
@@ -750,9 +751,9 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Pertes « en jeu » autorisées même fiche verrouillée : Voie, Volonté, vertus (dégénérescence)
     const lossAllowed = path === "system.road.value" || path === "system.willpower.permanent" || path.startsWith("system.virtues.");
     if (this.locked && !free && !(value < current && lossAllowed)) {
-      if (value < current) return ui.notifications.warn("Fiche verrouillée : déverrouillez-la (cadenas) pour retirer des points.");
+      if (value < current) return ui.notifications.warn(loc("NOCTIS.js.FicheVerrouilleeDeverrouillezLaCadenasPo"));
       const p = actor.describePurchase(path, current, value);
-      const choice = await NOCTISActorSheet.#purchaseDialog(`Progression : ${p.label}`, `${p.label} : ${current} → ${value}<br>Catégorie : ${NOCTIS.xpCategories[p.category]}<br>Coût : <b>${p.cost} XP</b>`, p.cost, actor.system.experience.available);
+      const choice = await NOCTISActorSheet.#purchaseDialog(loc("NOCTIS.js.Progression", { label: p.label }), loc("NOCTIS.js.CategorieCoutXp", { label: p.label, current, value, p3: NOCTIS.xpCategories[p.category], cost: p.cost }), p.cost, actor.system.experience.available);
       if (!choice) return;
       return actor.purchaseTrait(path, current, value, { free: choice.free, note: choice.note });
     }
@@ -765,12 +766,11 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return DialogV2.wait({
       window: { title, icon: "fa-solid fa-scroll" },
       classes: ["noctis", "noctis-dialog"],
-      content: `<div class="noctis-mini-form"><p>${html}</p><p>Expérience disponible : <b>${available}</b>${enough ? "" : ` <span class="warn">(insuffisante)</span>`}</p>
-        <label>Motif / note <input type="text" name="note" placeholder="ex. entraînement auprès de son sire"></label></div>`,
+      content: loc("NOCTIS.js.ExperienceDisponibleMotifNote", { html, available, p2: enough ? "" : ` <span class="warn">(insuffisante)</span>` }),
       buttons: [
-        { action: "pay", label: `Payer ${cost} XP`, icon: "fa-solid fa-coins", default: enough, callback: (e, b) => ({ free: false, note: b.form.elements.note.value }) },
-        { action: "free", label: "Gratuit", icon: "fa-solid fa-gift", callback: (e, b) => ({ free: true, note: b.form.elements.note.value }) },
-        { action: "cancel", label: "Annuler", icon: "fa-solid fa-xmark", callback: () => null }
+        { action: "pay", label: loc("NOCTIS.js.PayerXp", { cost }), icon: "fa-solid fa-coins", default: enough, callback: (e, b) => ({ free: false, note: b.form.elements.note.value }) },
+        { action: "free", label: loc("NOCTIS.js.Gratuit"), icon: "fa-solid fa-gift", callback: (e, b) => ({ free: true, note: b.form.elements.note.value }) },
+        { action: "cancel", label: loc("NOCTIS.js.Annuler"), icon: "fa-solid fa-xmark", callback: () => null }
       ],
       rejectClose: false
     });
@@ -856,12 +856,12 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const kind = target.dataset.kind;
     const actor = this.actor;
     switch (kind) {
-      case "frenzy": return RollDialog.prompt(actor, { label: "Résister à la frénésie", trait1: "virtue.selfcontrol", trait2: "none", difficulty: 6, capByBlood: true, noWoundPenalty: true, tags: ["frenzy"] });
-      case "panic": return RollDialog.prompt(actor, { label: "Panique", trait1: "virtue.courage", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["panic"] });
-      case "conscience": return RollDialog.prompt(actor, { label: `Jet de ${actor.system.virtues.conscience.label}`, trait1: "virtue.conscience", trait2: "none", difficulty: 6, noWoundPenalty: true });
-      case "willpower": return RollDialog.prompt(actor, { label: "Jet de Volonté", trait1: "willpower", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["willpower"] });
-      case "road": return RollDialog.prompt(actor, { label: `Jet de ${actor.system.road.name || "Voie"}`, trait1: "road", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["road"] });
-      case "faith": return RollDialog.prompt(actor, { label: "Vraie Foi", trait1: "faith", trait2: "none", difficulty: 6, noWoundPenalty: true });
+      case "frenzy": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.ResisterALaFrenesie"), trait1: "virtue.selfcontrol", trait2: "none", difficulty: 6, capByBlood: true, noWoundPenalty: true, tags: ["frenzy"] });
+      case "panic": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.Panique"), trait1: "virtue.courage", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["panic"] });
+      case "conscience": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.JetDe", { label: actor.system.virtues.conscience.label }), trait1: "virtue.conscience", trait2: "none", difficulty: 6, noWoundPenalty: true });
+      case "willpower": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.JetDeVolonte"), trait1: "willpower", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["willpower"] });
+      case "road": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.JetDe2", { p0: actor.system.road.name || loc("NOCTIS.js.Voie") }), trait1: "road", trait2: "none", difficulty: 6, noWoundPenalty: true, tags: ["road"] });
+      case "faith": return RollDialog.prompt(actor, { label: loc("NOCTIS.js.VraieFoi"), trait1: "faith", trait2: "none", difficulty: 6, noWoundPenalty: true });
     }
   }
 
@@ -871,7 +871,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const str = this.actor.system.attributes.strength.total;
     const tooWeak = Math.max(0, (w.system.strength || 0) - str);
     return RollDialog.prompt(this.actor, {
-      label: `Attaque — ${w.name}`,
+      label: loc("NOCTIS.js.Attaque", { name: w.name }),
       trait1: `attr.${w.system.attribute || "dexterity"}`,
       trait2: `abil.${w.system.ability || "melee"}`,
       difficulty: (w.system.difficulty || 6) + tooWeak,
@@ -884,14 +884,14 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #onRollSoak(event, target) {
     const type = target.dataset.type;
     const pool = this.actor.system.soak[type];
-    return rollPool({ actor: this.actor, pool, difficulty: 6, kind: "soak", noBotch: true, label: `Absorption (${NOCTIS.damageTypes[type].label.toLowerCase()})`, parts: [`${pool} dés`] });
+    return rollPool({ actor: this.actor, pool, difficulty: 6, kind: "soak", noBotch: true, label: loc("NOCTIS.js.Absorption", { p0: NOCTIS.damageTypes[type].label.toLowerCase() }), parts: [loc("NOCTIS.js.Des", { pool })] });
   }
 
   static async #onRollInitiative() {
     const actor = this.actor;
     if (game.combat) return actor.rollInitiative({ createCombatants: true });
-    const roll = await new Roll("1d10 + @init", { init: actor.system.initiative.value }).evaluate();
-    return roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: `Initiative (${actor.system.initiative.value} + 1d10)` });
+    const roll = await new Roll(`1d10 + @init`, { init: actor.system.initiative.value }).evaluate();
+    return roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: loc("NOCTIS.js.Initiative1d10", { value: actor.system.initiative.value }) });
   }
 
   /* ---- Objets ---- */
@@ -905,14 +905,14 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const id = target.closest("[data-item-id]").dataset.itemId;
     const item = this.actor.items.get(id);
     if (!item) return;
-    const ok = await DialogV2.confirm({ window: { title: "Supprimer" }, content: `<p>Supprimer <b>${item.name}</b> de la fiche ?</p>`, rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.Supprimer") }, content: loc("NOCTIS.js.SupprimerDeLaFiche", { name: item.name }), rejectClose: false });
     if (ok) await item.delete();
   }
 
   static async #onItemCreate(event, target) {
     const type = target.dataset.type;
-    const labels = { weapon: "Nouvelle arme", armor: "Nouvelle armure", gear: "Nouvel objet", merit: "Nouvel atout", flaw: "Nouveau handicap", ability: "Nouvelle capacité", discipline: "Nouvelle discipline", ritual: "Nouveau rituel", derangement: "Nouveau dérangement" };
-    const data = { name: labels[type] ?? "Nouvel objet", type };
+    const labels = { weapon: loc("NOCTIS.js.NouvelleArme"), armor: loc("NOCTIS.js.NouvelleArmure"), gear: loc("NOCTIS.js.NouvelObjet"), merit: loc("NOCTIS.js.NouvelAtout"), flaw: loc("NOCTIS.js.NouveauHandicap"), ability: loc("NOCTIS.js.NouvelleCapacite"), discipline: loc("NOCTIS.js.NouvelleDiscipline"), ritual: loc("NOCTIS.js.NouveauRituel"), derangement: loc("NOCTIS.js.NouveauDerangement") };
+    const data = { name: labels[type] ?? loc("NOCTIS.js.NouvelObjet"), type };
     if (type === "ability") data.system = { group: target.dataset.group ?? "knowledges" };
     const [item] = await this.actor.createEmbeddedDocuments("Item", [data]);
     item?.sheet.render({ force: true });
@@ -944,36 +944,27 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onXpAdd() {
     const data = await DialogV2.prompt({
-      window: { title: "Gain d'expérience", icon: "fa-solid fa-plus" },
+      window: { title: loc("NOCTIS.js.GainDExperience"), icon: "fa-solid fa-plus" },
       classes: ["noctis", "noctis-dialog"],
-      content: `<div class="noctis-mini-form">
-        <label>Points gagnés <input type="number" name="amount" value="1" min="0" autofocus></label>
-        <label>Motif <input type="text" name="label" placeholder="ex. Séance 4, fin du chapitre II"></label>
-        <label>Date <input type="text" name="date" value="${new Date().toLocaleDateString("fr-FR")}"></label></div>`,
-      ok: { label: "Ajouter", icon: "fa-solid fa-check", callback: (e, b) => new foundry.applications.ux.FormDataExtended(b.form).object },
+      content: loc("NOCTIS.js.PointsGagnesMotifDate", { p0: new Date().toLocaleDateString("fr-FR") }),
+      ok: { label: loc("NOCTIS.js.Ajouter"), icon: "fa-solid fa-check", callback: (e, b) => new foundry.applications.ux.FormDataExtended(b.form).object },
       rejectClose: false
     });
     if (!data) return;
-    return this.actor.addXpEntry({ kind: "gain", amount: Number(data.amount) || 0, label: data.label || "Gain d'expérience", date: data.date, category: "" });
+    return this.actor.addXpEntry({ kind: "gain", amount: Number(data.amount) || 0, label: data.label || loc("NOCTIS.js.GainDExperience"), date: data.date, category: "" });
   }
 
   static async #onXpSpend() {
     const cats = Object.entries(NOCTIS.xpCategories).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
     const data = await DialogV2.prompt({
-      window: { title: "Dépense ou ajout manuel", icon: "fa-solid fa-minus" },
+      window: { title: loc("NOCTIS.js.DepenseOuAjoutManuel"), icon: "fa-solid fa-minus" },
       classes: ["noctis", "noctis-dialog"],
-      content: `<div class="noctis-mini-form">
-        <p class="hint">Pour les achats de points, cliquez plutôt directement sur les points de la fiche : le coût est calculé tout seul.</p>
-        <label>Libellé <input type="text" name="label" placeholder="ex. Rituel : Défense du refuge sacré"></label>
-        <label>Catégorie <select name="category">${cats}</select></label>
-        <label>Coût (XP) <input type="number" name="amount" value="0" min="0"></label>
-        <label class="check"><input type="checkbox" name="free"> Gratuit (accordé par le conteur)</label>
-        <label>Note <input type="text" name="note"></label></div>`,
-      ok: { label: "Inscrire", icon: "fa-solid fa-check", callback: (e, b) => new foundry.applications.ux.FormDataExtended(b.form).object },
+      content: loc("NOCTIS.js.PourLesAchatsDePointsCliquez", { cats }),
+      ok: { label: loc("NOCTIS.js.Inscrire"), icon: "fa-solid fa-check", callback: (e, b) => new foundry.applications.ux.FormDataExtended(b.form).object },
       rejectClose: false
     });
     if (!data) return;
-    return this.actor.addXpEntry({ kind: "spend", amount: Number(data.amount) || 0, free: !!data.free, label: data.label || "Dépense", category: data.category, note: data.note ?? "" });
+    return this.actor.addXpEntry({ kind: "spend", amount: Number(data.amount) || 0, free: !!data.free, label: data.label || loc("NOCTIS.js.Depense"), category: data.category, note: data.note ?? "" });
   }
 
   static #onXpToggleFree(event, target) {
@@ -984,7 +975,9 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onXpDelete(event, target) {
     const id = target.closest("[data-entry-id]").dataset.entryId;
-    const ok = await DialogV2.confirm({ window: { title: "Supprimer l'entrée" }, content: "<p>Supprimer cette ligne du journal d'expérience ? Les points de la fiche ne sont pas modifiés.</p>", rejectClose: false });
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.js.SupprimerLEntree") }, content: loc("NOCTIS.js.SupprimerCetteLigneDuJournalD"), rejectClose: false });
     if (ok) return this.actor.deleteXpEntry(id);
   }
 }
+
+registerLocalizable(TABS);
