@@ -1,8 +1,8 @@
 {
   "id": "noctis",
-  "title": "Noctis — chroniques de vampires médiévales",
-  "description": "Système générique pour Foundry VTT : une chronique de vampires dans un Moyen Âge sombre, sur un moteur à d10 (groupements de dés, difficultés, santé à 7 niveaux, sang, Volonté, vertus). Fiches modernes, créateur de personnage guidé, combat automatisé avec manœuvres, la Bête, calendrier et temps de la chronique, expérience, variantes de règles. Aucun contenu d'univers : créez vos lignées, disciplines, Voies et atouts avec les éditeurs intégrés.",
-  "version": "1.1.0",
+  "title": "Noctis — Vampire : l'Âge des Ténèbres (Dark Pack)",
+  "description": "Système pour Vampire : l'Âge des Ténèbres 20e anniversaire, en français et en anglais. Fiches modernes, créateur de personnage guidé, combat automatisé avec manœuvres, la Bête (frénésie, Rötschreck), calendrier et temps de la chronique, expérience, variantes de règles. Les 13 clans sont fournis ; disciplines et Voies sont à créer par chaque table. Contenu de fan gratuit (Dark Pack) : portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit worldofdarkness.com. Not official World of Darkness material.",
+  "version": "1.2.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14.370"
@@ -124,7 +124,7 @@
   "socket": true,
   "url": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public",
   "manifest": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json",
-  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/download/v1.1.0/noctis.zip",
+  "download": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/download/v1.2.0/noctis.zip",
   "license": "LICENSE.txt",
   "readme": "README.md",
   "bugs": "https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/issues"

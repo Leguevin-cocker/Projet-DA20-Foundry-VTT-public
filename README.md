@@ -1,18 +1,31 @@
 # Noctis — chroniques de vampires médiévales pour Foundry VTT
 
-Système **générique** pour Foundry VTT (v14) : jouer des vampires dans un Moyen Âge sombre, sur un moteur à d10 classique
-(groupements de dés, difficultés, réussites annulées par les 1, santé à 7 niveaux, sang, Volonté, vertus, Voies morales).
+Système pour Foundry VTT (v14) pour **Vampire : l'Âge des Ténèbres** (édition 20e anniversaire), avec le vocabulaire du
+jeu : clans, disciplines (Célérité, Force d'âme, Puissance…), Voies, vertus, Rötschreck. Moteur à d10 complet
+(groupements, difficultés, réussites annulées par les 1, santé à 7 niveaux, sang, Volonté).
 
 **Bilingue : français et anglais / French and English.** L'interface suit la langue choisie dans Foundry, et les
-compendiums d'exemple sont construits dans cette langue. *The interface follows Foundry's language setting; example
-compendiums are built in that language (English for any language other than French).*
+compendiums sont construits dans cette langue. *The interface follows Foundry's language setting; compendiums are built
+in that language (English for any language other than French).*
 
-**Aucun contenu d'univers n'est inclus.** Pas de clans, de disciplines, de sectes ni de textes tirés d'un livre :
-chaque table crée son propre contenu avec les éditeurs intégrés. Quelques exemples originaux, écrits pour ce système,
-montrent comment faire.
+**Ce qui est fourni :** les 13 clans (noms, disciplines de clan, faiblesse résumée), des atouts et handicaps d'exemple,
+des armes et armures génériques.
 
-> Ce projet n'est affilié à aucun éditeur. Il ne contient que du code et des textes originaux. Si vous l'utilisez avec
-> le contenu d'un jeu commercial que vous possédez, gardez ce contenu pour votre table.
+**Ce qui n'est pas fourni :** aucun texte des livres, **aucune fiche de discipline** (les pouvoirs sont à saisir par chaque
+table dans l'atelier) et **aucune Voie** (Humanité comprise : chaque table crée les siennes avec leur hiérarchie des
+péchés). Il vous faut le livre de base pour jouer.
+
+Célérité, Force d'âme et Puissance sont reconnues d'office par le moteur (actions supplémentaires, absorption, réussites
+automatiques de Force), même sur une discipline créée à la main.
+
+## Dark Pack
+
+Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
+
+> Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission.
+> All rights reserved. For more information please visit worldofdarkness.com.
+>
+> Ce contenu n'est pas un produit officiel du World of Darkness. *This material is not official World of Darkness material.*
 
 ## Ce que fait le système
 
@@ -41,29 +54,31 @@ montrent comment faire.
 Ouvrez l'**Atelier du conteur** (bouton marteau dans la barre de gauche, ou onglet Objets, ou Paramètres du jeu). Il
 rassemble les objets du monde et des compendiums et permet de :
 
-- créer des **lignées** : disciplines de lignée, faiblesse en texte et en effets (Apparence à 0, XP de morale doublée,
+- créer ou modifier des **clans et lignées** : disciplines de clan, faiblesse en texte et en effets (Apparence à 0, XP de morale doublée,
   bonus ou malus de jet automatiques), blason ;
 - créer des **disciplines** : pouvoirs par niveau (groupement, difficulté, coût, durée, description). Une discipline peut
   tenir un **rôle mécanique**, appliqué automatiquement :
-  - *Vélocité* : bonus de Dextérité et d'initiative, actions supplémentaires contre du sang ;
-  - *Résilience* : dés d'absorption, y compris contre les dégâts aggravés ;
-  - *Vigueur surnaturelle* : réussites automatiques aux jets de Force et aux dégâts fondés sur la Force ;
+  - *Célérité* : bonus de Dextérité et d'initiative, actions supplémentaires contre du sang ;
+  - *Force d'âme* : dés d'absorption, y compris contre les dégâts aggravés ;
+  - *Puissance* : réussites automatiques aux jets de Force et aux dégâts fondés sur la Force ;
 - créer des **voies de sorcellerie** (disciplines cochées « voie », rattachées à une discipline mère) et des **rituels** ;
 - créer des **Voies morales** avec leur hiérarchie des péchés ;
 - créer des **atouts et handicaps**, à plusieurs niveaux si besoin ;
 - **ranger** tout le contenu du monde dans un compendium pour le réutiliser ailleurs.
 
-Les lignées, disciplines et voies se relient par la **clé** de chaque discipline, tirée de son nom si vous ne la changez pas.
+Les clans, disciplines et voies se relient par la **clé** de chaque discipline. Pour les disciplines du jeu, utilisez les clés
+`celerity`, `fortitude`, `potence`, `auspex`, `dominate`, `presence`, `obfuscate`, `animalism`, `protean`, `dementation`,
+`chimerstry`, `necromancy`, `obtenebration`, `quietus`, `serpentis`, `thaumaturgy`, `vicissitude` : les clans fournis y renvoient.
 
 ## Installation
 
 Dans Foundry VTT, *Installer un système* → coller l'adresse du manifeste :
 
 ```
-https://raw.githubusercontent.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/main/system.json
+https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json
 ```
 
-Au premier chargement d'un monde, le MJ construit les compendiums d'exemple (« Noctis — Exemples : … »).
+Au premier chargement d'un monde, le MJ construit les compendiums (« Noctis — Clans », atouts et handicaps, armes et armures).
 
 ## Licence
 

@@ -303,7 +303,11 @@ NOCTIS.meritCategories = {
  * Registre des disciplines connues du monde : clé → nom. Rempli au chargement à partir des objets
  * « discipline » du monde et des compendiums (voir module/registry.mjs). Vide par défaut.
  */
-NOCTIS.disciplines = {};
+/** Disciplines du jeu : noms par défaut (les fiches de discipline et leurs pouvoirs sont à créer par chaque table). */
+NOCTIS.coreDisciplines = { animalism: "NOCTIS.js.DiscAnimalism", auspex: "NOCTIS.js.DiscAuspex", celerity: "NOCTIS.js.DiscCelerity", chimerstry: "NOCTIS.js.DiscChimerstry", dementation: "NOCTIS.js.DiscDementation", dominate: "NOCTIS.js.DiscDominate", fortitude: "NOCTIS.js.DiscFortitude", necromancy: "NOCTIS.js.DiscNecromancy", obfuscate: "NOCTIS.js.DiscObfuscate", obtenebration: "NOCTIS.js.DiscObtenebration", potence: "NOCTIS.js.DiscPotence", presence: "NOCTIS.js.DiscPresence", protean: "NOCTIS.js.DiscProtean", quietus: "NOCTIS.js.DiscQuietus", serpentis: "NOCTIS.js.DiscSerpentis", thaumaturgy: "NOCTIS.js.DiscThaumaturgy", vicissitude: "NOCTIS.js.DiscVicissitude" };
+NOCTIS.disciplines = { ...NOCTIS.coreDisciplines };
+/** Rôle mécanique par défaut des disciplines du jeu (si la fiche de discipline n'en précise pas). */
+NOCTIS.defaultMechanics = { celerity: "speed", fortitude: "resilience", potence: "might" };
 
 /**
  * Rôles mécaniques qu'une discipline peut tenir : ses points sont alors pris en compte automatiquement.

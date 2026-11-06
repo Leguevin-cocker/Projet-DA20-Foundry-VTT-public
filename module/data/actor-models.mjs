@@ -71,7 +71,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
         courage: new fields.SchemaField({ value: dots(1, 10) })
       }),
       road: new fields.SchemaField({
-        name: new fields.StringField({ blank: true, initial: loc("NOCTIS.js.VoieDeLHumanite") }),
+        name: new fields.StringField({ blank: true, initial: "" }),
         value: dots(5, 10),
         aura: new fields.StringField({ blank: true, initial: "" })
       }),
@@ -220,7 +220,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
     for (const it of items) if (it.type === "discipline") {
       const key = it.system.key || slugKey(it.name);
       disc[key] = Math.max(disc[key] ?? 0, it.system.value);
-      const m = it.system.mechanic;
+      const m = it.system.mechanic || NOCTIS.defaultMechanics[key];
       if (m && m in mech && it.system.value >= mech[m]) { mech[m] = it.system.value; mechNames[m] = it.name; }
     }
     this.disciplineRatings = disc;
@@ -339,7 +339,6 @@ export class MortalModel extends BaseActorModel {
   static defineSchema() {
     const s = super.defineSchema();
     s.blood.fields.value.initial = 10;
-    s.road.fields.name.initial = loc("NOCTIS.js.VoieDeLHumanite");
     s.road.fields.value.initial = 7;
     return s;
   }

@@ -26,7 +26,9 @@ export async function refreshDisciplineRegistry() {
     } catch (err) { console.warn(loc("NOCTIS.js.NoctisIndexDe", { collection: pack.collection }), err); }
   }
   for (const k of Object.keys(NOCTIS.disciplines)) delete NOCTIS.disciplines[k];
-  for (const [k, v] of Object.entries(out).sort((a, b) => a[1].localeCompare(b[1], "fr"))) NOCTIS.disciplines[k] = v;
+  // Les noms du jeu servent de base ; les disciplines créées par la table les complètent ou les remplacent
+  const all = { ...NOCTIS.coreDisciplines, ...out };
+  for (const [k, v] of Object.entries(all).sort((a, b) => a[1].localeCompare(b[1], game.i18n?.lang ?? "fr"))) NOCTIS.disciplines[k] = v;
   return NOCTIS.disciplines;
 }
 

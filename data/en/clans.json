@@ -1,73 +1,288 @@
 [
  {
-  "name": "Wardens of the Threshold",
+  "name": "Assamite",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Examples",
+  "folder": "Clans",
   "system": {
-   "nickname": "The Gatekeepers",
+   "nickname": "Children of Haqim, Saracens",
    "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "murmure-des-ombres",
-    "chair-de-pierre",
-    "hate-sanguine"
+    "auspex",
+    "presence",
+    "quietus"
    ],
    "disciplineNote": "",
-   "weakness": "A Warden cannot cross the threshold of an inhabited dwelling without being invited; forcing the way costs 1 Willpower point per turn spent inside.",
+   "weakness": "Their rigor turns into obsession: each suffers from a derangement tied to their field of excellence.",
    "appearanceZero": false,
-   "roads": "Road of the Heart",
+   "roads": "",
    "emblem": "",
-   "description": "<p><b>Example lineage</b>, invented for this system. Keepers of passages, they sell other vampires the right to enter and leave cities.</p>"
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
   }
  },
  {
-  "name": "Children of the Forge",
+  "name": "Brujah",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Examples",
+  "folder": "Clans",
   "system": {
-   "nickname": "The Hammers",
+   "nickname": "Zealots, Philosopher-kings",
    "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "bras-de-fer",
-    "chair-de-pierre",
-    "art-du-sang"
+    "celerity",
+    "potence",
+    "presence"
    ],
    "disciplineNote": "",
-   "weakness": "Cold metal unsettles them: +1 difficulty to their social rolls while they carry no item of iron forged by their own hands.",
+   "weakness": "Anger always smolders: +2 difficulty to resist frenzy.",
    "appearanceZero": false,
-   "roads": "Road of Iron",
+   "roads": "",
    "emblem": "",
-   "description": "<p><b>Example lineage</b>, invented for this system. Craftsmen of blood and metal.</p>"
-  },
-  "flags": {
-   "noctis": {
-    "doubleConscienceXp": false
-   }
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
   }
  },
  {
-  "name": "Ash Masks",
+  "name": "Cappadocian",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Examples",
+  "folder": "Clans",
   "system": {
-   "nickname": "The Grey Faces",
-   "isBloodline": true,
+   "nickname": "Necromancers, Clan of Death",
+   "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "murmure-des-ombres",
-    "hate-sanguine",
-    "art-du-sang"
+    "auspex",
+    "fortitude",
+    "necromancy"
    ],
    "disciplineNote": "",
-   "weakness": "Their grey, cracked skin betrays their nature: Appearance 0, cannot be raised.",
+   "weakness": "Their corpse-like pallor fools no one: they look like the dead, and mortals feel it.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Gangrel",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Outlanders",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "fortitude",
+    "protean"
+   ],
+   "disciplineNote": "",
+   "weakness": "Each frenzy leaves them a mark of the Beast: an animal trait, physical or behavioral.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Lasombra",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Magisters",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "dominate",
+    "obtenebration",
+    "potence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Neither mirrors nor water show their reflection.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Malkavian",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Seers, Children of Malkav",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "dementation",
+    "obfuscate"
+   ],
+   "disciplineNote": "",
+   "weakness": "Each carries a permanent derangement that nothing truly cures.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Nosferatu",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Lepers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "obfuscate",
+    "potence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Hideously deformed by the Embrace: Appearance 0, which cannot be raised.",
    "appearanceZero": true,
    "roads": "",
    "emblem": "",
-   "description": "<p><b>Example lineage</b> showing the “Appearance 0” weakness handled by the creator and the sheet.</p>"
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Ravnos",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Charlatans, Wanderers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "chimerstry",
+    "fortitude"
+   ],
+   "disciplineNote": "",
+   "weakness": "Each is slave to a specific vice (theft, lies, gambling…): a Self-Control roll to resist when the chance arises.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Follower of Set",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Serpents, Setites",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "obfuscate",
+    "presence",
+    "serpentis"
+   ],
+   "disciplineNote": "",
+   "weakness": "Bright light hurts them: penalties under strong light, and the sun harms them more than others.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Toreador",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Aesthetes, Artisans",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "celerity",
+    "presence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Beauty captivates them: a Self-Control roll not to stand transfixed before an exceptional work or person.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Tremere",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Usurpers, Warlocks",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "dominate",
+    "thaumaturgy"
+   ],
+   "disciplineNote": "",
+   "weakness": "Their blood makes them easy prey to the blood bond: it takes one drink fewer to enthrall them.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Tzimisce",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Fiends",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "auspex",
+    "vicissitude"
+   ],
+   "disciplineNote": "",
+   "weakness": "They must sleep in contact with the soil of their homeland; without it, their dice pools dwindle night after night.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
+  }
+ },
+ {
+  "name": "Ventrue",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Patricians",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "dominate",
+    "fortitude",
+    "presence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Their palate is exacting: they can only feed on one specific kind of mortal; any other blood comes back up.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Discipline sheets and their powers are not provided: create them in the storyteller's workshop (each discipline's key links the clan to its sheet).</p>"
   }
  }
 ]

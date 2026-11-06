@@ -4,14 +4,12 @@ import { loc, registerLocalizable } from "./i18n.mjs";
  * systems/noctis/data/*.json. Lancé automatiquement par le MJ au premier
  * chargement et à chaque mise à jour des données.
  */
-export const COMPENDIUM_VERSION = "1.0.0";
+export const COMPENDIUM_VERSION = "1.2.0";
 
 /** Contenu d'exemple, écrit pour ce système : à compléter ou remplacer par celui de votre table. */
 export const PACKS = [
-  { name: "noctis-clans", label: "NOCTIS.js.NoctisExemplesLignees", type: "Item", file: "clans.json", v: 1 },
-  { name: "noctis-disciplines", label: "NOCTIS.js.NoctisExemplesDisciplines", type: "Item", file: "disciplines.json", v: 1 },
+  { name: "noctis-clans", label: "NOCTIS.js.NoctisExemplesLignees", type: "Item", file: "clans.json", v: 2 },
   { name: "noctis-merits", label: "NOCTIS.js.NoctisExemplesAtoutsEtHandicaps", type: "Item", file: "merits.json", v: 1 },
-  { name: "noctis-roads", label: "NOCTIS.js.NoctisExemplesVoies", type: "Item", file: "roads.json", v: 1 },
   { name: "noctis-equipment", label: "NOCTIS.js.NoctisArmesEtArmures", type: "Item", file: "equipment.json", v: 1 }
 ];
 

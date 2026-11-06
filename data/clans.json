@@ -1,73 +1,288 @@
 [
  {
-  "name": "Veilleurs du Seuil",
+  "name": "Assamite",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Exemples",
+  "folder": "Clans",
   "system": {
-   "nickname": "Les Portiers",
+   "nickname": "Enfants d'Haqim, Sarrasins",
    "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "murmure-des-ombres",
-    "chair-de-pierre",
-    "hate-sanguine"
+    "auspex",
+    "presence",
+    "quietus"
    ],
    "disciplineNote": "",
-   "weakness": "Un Veilleur ne peut franchir le seuil d'une demeure habitée sans y être invité ; forcer le passage lui coûte 1 point de Volonté par tour passé à l'intérieur.",
+   "weakness": "Leur rigueur tourne à l'obsession : chacun souffre d'un dérangement lié à son domaine d'excellence.",
    "appearanceZero": false,
-   "roads": "Voie du Cœur",
+   "roads": "",
    "emblem": "",
-   "description": "<p><b>Lignée d'exemple</b>, inventée pour ce système. Gardiens des passages, ils vendent aux autres vampires le droit d'entrer et de sortir des villes.</p>"
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
   }
  },
  {
-  "name": "Fils de la Forge",
+  "name": "Brujah",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Exemples",
+  "folder": "Clans",
   "system": {
-   "nickname": "Les Marteaux",
+   "nickname": "Zélotes, Philosophes rois",
    "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "bras-de-fer",
-    "chair-de-pierre",
-    "art-du-sang"
+    "celerity",
+    "potence",
+    "presence"
    ],
    "disciplineNote": "",
-   "weakness": "Le métal froid les trouble : +1 à la difficulté de leurs jets sociaux tant qu'ils portent moins d'un objet de fer forgé de leurs mains.",
+   "weakness": "Une colère couve en permanence : +2 à la difficulté pour résister à la frénésie.",
    "appearanceZero": false,
-   "roads": "Voie du Fer",
+   "roads": "",
    "emblem": "",
-   "description": "<p><b>Lignée d'exemple</b>, inventée pour ce système. Artisans du sang et du métal.</p>"
-  },
-  "flags": {
-   "noctis": {
-    "doubleConscienceXp": false
-   }
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
   }
  },
  {
-  "name": "Masques de cendre",
+  "name": "Cappadocien",
   "type": "clan",
   "img": "systems/noctis/assets/icons/clan.svg",
-  "folder": "Exemples",
+  "folder": "Clans",
   "system": {
-   "nickname": "Les Visages gris",
-   "isBloodline": true,
+   "nickname": "Nécromanciens, Clan de la Mort",
+   "isBloodline": false,
    "parent": "",
    "disciplines": [
-    "murmure-des-ombres",
-    "hate-sanguine",
-    "art-du-sang"
+    "auspex",
+    "fortitude",
+    "necromancy"
    ],
    "disciplineNote": "",
-   "weakness": "Leur peau grise et craquelée trahit leur nature : Apparence à 0, impossible à augmenter.",
+   "weakness": "Leur teint cadavérique ne trompe personne : ils ressemblent à des morts, et les mortels le sentent.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Gangrel",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Hors-la-loi",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "fortitude",
+    "protean"
+   ],
+   "disciplineNote": "",
+   "weakness": "Chaque frénésie leur laisse une marque de la Bête : un trait animal, physique ou de comportement.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Lasombra",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Précepteurs, Magisters",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "dominate",
+    "obtenebration",
+    "potence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Ni les miroirs ni l'eau ne renvoient leur reflet.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Malkavien",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Devins, Enfants de Malkav",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "dementation",
+    "obfuscate"
+   ],
+   "disciplineNote": "",
+   "weakness": "Chacun porte un dérangement permanent que rien ne guérit vraiment.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Nosferatu",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Prieurs, Lépreux",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "obfuscate",
+    "potence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Hideusement déformés par l'Étreinte : Apparence 0, qui ne peut pas augmenter.",
    "appearanceZero": true,
    "roads": "",
    "emblem": "",
-   "description": "<p><b>Lignée d'exemple</b> montrant la faiblesse « Apparence à 0 » gérée par le créateur et la fiche.</p>"
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Ravnos",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Charlatans, Vagabonds",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "chimerstry",
+    "fortitude"
+   ],
+   "disciplineNote": "",
+   "weakness": "Chacun est esclave d'un vice précis (vol, mensonge, jeu…) : jet de Maîtrise de soi pour y résister quand l'occasion se présente.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Disciple de Set",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Serpents, Setites",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "obfuscate",
+    "presence",
+    "serpentis"
+   ],
+   "disciplineNote": "",
+   "weakness": "La lumière vive les blesse : malus sous un éclairage fort, et le soleil leur fait plus de mal qu'aux autres.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Toréador",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Esthètes, Artisans",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "celerity",
+    "presence"
+   ],
+   "disciplineNote": "",
+   "weakness": "La beauté les captive : jet de Maîtrise de soi pour ne pas rester figés devant une œuvre ou une personne d'exception.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Tremere",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Usurpateurs, Sorciers",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "auspex",
+    "dominate",
+    "thaumaturgy"
+   ],
+   "disciplineNote": "",
+   "weakness": "Leur sang les livre facilement au lien de sang : il faut une gorgée de moins pour les asservir.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Tzimisce",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Démons",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "animalism",
+    "auspex",
+    "vicissitude"
+   ],
+   "disciplineNote": "",
+   "weakness": "Ils doivent dormir au contact de la terre de leur pays natal ; sans elle, leurs groupements fondent nuit après nuit.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
+  }
+ },
+ {
+  "name": "Ventrue",
+  "type": "clan",
+  "img": "systems/noctis/assets/icons/clan.svg",
+  "folder": "Clans",
+  "system": {
+   "nickname": "Patriciens",
+   "isBloodline": false,
+   "parent": "",
+   "disciplines": [
+    "dominate",
+    "fortitude",
+    "presence"
+   ],
+   "disciplineNote": "",
+   "weakness": "Leur palais est exigeant : ils ne peuvent se nourrir que d'un type précis de mortels, tout autre sang leur est rendu.",
+   "appearanceZero": false,
+   "roads": "",
+   "emblem": "",
+   "description": "<p>Les fiches de discipline et leurs pouvoirs ne sont pas fournis : créez-les dans l'atelier du conteur (la clé de chaque discipline relie le clan à sa fiche).</p>"
   }
  }
 ]

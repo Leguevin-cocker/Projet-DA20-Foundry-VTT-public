@@ -215,7 +215,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     });
     // Disciplines proposées
     const clanDisc = clan?.system?.disciplines ?? [];
-    const allKeys = [...new Set(cache.discs.filter(d => !d.system.isPath).map(d => d.system.key))];
+    const allKeys = [...new Set([...cache.discs.filter(d => !d.system.isPath).map(d => d.system.key), ...Object.keys(NOCTIS.coreDisciplines)])];
     const discKeys = this.guided ? clanDisc : [...new Set([...clanDisc, ...allKeys])];
     for (const k of Object.keys(st.disciplines)) if (!discKeys.includes(k) && st.disciplines[k]) discKeys.push(k);
     const discOf = (k) => cache.discs.find(d => !d.system?.isPath && d.system?.key === k);
@@ -258,7 +258,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const e = (step, msg) => (errors[step] ??= []).push(msg);
     if (!st.name) e(1, loc("NOCTIS.js.DonnezUnNomAuPersonnage"));
     if (!clan && this.actor.type === "vampire") e(1, loc("NOCTIS.js.ChoisissezUnClan"));
-    if (!road) e(1, loc("NOCTIS.js.ChoisissezUneVoie"));
+    if (!road && cache.roads.length) e(1, loc("NOCTIS.js.ChoisissezUneVoie"));
     if (!st.nature || !st.demeanor) e(1, loc("NOCTIS.js.ChoisissezUneNatureEtUneAttitude"));
     const ranksA = Object.values(st.attrRank); if (new Set(ranksA.filter(Boolean)).size !== 3) e(2, loc("NOCTIS.js.ClassezLesTroisCategoriesDAttributs"));
     for (const g of attrGroups) if (g.points != null && g.spent !== g.points) e(2, loc("NOCTIS.js.PointsRepartis", { label: g.label, spent: g.spent, points: g.points }));
@@ -538,8 +538,8 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
         // Plusieurs disciplines de même clé : on préfère celle dont le nom figure dans le nom de la lignée
         entry = cands.find(x => x.name.split(/\s+/).some(w => w.length > 3 && n.includes(w.toLowerCase()))) ?? cands[0];
       }
-      if (!entry) continue;
-      const o = await fromUuid_(entry.uuid);
+      // Pas de fiche de discipline dans le monde : on crée une discipline vide (à compléter par la table)
+      const o = entry ? await fromUuid_(entry.uuid) : { name: NOCTIS.disciplines[d.key] ?? d.key, type: "discipline", img: "systems/noctis/assets/icons/discipline.svg", system: { key: d.key } };
       if (o) { o.system.value = d.value; toCreate.push(o); }
     }
     const withLevel = (o, id) => {
