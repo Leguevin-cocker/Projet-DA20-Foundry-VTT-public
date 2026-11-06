@@ -1,6 +1,8 @@
 name: Publier une version
 
 on:
+  push:
+    tags: ["v*"]
   release:
     types: [published]
 
@@ -27,9 +29,14 @@ jobs:
       - name: Archive
         run: zip -r noctis.zip system.json noctis.mjs module templates styles lang assets data LICENSE.txt README.md README.fr.md -x "*/_preview*"
 
-      - name: Joindre à la release
+      - name: Créer ou compléter la release
         uses: softprops/action-gh-release@v2
         with:
+          name: Noctis ${{ github.ref_name }}
+          make_latest: true
+          body: |
+            Manifest: https://github.com/${{ github.repository }}/releases/latest/download/system.json
+            Free fan content under the Dark Pack. Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit worldofdarkness.com. Not official World of Darkness material.
           files: |
             system.json
             noctis.zip
