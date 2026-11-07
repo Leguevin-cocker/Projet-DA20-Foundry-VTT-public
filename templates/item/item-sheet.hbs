@@ -52,6 +52,8 @@
         <label><span>{{localize "NOCTIS.ui.PremiereVertu"}}</span><select name="system.virtue1">{{noctisOptions virtue1 system.virtue1}}</select></label>
         <label><span>{{localize "NOCTIS.ui.DeuxiemeVertu"}}</span><select name="system.virtue2">{{noctisOptions virtue2 system.virtue2}}</select></label>
         <label class="wide"><span>{{localize "NOCTIS.ui.Aura"}}</span><input type="text" name="system.aura" value="{{system.aura}}"></label>
+        <label class="wide" data-tooltip="{{localize "NOCTIS.moral.AuraRollsTip"}}"><span>{{localize "NOCTIS.moral.AuraRollsLabel"}}</span><input type="text" name="system.auraRolls" value="{{system.auraRolls}}"></label>
+        <label data-tooltip="{{localize "NOCTIS.moral.CreedRequiredTip"}}"><span>{{localize "NOCTIS.moral.CreedRequired"}}</span><input type="checkbox" name="system.creedRequired" {{#if system.creedRequired}}checked{{/if}}></label>
       {{/if}}
 
       {{#if isWeapon}}
@@ -137,17 +139,54 @@
     {{/if}}
 
     {{#if isRoad}}
+      <h3 class="noctis-subsection">{{localize "NOCTIS.moral.AuraTextLabel"}}</h3>
+      <textarea class="plain-text small" name="system.auraText" rows="3" placeholder="{{localize "NOCTIS.moral.AuraTextPlaceholder"}}">{{system.auraText}}</textarea>
+
       <h3 class="noctis-subsection">{{localize "NOCTIS.ui.HierarchieDesPeches"}}</h3>
+      <p class="hint">{{localize "NOCTIS.moral.SinsHint"}}</p>
       <table class="sins-editor">
         {{#each system.sins}}
           <tr>
             <td><input type="number" name="system.sins.{{@index}}.level" value="{{level}}" min="1" max="10"></td>
-            <td><input type="text" name="system.sins.{{@index}}.sin" value="{{sin}}"></td>
+            <td><input type="text" name="system.sins.{{@index}}.sin" value="{{sin}}" placeholder="{{localize "NOCTIS.moral.SinPlaceholder"}}"></td>
+            <td><input type="text" name="system.sins.{{@index}}.why" value="{{why}}" placeholder="{{localize "NOCTIS.moral.WhyPlaceholder"}}"></td>
             <td><a data-action="deleteRow" data-field="system.sins" data-idx="{{@index}}"><i class="fa-solid fa-trash"></i></a></td>
           </tr>
         {{/each}}
       </table>
       <a class="add-row" data-action="addRow" data-field="system.sins"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Peche"}}</a>
+
+      <h3 class="noctis-subsection">{{localize "NOCTIS.moral.Ethics"}}</h3>
+      <textarea class="plain-text small" name="system.ethicsText" rows="4" placeholder="{{localize "NOCTIS.moral.EthicsPlaceholder"}}">{{ethicsText}}</textarea>
+
+      <h3 class="noctis-subsection">{{localize "NOCTIS.moral.Creeds"}}</h3>
+      <p class="hint">{{localize "NOCTIS.moral.CreedsHint"}}</p>
+      {{#each creeds}}
+        <fieldset class="creed-editor">
+          <legend><i class="fa-solid fa-book-bible"></i> {{#if name}}{{name}}{{else}}{{localize "NOCTIS.moral.Creed"}} {{n}}{{/if}}
+            <a data-action="deleteRow" data-field="system.creeds" data-idx="{{idx}}" data-tooltip="{{localize "NOCTIS.moral.DeleteCreed"}}"><i class="fa-solid fa-trash"></i></a></legend>
+          <div class="fields-grid">
+            <label class="wide"><span>{{localize "NOCTIS.moral.Name"}}</span><input type="text" name="system.creeds.{{idx}}.name" value="{{name}}"></label>
+            <label><span>{{localize "NOCTIS.ui.PremiereVertu"}}</span><select name="system.creeds.{{idx}}.virtue1">{{noctisOptions @root.virtue1 virtue1}}</select></label>
+            <label><span>{{localize "NOCTIS.ui.DeuxiemeVertu"}}</span><select name="system.creeds.{{idx}}.virtue2">{{noctisOptions @root.virtue2 virtue2}}</select></label>
+            <label class="wide"><span>{{localize "NOCTIS.moral.Summary"}}</span><input type="text" name="system.creeds.{{idx}}.summary" value="{{summary}}"></label>
+          </div>
+          <label class="stack"><span>{{localize "NOCTIS.moral.Ethics"}}</span><textarea class="plain-text small" name="system.creeds.{{idx}}.ethicsText" rows="3" placeholder="{{localize "NOCTIS.moral.EthicsPlaceholder"}}">{{ethicsText}}</textarea></label>
+          <span class="stack-label">{{localize "NOCTIS.moral.CreedSins"}}</span>
+          <table class="sins-editor">
+            {{#each sins}}
+              <tr>
+                <td><input type="number" name="system.creeds.{{../idx}}.sins.{{@index}}.level" value="{{level}}" min="1" max="10"></td>
+                <td><input type="text" name="system.creeds.{{../idx}}.sins.{{@index}}.sin" value="{{sin}}" placeholder="{{localize "NOCTIS.moral.SinPlaceholder"}}"></td>
+                <td><input type="text" name="system.creeds.{{../idx}}.sins.{{@index}}.why" value="{{why}}" placeholder="{{localize "NOCTIS.moral.WhyPlaceholder"}}"></td>
+                <td><a data-action="deleteRow" data-field="system.creeds.{{../idx}}.sins" data-idx="{{@index}}"><i class="fa-solid fa-trash"></i></a></td>
+              </tr>
+            {{/each}}
+          </table>
+          <a class="add-row" data-action="addRow" data-field="system.creeds.{{idx}}.sins"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Peche"}}</a>
+        </fieldset>
+      {{/each}}
+      <a class="add-row" data-action="addRow" data-field="system.creeds"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.moral.Creed"}}</a>
     {{/if}}
 
     <h3 class="noctis-subsection">{{localize "NOCTIS.ui.Description"}}</h3>

@@ -2,6 +2,7 @@ import { gatherItems, disciplineKey } from "../registry.mjs";
 import { NOCTIS, generationStats } from "../config.mjs";
 import { traitTooltip } from "../trait-help.mjs";
 import { loc, registerLocalizable } from "../i18n.mjs";
+import { addMoralEntry } from "../morality.mjs";
 
 const TIP_COST = {
   attribute: "NOCTIS.js.Creation753PointsSelon",
@@ -84,7 +85,7 @@ function emptyState() {
   return {
     mode: null, step: 0,
     name: "", concept: "", nature: "", demeanor: "", sire: "", player: "",
-    clanId: "", roadId: "",
+    clanId: "", roadId: "", creed: "",
     attrRank: { physical: "", social: "", mental: "" },
     abilRank: { talents: "", skills: "", knowledges: "" },
     attributes: z(Object.keys(NOCTIS.attributes)),
@@ -133,6 +134,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       toggleMF: CharacterCreator.#onToggleMF,
       rollBlood: CharacterCreator.#onRollBlood,
       finish: CharacterCreator.#onFinish,
+      pickCreed: CharacterCreator.#onPickCreed,
       reset: CharacterCreator.#onReset
     }
   };
@@ -165,7 +167,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     if (this._cache) return this._cache;
     // Contenu de la table : objets du monde et de tous les compendiums d'objets
     const clans = await gatherItems(["clan"], ["system.disciplines", "system.weakness", "system.nickname", "system.emblem", "system.isBloodline", "system.disciplineNote", "system.appearanceZero"]);
-    const roads = await gatherItems(["road"], ["system.virtue1", "system.virtue2", "system.latin"]);
+    const roads = await gatherItems(["road"], ["system.virtue1", "system.virtue2", "system.latin", "system.aura", "system.creeds", "system.creedRequired", "system.nickname"]);
     const discs = (await gatherItems(["discipline"], ["system.key", "system.isPath", "system.parent"])).map(d => ({ ...d, system: { ...d.system, key: disciplineKey(d) } }));
     const mf = await gatherItems(["merit", "flaw"], ["system.cost", "system.costText", "system.category", "system.levels", "system.description"]);
     for (const list of [clans, roads, discs, mf]) for (const e of list) e.system ??= {};
@@ -190,6 +192,8 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const clan = cache.clans.find(c => c._id === st.clanId) ?? null;
     const road = cache.roads.find(r => r._id === st.roadId) ?? null;
     const noAppearance = !!clan?.system?.appearanceZero;
+    const creeds = (road?.system?.creeds ?? []).filter(c => c.name);
+    const creed = creeds.find(c => c.name === st.creed) ?? null;
     const sum = (o) => Object.values(o ?? {}).reduce((a, b) => a + (Number(b) || 0), 0);
 
     // Attributs
@@ -227,7 +231,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       value: (st.backgrounds[k] || 0) + (st.bonus.backgrounds[k] || 0), path: `backgrounds.${k}`, tip: tip("background", k, label) }));
     const bgSpent = sum(st.backgrounds);
     // Vertus (1 point offert dans chacune)
-    const v1 = road?.system?.virtue1 ?? "conscience", v2 = road?.system?.virtue2 ?? "selfcontrol";
+    const v1 = creed?.virtue1 ?? road?.system?.virtue1 ?? "conscience", v2 = creed?.virtue2 ?? road?.system?.virtue2 ?? "selfcontrol";
     const virtues = [
       { key: "conscience", label: NOCTIS.virtueLabels[v1] },
       { key: "selfcontrol", label: NOCTIS.virtueLabels[v2] },
@@ -259,6 +263,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!st.name) e(1, loc("NOCTIS.js.DonnezUnNomAuPersonnage"));
     if (!clan && this.actor.type === "vampire") e(1, loc("NOCTIS.js.ChoisissezUnClan"));
     if (!road && cache.roads.length) e(1, loc("NOCTIS.js.ChoisissezUneVoie"));
+    if (road?.system?.creedRequired && creeds.length && !creed) e(1, loc("NOCTIS.moral.ChooseCreedFor", { road: road.name }));
     if (!st.nature || !st.demeanor) e(1, loc("NOCTIS.js.ChoisissezUneNatureEtUneAttitude"));
     const ranksA = Object.values(st.attrRank); if (new Set(ranksA.filter(Boolean)).size !== 3) e(2, loc("NOCTIS.js.ClassezLesTroisCategoriesDAttributs"));
     for (const g of attrGroups) if (g.points != null && g.spent !== g.points) e(2, loc("NOCTIS.js.PointsRepartis", { label: g.label, spent: g.spent, points: g.points }));
@@ -276,7 +281,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
 
     const bloodStart = st.bloodRoll != null ? Math.min(gs.blood, st.bloodRoll + (st.backgrounds.domain || 0) + (st.backgrounds.herd || 0) + (st.bonus.backgrounds.domain || 0) + (st.bonus.backgrounds.herd || 0)) : null;
 
-    return { clan, road, attrGroups, abilGroups, disciplines, discSpent, backgrounds, bgSpent, virtues, virtSpent, generation, gs,
+    return { clan, road, creed, creeds, attrGroups, abilGroups, disciplines, discSpent, backgrounds, bgSpent, virtues, virtSpent, generation, gs,
       roadBase, roadValue, willBase, willValue, bonusSpent, meritCost, flawGain, flawRaw, bonusTotal, bonusLeft, errors, bloodStart, noAppearance };
   }
 
@@ -315,7 +320,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     return {
       mode: st.mode === "free" ? "libre" : loc("NOCTIS.js.Guide"),
       date: new Date().toLocaleDateString("fr-FR"),
-      clan: c.clan?.name ?? "", road: c.road?.name ?? "",
+      clan: c.clan?.name ?? "", road: c.road?.name ?? "", creed: c.creed?.name ?? "",
       sections, bonus,
       bonusTotal: c.bonusTotal, bonusSpent: c.bonusSpent + c.meritCost, bonusLeft: c.bonusLeft, flawGain: c.flawGain,
       derived: [
@@ -356,6 +361,11 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
       noPacks: !cache.clans.length,
       clans: cache.clans.map(cl => ({ id: cl._id, name: cl.name, selected: cl._id === st.clanId, bloodline: cl.system.isBloodline })),
       roads: cache.roads.map(r => ({ id: r._id, name: r.name, selected: r._id === st.roadId })),
+      creedChoices: c.creeds.map(cr => ({ name: cr.name, summary: cr.summary, selected: cr.name === st.creed,
+        virtues: `${loc(NOCTIS.virtueLabels[cr.virtue1] ?? cr.virtue1)}, ${loc(NOCTIS.virtueLabels[cr.virtue2] ?? cr.virtue2)}`,
+        overrides: (cr.sins ?? []).filter(x => x.sin).length ? loc("NOCTIS.moral.OwnSins", { n: cr.sins.filter(x => x.sin).length }) : "",
+        ethics: cr.ethics ?? [] })),
+      creedRequired: !!c.road?.system?.creedRequired,
       clanDiscLabels: (c.clan?.system?.disciplines ?? []).map(k => NOCTIS.disciplines[k] ?? k).join(", "),
       archetypes: ARCHETYPES.map(a => ({ name: a.name, desc: a.desc })),
       natureDesc: ARCHETYPES.find(a => a.name === st.nature)?.desc ?? "", demeanorDesc: ARCHETYPES.find(a => a.name === st.demeanor)?.desc ?? "",
@@ -383,6 +393,7 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     const path = name.slice(3);
     foundry.utils.setProperty(this.cs, path, t.type === "number" ? Number(t.value) || 0 : t.value);
     if (path === "clanId") { this.cs.disciplines = {}; this.cs.bonus.disciplines = {}; }
+    if (path === "roadId") { this.cs.creed = ""; }
     await this.#save();
     this.render();
   }
@@ -477,6 +488,12 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     this.render();
   }
 
+  static async #onPickCreed(event, target) {
+    this.cs.creed = this.cs.creed === target.dataset.name && !target.dataset.required ? "" : target.dataset.name;
+    await this.#save();
+    this.render();
+  }
+
   static async #onRollBlood() {
     const roll = await new Roll("1d10").evaluate();
     await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: loc("NOCTIS.js.ReserveDeSangDeDepart1d10") });
@@ -511,6 +528,12 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     for (const b of c.backgrounds) upd[`system.backgrounds.${b.key}.value`] = b.value;
     for (const v of c.virtues) upd[`system.virtues.${v.key}.value`] = v.value;
     if (c.road) { upd["system.virtues.conscience.type"] = c.road.system.virtue1; upd["system.virtues.selfcontrol.type"] = c.road.system.virtue2; upd["system.road.name"] = c.road.name; }
+    if (c.road) {
+      upd["system.virtues.conscience.type"] = c.creed?.virtue1 ?? c.road.system.virtue1;
+      upd["system.virtues.selfcontrol.type"] = c.creed?.virtue2 ?? c.road.system.virtue2;
+      upd["system.road.aura"] = c.road.system.aura ?? "";
+    }
+    upd["system.road.creed"] = c.creed?.name ?? "";
     upd["system.road.value"] = c.roadValue;
     upd["system.willpower.permanent"] = c.willValue;
     upd["system.willpower.temporary"] = c.willValue;
@@ -519,7 +542,8 @@ export class CharacterCreator extends HandlebarsApplicationMixin(ApplicationV2) 
     if (c.clan) upd["system.identity.clan"] = c.clan.name;
     upd["system.creation.done"] = true;
     upd["flags.noctis.creationLog"] = this.#creationLog(cache, c);
-    await actor.update(upd);
+    await actor.update(upd, { noctisMoral: false });
+    await addMoralEntry(actor, { kind: "creation", text: loc("NOCTIS.moral.LogCreation", { road: (c.road?.name ?? loc("NOCTIS.moral.Road")) + (c.creed ? `, ${c.creed.name}` : ""), n: c.roadValue }) });
 
     // Objets : clan, Voie, disciplines, atouts, handicaps
     const replaceTypes = ["clan", "road", "discipline", "merit", "flaw"];

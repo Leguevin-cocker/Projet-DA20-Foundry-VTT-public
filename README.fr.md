@@ -33,7 +33,7 @@ Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](ht
 ## Ce que fait le système
 
 - **Fiches** modernes : traits à points cliquables, panneau contextuel, onglets Traits, Disciplines, Combat, Avantages,
-  Expérience, Relations, Domaine, Chronique, Variantes.
+  Voie, Expérience, Relations, Domaine, Chronique, Variantes.
 - **Créateur de personnage** guidé (pas à pas, points comptés, étapes validées) ou libre. Il lit tout le contenu du monde
   et des compendiums.
 - **Jets** : fenêtre de jet complète (spécialité, Volonté, amplification par le sang, actions multiples, bonus et malus
@@ -48,7 +48,12 @@ Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](ht
 - **Temps de la chronique** : calendrier julien avec lune, lever et coucher du soleil, fêtes ; nuits, aube, réveil des
   vampires, ellipses, torpeur. Deux vues (joueurs et MJ), événements révélés au fil du jeu, vues Mois, Année, Siècle,
   Chronologie. Barre d'accès sur le bord gauche de l'écran.
-- **Expérience** : achat de traits sur la fiche, journal, tableau de bord MJ (attribution groupée, sang des PJ).
+- **Voie et credo** : un onglet au nom de la Voie du personnage (aura et sa table de difficulté, heure du réveil, plafond
+  de dés, hiérarchie des péchés séparée en niveaux à risque et sans risque, péchés propres au credo), un bouton de péché
+  qui lance la vertu à la bonne difficulté et applique la perte, l'épiphanie à moitié prix en XP, et un journal moral
+  qui note chaque changement avec la date de la chronique. Les Voies, leurs credo et leurs péchés se saisissent dans
+  l'objet Voie.
+- **Expérience** : achat de traits sur la fiche, journal, tableau de bord MJ (attribution groupée, sang des PJ, vue des Voies).
 - **Variantes de règles** réglables (défense réflexe, dégâts minimum, PNJ au résultat moyen, initiative, 10 doubles,
   variante des 1, armure contre le feu, Volonté sur l'absorption…).
 

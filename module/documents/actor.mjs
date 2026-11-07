@@ -491,7 +491,7 @@ export class NOCTISActor extends Actor {
       const it = this.items.get(path.split(".")[1]);
       await it.update({ "system.value": to });
     } else {
-      await this.update({ [path]: to });
+      await this.update({ [path]: to }, { noctisMoral: { kind: "xp", text: free ? loc("NOCTIS.moral.FreeProgress") : loc("NOCTIS.moral.XpPurchase", { cost: p.cost }), note } });
     }
     await this.addXpEntry({ kind: "spend", amount: p.cost, free, label: `${p.label} ${from} → ${to}`, category: p.category, trait: path, from, to, note });
     return true;

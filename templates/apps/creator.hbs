@@ -79,6 +79,20 @@
       <p class="hint">{{localize "NOCTIS.ui.LaVoieEstLaMoraleQui"}}</p>
       <select name="st.roadId"><option value="">{{localize "NOCTIS.ui.ChoisirUneVoie"}}</option>{{#each roads}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}</select>
       {{#if road}}<p class="desc">{{{localize "NOCTIS.ui.Vertus2" name=road.name latin=road.system.latin}}} {{#with virtues}}{{localize "NOCTIS.ui.Et" label=this.[0].label label2=this.[1].label}}{{/with}}.</p>{{/if}}
+      {{#if creedChoices.length}}
+        <h3 class="noctis-subsection">{{localize "NOCTIS.moral.Creed"}}</h3>
+        <p class="hint">{{localize "NOCTIS.moral.CreatorCreedHint"}}{{#unless creedRequired}} {{localize "NOCTIS.moral.CreedOptional"}}{{/unless}}</p>
+        <div class="creed-pick">
+          {{#each creedChoices}}
+            <a class="creed-card {{#if selected}}on{{/if}}" data-action="pickCreed" data-name="{{name}}" {{#if ../creedRequired}}data-required="1"{{/if}}>
+              <b><i class="fa-solid {{#if selected}}fa-circle-dot{{else}}fa-circle{{/if}}"></i> {{name}}</b>
+              <span class="virt">{{virtues}}{{#if overrides}} · {{overrides}}{{/if}}</span>
+              {{#if summary}}<span>{{summary}}</span>{{/if}}
+              {{#if ethics.length}}<ul>{{#each ethics}}<li>{{this}}</li>{{/each}}</ul>{{/if}}
+            </a>
+          {{/each}}
+        </div>
+      {{/if}}
     {{/if}}
 
     {{!-- ===================== 2. ATTRIBUTS ===================== --}}
@@ -253,7 +267,7 @@
       <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.LEtincelleDeNonVie"}}</span></h2>
       <div class="summary-head">
         {{#if clan}}<img src="{{clan.system.emblem}}" alt="">{{/if}}
-        <div><h3>{{st.name}}</h3><p>{{#if clan}}{{clan.name}} · {{/if}}{{localize "NOCTIS.ui.Generation2" generationLabel=generationLabel}} {{#if road}}{{road.name}} {{roadValue}}{{/if}}</p>
+        <div><h3>{{st.name}}</h3><p>{{#if clan}}{{clan.name}} · {{/if}}{{localize "NOCTIS.ui.Generation2" generationLabel=generationLabel}} {{#if road}}{{road.name}} {{roadValue}}{{#if creed}}, {{creed.name}}{{/if}}{{/if}}</p>
         <p>{{{localize "NOCTIS.ui.NatureAttitude" concept=st.concept nature=st.nature demeanor=st.demeanor}}}</p></div>
       </div>
       <div class="cgrid three summary">

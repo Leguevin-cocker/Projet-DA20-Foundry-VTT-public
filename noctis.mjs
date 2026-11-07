@@ -22,6 +22,7 @@ import { refreshDisciplineRegistry, queueRegistryRefresh } from "./module/regist
 import { registerStatuses, queueStatusSync, setStatus } from "./module/status.mjs";
 import { registerBeastSettings, onBloodChange, beastTest, provocationDialog } from "./module/beast.mjs";
 import * as Time from "./module/time/time.mjs";
+import * as Morality from "./module/morality.mjs";
 import { ChronicleCalendar, ChronicleCalendarGM } from "./module/apps/calendar.mjs";
 import { Workshop } from "./module/apps/workshop.mjs";
 import { loc, localizeRegistered } from "./module/i18n.mjs";
@@ -31,7 +32,7 @@ Hooks.once("init", () => {
 
   CONFIG.NOCTIS = NOCTIS;
   game.noctis = { NOCTIS, CharacterCreator, XpLedger, openXpLedger: () => XpLedger.open(), openGmDashboard: () => XpLedger.open(), promptCelerity, variantList, RollDialog, rollPool, xpCost, manualDamageDialog, buildCompendiums, damageTargets,
-    beastTest, provocationDialog, time: Time, ChronicleCalendar, ChronicleCalendarGM, openCalendar: (date) => ChronicleCalendar.open(date), openCalendarGM: (date) => ChronicleCalendarGM.open(date), Workshop, openWorkshop: () => Workshop.open() };
+    beastTest, provocationDialog, time: Time, ChronicleCalendar, ChronicleCalendarGM, openCalendar: (date) => ChronicleCalendar.open(date), openCalendarGM: (date) => ChronicleCalendarGM.open(date), Workshop, openWorkshop: () => Workshop.open(), morality: Morality };
 
   CONFIG.Actor.documentClass = NOCTISActor;
   CONFIG.Item.documentClass = NOCTISItem;
@@ -68,6 +69,7 @@ Hooks.once("init", () => {
   registerBeastSettings();
   Time.registerTimeSettings();
   registerStatuses();
+  Morality.registerMoralHooks();
   game.settings.register("noctis", "xpBatches", { scope: "world", config: false, type: Array, default: [] });
   game.settings.registerMenu("noctis", "workshopMenu", {
     name: loc("NOCTIS.js.AtelierDuConteur"), label: loc("NOCTIS.js.OuvrirLAtelier"), hint: loc("NOCTIS.js.CreerEtRangerLigneesDisciplinesVoies"),

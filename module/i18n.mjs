@@ -3,7 +3,7 @@
  * Les tables portent des clés « NOCTIS.… » qui sont traduites au hook i18nInit.
  */
 
-const MARKER = /NOCTIS\.(?:js|ui|data)\.[A-Za-z0-9]+/g;
+const MARKER = /NOCTIS\.(?:js|ui|data|moral)\.[A-Za-z0-9]+/g;
 const ready = () => !!globalThis.game?.i18n?.translations && Object.keys(game.i18n.translations).length > 0;
 
 /** Traduit une clé, avec remplacement des {variables}. */

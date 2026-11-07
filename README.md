@@ -32,7 +32,7 @@ This project is free fan content published under the
 
 ## Features
 
-- **Modern sheets**: clickable dots, context panel, tabs for Traits, Disciplines, Combat, Advantages, Experience,
+- **Modern sheets**: clickable dots, context panel, tabs for Traits, Disciplines, Combat, Advantages, Road, Experience,
   Relations, Domain, Chronicle and Variants.
 - **Character creator**, guided (step by step, points counted, steps validated) or free. It reads all the content from
   the world and the compendiums.
@@ -49,7 +49,11 @@ This project is free fan content published under the
 - **Chronicle time**: a Julian calendar with moon phases, sunrise and sunset, and feast days; nights, dawn, vampires
   awakening, time skips, torpor. Two views (players and GM), events revealed as play goes on, and Month, Year, Century
   and Timeline views. Quick-access bar on the left edge of the screen.
-- **Experience**: buy traits from the sheet, a log, and a GM dashboard (group awards, PCs' blood).
+- **Road and creed**: a Road tab named after the character's Road (aura and its difficulty table, waking time, dice
+  cap, hierarchy of sins split into at-risk and safe levels, creed overrides), a sin button that rolls the virtue at the
+  right difficulty and applies the loss, epiphanies at half XP cost, and a moral journal that records every change with
+  the chronicle date. Roads, their creeds and sins are written by you in the Road item.
+- **Experience**: buy traits from the sheet, a log, and a GM dashboard (group awards, PCs' blood, Roads overview).
 - **Rule variants** you can toggle (reflexive defense, minimum damage, NPCs use the average result, initiative, 10s
   always double, 1s variant, armor against fire, Willpower on soak…).
 

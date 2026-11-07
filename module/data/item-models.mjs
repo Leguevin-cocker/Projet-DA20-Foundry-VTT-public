@@ -4,6 +4,8 @@ const int = (initial = 0, opts = {}) => new fields.NumberField({ required: true,
 const str = (initial = "") => new fields.StringField({ required: true, blank: true, initial });
 
 /** Modificateur permanent appliqué à la fiche (ex. +1 en Vigueur). */
+const sinField = () => new fields.SchemaField({ level: int(1, { min: 1, max: 10 }), sin: str(""), why: str("") });
+
 function modifierField() {
   return new fields.SchemaField({
     target: str(""),
@@ -114,7 +116,19 @@ export class RoadModel extends BaseItemModel {
       virtue2: new fields.StringField({ choices: ["selfcontrol", "instinct"], initial: "selfcontrol" }),
       nickname: str(""),
       aura: str(""),
-      sins: new fields.ArrayField(new fields.SchemaField({ level: int(1), sin: str("") }))
+      auraText: str(""),
+      auraRolls: str(""),
+      ethics: new fields.ArrayField(new fields.StringField()),
+      sins: new fields.ArrayField(sinField()),
+      creedRequired: new fields.BooleanField({ initial: false }),
+      creeds: new fields.ArrayField(new fields.SchemaField({
+        name: str(""),
+        virtue1: new fields.StringField({ choices: ["conscience", "conviction"], initial: "conviction" }),
+        virtue2: new fields.StringField({ choices: ["selfcontrol", "instinct"], initial: "selfcontrol" }),
+        summary: str(""),
+        ethics: new fields.ArrayField(new fields.StringField()),
+        sins: new fields.ArrayField(sinField())
+      }))
     };
   }
 }

@@ -1620,3 +1620,148 @@ body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px s
 .noctis prose-mirror .ProseMirror p, .noctis prose-mirror .ProseMirror li, .noctis prose-mirror .ProseMirror h1,
 .noctis prose-mirror .ProseMirror h2, .noctis prose-mirror .ProseMirror h3, .noctis prose-mirror .ProseMirror h4 { color: inherit; }
 .noctis textarea.plain-text { width: 100%; min-height: 140px; resize: vertical; font-family: var(--noctis-font-body); font-size: 14px; line-height: 1.45; color: var(--noctis-ink); background: rgba(255, 252, 244, 0.55); border: 1px solid rgba(90, 70, 54, 0.3); border-radius: 4px; padding: 6px 8px; }
+
+/* ===== Voie, credo et journal moral ===== */
+
+/* ------------------------------------------------------------------ */
+/*  Onglet Voie (morale)                                               */
+/* ------------------------------------------------------------------ */
+.noctis .tab-morality { color: var(--noctis-ink); font-family: var(--noctis-font-body); }
+.noctis .tab-morality .mor-head { display: flex; gap: 16px; align-items: stretch; justify-content: space-between; padding: 10px 14px; margin-bottom: 10px;
+  background: linear-gradient(90deg, rgba(74, 7, 10, 0.92), rgba(43, 27, 21, 0.88)); color: #f3e6c8; border: 1px solid var(--noctis-gold); }
+.noctis .tab-morality .mor-title h2 { margin: 0; border: 0; font-family: var(--noctis-font-title); font-size: 26px; color: #f6e3b4; }
+.noctis .tab-morality .mor-title p { margin: 2px 0 6px; font-size: 13px; color: #d9c69a; }
+.noctis .tab-morality .mor-creed { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; font-size: 14px; }
+.noctis .tab-morality .mor-creed a { color: #f6e3b4; }
+.noctis .tab-morality .mor-creed small { flex-basis: 100%; color: #d9c69a; font-style: italic; }
+.noctis .tab-morality .mor-creed .warn { color: #ffb08a; }
+.noctis .tab-morality .mor-score { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 210px; }
+.noctis .tab-morality .mor-num { font-family: var(--noctis-font-head); font-size: 40px; line-height: 1; color: #fff3cf; }
+.noctis .tab-morality .mor-dots { display: flex; gap: 3px; }
+.noctis .tab-morality .mor-dots i { width: 13px; height: 13px; border-radius: 50%; border: 1px solid #d9c69a; }
+.noctis .tab-morality .mor-dots i.on { background: #e8c879; box-shadow: 0 0 4px rgba(232, 200, 121, 0.7); }
+.noctis .tab-morality .mor-virtues { display: flex; gap: 10px; font-size: 12px; color: #d9c69a; }
+.noctis .tab-morality .mor-virtues b { color: #fff3cf; }
+
+.noctis .tab-morality .mor-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 10px; margin-bottom: 6px; }
+.noctis .tab-morality .mor-aura { position: relative; padding: 10px 12px; background: rgba(255, 250, 235, 0.6); border: 1px solid #b59a68; border-left: 5px solid #8a7a5a; }
+.noctis .tab-morality .mor-aura.good { border-left-color: #2f5a3a; }
+.noctis .tab-morality .mor-aura.bad { border-left-color: var(--noctis-blood); }
+.noctis .tab-morality .mor-aura h3 { margin: 0 70px 4px 0; font-family: var(--noctis-font-head); font-size: 16px; color: var(--noctis-blood-deep); border: 0; }
+.noctis .tab-morality .mor-aura p { margin: 4px 0; font-size: 13.5px; }
+.noctis .tab-morality .mor-aura-mod { position: absolute; top: 8px; right: 10px; text-align: center; }
+.noctis .tab-morality .mor-aura-mod b { display: block; font-family: var(--noctis-font-head); font-size: 26px; line-height: 1; }
+.noctis .tab-morality .mor-aura.good .mor-aura-mod b { color: #2f5a3a; }
+.noctis .tab-morality .mor-aura.bad .mor-aura-mod b { color: var(--noctis-blood); }
+.noctis .tab-morality .mor-aura-mod span { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--noctis-muted); }
+.noctis .tab-morality .mor-applies { color: var(--noctis-ink-soft); }
+.noctis .tab-morality .mor-aura-table { width: 100%; margin-top: 6px; border-collapse: collapse; font-size: 12px; text-align: center; }
+.noctis .tab-morality .mor-aura-table th { text-align: left; font-weight: 600; color: var(--noctis-ink-soft); padding: 2px 4px; }
+.noctis .tab-morality .mor-aura-table td { border: 1px solid #cdb68a; padding: 2px 4px; }
+.noctis .tab-morality .mor-aura-table td.active { background: var(--noctis-blood); color: #fff3cf; font-weight: 700; }
+.noctis .tab-morality .mor-effects { display: grid; gap: 6px; }
+.noctis .tab-morality .mor-effect { display: flex; gap: 10px; align-items: flex-start; padding: 6px 10px; background: rgba(255, 250, 235, 0.45); border: 1px solid #cdb68a; }
+.noctis .tab-morality .mor-effect > i { flex: 0 0 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--noctis-blood-deep); color: #f3e6c8; font-size: 13px; }
+.noctis .tab-morality .mor-effect b { font-family: var(--noctis-font-head); font-size: 13px; }
+.noctis .tab-morality .mor-effect .val { font-weight: 700; color: var(--noctis-blood); }
+.noctis .tab-morality .mor-effect small { display: block; font-size: 12px; color: var(--noctis-ink-soft); }
+
+.noctis .tab-morality .mor-sins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.noctis .tab-morality .mor-col h4 { margin: 0 0 4px; font-family: var(--noctis-font-head); font-size: 13px; padding: 4px 8px; color: #fff3cf; }
+.noctis .tab-morality .mor-col.forbidden h4 { background: var(--noctis-blood); }
+.noctis .tab-morality .mor-col.allowed h4 { background: #4f6b52; }
+.noctis .tab-morality .sin-row { display: flex; gap: 8px; align-items: center; padding: 4px 6px; border-bottom: 1px dotted #cdb68a; }
+.noctis .tab-morality .mor-col.allowed .sin-row { opacity: 0.85; }
+.noctis .tab-morality .sin-row .lvl { flex: 0 0 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; font-family: var(--noctis-font-head); font-weight: 700; background: rgba(123, 16, 21, 0.12); color: var(--noctis-blood-deep); }
+.noctis .tab-morality .mor-col.allowed .lvl { background: rgba(79, 107, 82, 0.15); color: #2f5a3a; }
+.noctis .tab-morality .sin-txt { flex: 1; min-width: 0; font-size: 13.5px; }
+.noctis .tab-morality .sin-txt small { display: block; font-style: italic; color: var(--noctis-ink-soft); font-size: 12px; }
+.noctis .tab-morality .sin-txt .tag { margin-left: 4px; font-size: 10px; text-transform: uppercase; padding: 0 4px; border: 1px solid var(--noctis-gold); color: var(--noctis-gold); font-style: normal; }
+.noctis .tab-morality .sin-roll { flex: 0 0 auto; padding: 2px 7px; border: 1px solid var(--noctis-blood); color: var(--noctis-blood); font-size: 12px; border-radius: 3px; white-space: nowrap; }
+.noctis .tab-morality .sin-roll:hover { background: var(--noctis-blood); color: #fff3cf; }
+.noctis .tab-morality .hint, .noctis .tab-morality .empty { font-size: 12px; font-style: italic; color: var(--noctis-muted); }
+.noctis .tab-morality .mor-ethics ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+.noctis .tab-morality .mor-ethics li { margin-bottom: 3px; }
+
+.noctis .tab-morality .mor-log-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
+.noctis .tab-morality .mor-log-bar > span { flex: 1; font-size: 13px; color: var(--noctis-ink-soft); }
+.noctis .tab-morality .mor-log-bar .btn { padding: 3px 10px; border: 1px solid var(--noctis-blood); background: rgba(255, 250, 235, 0.6); color: var(--noctis-blood-deep); font-family: var(--noctis-font-head); font-size: 12px; border-radius: 3px; }
+.noctis .tab-morality .mor-log-bar .btn:hover { background: var(--noctis-blood); color: #fff3cf; }
+.noctis .tab-morality .mor-log { list-style: none; margin: 0; padding: 0; }
+.noctis .tab-morality .mor-log li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 8px; margin-bottom: 4px; background: rgba(255, 250, 235, 0.5); border: 1px solid #cdb68a; border-left: 4px solid #8a7a5a; }
+.noctis .tab-morality .mor-log li.up { border-left-color: #2f5a3a; }
+.noctis .tab-morality .mor-log li.down { border-left-color: var(--noctis-blood); }
+.noctis .tab-morality .mor-log li > i { margin-top: 3px; width: 16px; text-align: center; color: var(--noctis-ink-soft); }
+.noctis .tab-morality .mor-log li.down > i { color: var(--noctis-blood); }
+.noctis .tab-morality .mor-log li.up > i { color: #2f5a3a; }
+.noctis .tab-morality .ml-body { flex: 1; min-width: 0; }
+.noctis .tab-morality .ml-body header { display: flex; gap: 8px; align-items: baseline; font-size: 13px; }
+.noctis .tab-morality .ml-body .delta { font-weight: 700; }
+.noctis .tab-morality .ml-body .date { margin-left: auto; font-size: 11.5px; color: var(--noctis-muted); }
+.noctis .tab-morality .ml-body p { margin: 2px 0 0; font-size: 13.5px; }
+.noctis .tab-morality .ml-body small { color: var(--noctis-ink-soft); font-style: italic; }
+.noctis .tab-morality .ml-del { color: var(--noctis-muted); }
+.noctis .tab-morality .mor-log li.empty { border-left-color: transparent; }
+.noctis .tab-morality .mor-rules { margin-top: 10px; padding: 6px 10px; border: 1px solid #cdb68a; background: rgba(255, 250, 235, 0.35); }
+.noctis .tab-morality .mor-rules summary { cursor: pointer; font-family: var(--noctis-font-head); font-size: 14px; color: var(--noctis-blood-deep); }
+.noctis .tab-morality .mor-rule { display: flex; gap: 8px; margin-top: 6px; }
+.noctis .tab-morality .mor-rule > i { margin-top: 3px; color: var(--noctis-blood); }
+.noctis .tab-morality .mor-rule b { font-family: var(--noctis-font-head); font-size: 13px; }
+.noctis .tab-morality .mor-rule p { margin: 2px 0 0; font-size: 13px; }
+.noctis .tab-morality .drop-hint { font-style: italic; }
+.noctis-dialog .creed-list { margin: 6px 0 0; padding-left: 18px; font-size: 13px; max-height: 260px; overflow: auto; }
+.noctis-dialog .creed-list li { margin-bottom: 4px; }
+.noctis-card.moral-card .epi { color: #6b5a1e; }
+
+/* Créateur : credo */
+.noctis-creator .creed-pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
+.noctis-creator .creed-card { display: flex; flex-direction: column; gap: 3px; padding: 8px 10px; border: 1px solid #b59a68; background: rgba(255, 250, 235, 0.55); color: var(--noctis-ink); font-size: 13px; }
+.noctis-creator .creed-card:hover { border-color: var(--noctis-blood); }
+.noctis-creator .creed-card.on { border: 2px solid var(--noctis-blood); background: rgba(255, 245, 225, 0.95); box-shadow: 0 0 0 2px rgba(123, 16, 21, 0.15); }
+.noctis-creator .creed-card b { font-family: var(--noctis-font-head); font-size: 13.5px; color: var(--noctis-blood-deep); }
+.noctis-creator .creed-card .virt { font-size: 12px; color: var(--noctis-ink-soft); font-style: italic; }
+.noctis-creator .creed-card ul { margin: 2px 0 0; padding-left: 16px; font-size: 12px; color: var(--noctis-ink-soft); }
+.noctis.item .road-ethics, .noctis.item .creed-view ul { margin: 0 0 6px; padding-left: 18px; font-size: 13px; }
+.noctis.item .creed-view { margin: 4px 0; padding: 4px 8px; border: 1px solid #cdb68a; background: rgba(255, 250, 235, 0.45); }
+.noctis.item .creed-view summary { cursor: pointer; font-size: 13px; }
+.noctis.item .sins-view { width: 100%; font-size: 12.5px; border-collapse: collapse; }
+.noctis.item .sins-view td { padding: 2px 4px; border-bottom: 1px dotted #cdb68a; }
+.noctis.item .sins-view td:first-child { width: 22px; text-align: center; font-weight: 700; }
+
+/* Tableau de bord MJ : onglet Voies */
+.noctis-xp-ledger .moral-intro { margin: 6px 0; }
+.noctis-xp-ledger .moral-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; align-content: start; }
+.noctis-xp-ledger .moral-pc { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; background: rgba(255, 250, 235, 0.65); border: 1px solid #b59a68; color: var(--noctis-ink); font-family: var(--noctis-font-body); }
+.noctis-xp-ledger .moral-pc header { display: flex; gap: 8px; align-items: center; }
+.noctis-xp-ledger .moral-pc header img { width: 46px; height: 46px; object-fit: cover; border-radius: 50%; border: 2px solid var(--noctis-gold); }
+.noctis-xp-ledger .mp-id { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.noctis-xp-ledger .mp-id b { font-family: var(--noctis-font-head); font-size: 15px; }
+.noctis-xp-ledger .mp-id small { color: var(--noctis-ink-soft); font-size: 12px; }
+.noctis-xp-ledger .mp-score { text-align: right; }
+.noctis-xp-ledger .mp-score span { font-family: var(--noctis-font-head); font-size: 26px; line-height: 1; color: var(--noctis-blood-deep); }
+.noctis-xp-ledger .mor-dots { display: flex; gap: 2px; }
+.noctis-xp-ledger .mor-dots i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--noctis-blood); }
+.noctis-xp-ledger .mor-dots i.on { background: var(--noctis-blood); }
+.noctis-xp-ledger .mp-road { margin: 0; font-size: 13.5px; }
+.noctis-xp-ledger .mp-facts { display: flex; flex-wrap: wrap; gap: 4px; }
+.noctis-xp-ledger .mp-facts span { padding: 1px 7px; border: 1px solid #cdb68a; border-radius: 10px; font-size: 12px; background: rgba(255, 255, 255, 0.35); }
+.noctis-xp-ledger .mp-facts .aura.good { border-color: #2f5a3a; color: #2f5a3a; }
+.noctis-xp-ledger .mp-facts .aura.bad { border-color: var(--noctis-blood); color: var(--noctis-blood); }
+.noctis-xp-ledger .mp-virtues { margin: 0; display: flex; gap: 10px; font-size: 12px; color: var(--noctis-ink-soft); }
+.noctis-xp-ledger .mp-next { margin: 0; font-size: 12px; font-style: italic; color: var(--noctis-blood-deep); }
+.noctis-xp-ledger .moral-pc .alert { margin: 0; font-size: 12px; color: #9a4a00; }
+.noctis-xp-ledger .mp-log { list-style: none; margin: 2px 0; padding: 0; font-size: 12px; }
+.noctis-xp-ledger .mp-log li { padding: 2px 0 2px 6px; border-left: 3px solid #cdb68a; margin-bottom: 2px; }
+.noctis-xp-ledger .mp-log li.up { border-left-color: #2f5a3a; }
+.noctis-xp-ledger .mp-log li.down { border-left-color: var(--noctis-blood); }
+.noctis-xp-ledger .mp-log em { color: var(--noctis-muted); }
+.noctis-xp-ledger .moral-pc footer { display: flex; gap: 10px; align-items: center; border-top: 1px dotted #cdb68a; padding-top: 4px; }
+.noctis-xp-ledger .moral-pc footer .mp-count { flex: 1; font-size: 11.5px; color: var(--noctis-muted); }
+.noctis-xp-ledger .moral-pc footer a { color: var(--noctis-blood); font-size: 14px; }
+.noctis .creed-editor { border: 1px solid var(--noctis-line, rgba(0,0,0,.2)); border-radius: 4px; padding: 6px 10px 8px; margin: 0 0 10px; }
+.noctis .creed-editor legend { font-family: var(--noctis-font-head); color: var(--noctis-blood); padding: 0 6px; }
+.noctis .creed-editor legend a { margin-left: 8px; color: var(--noctis-muted); }
+.noctis .creed-editor .stack { display: flex; flex-direction: column; gap: 2px; margin: 6px 0; }
+.noctis .creed-editor .stack-label { display: block; font-size: 0.85em; color: var(--noctis-ink-soft); margin-top: 4px; }
+.noctis textarea.plain-text.small { min-height: 60px; }
+.noctis .sins-editor td:nth-child(3) input { font-style: italic; }

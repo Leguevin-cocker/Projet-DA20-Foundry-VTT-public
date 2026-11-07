@@ -1,5 +1,6 @@
 import { NOCTIS } from "../config.mjs";
 import { loc, registerLocalizable } from "../i18n.mjs";
+import { moralContext, sinDialog, moralNoteDialog, epiphanyDialog } from "../morality.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
@@ -59,7 +60,11 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
       award: XpLedger.#onAward,
       undoBatch: XpLedger.#onUndoBatch,
       openSheet: XpLedger.#onOpenSheet,
-      toggleAll: XpLedger.#onToggleAll
+      toggleAll: XpLedger.#onToggleAll,
+      moralSin: XpLedger.#onMoralSin,
+      moralNote: XpLedger.#onMoralNote,
+      moralEpiphany: XpLedger.#onMoralEpiphany,
+      openMoral: XpLedger.#onOpenMoral
     }
   };
 
@@ -118,11 +123,40 @@ export class XpLedger extends HandlebarsApplicationMixin(ApplicationV2) {
         kind: a.type === "ghoul" ? loc("NOCTIS.js.Goule") : (a.system.generationLabel ? loc("NOCTIS.js.Generation2", { generationLabel: a.system.generationLabel }) : loc("NOCTIS.js.Vampire"))
       };
     });
+    // Onglet Voies : morale, credo, aura, journal
+    const moralPcs = list.map(a => {
+      const m = moralContext(a);
+      const s = a.system;
+      const alerts = [];
+      if (m.value <= 3) alerts.push(loc("NOCTIS.moral.AlertLow", { n: m.value, mod: m.aura.modLabel }));
+      if (m.creedMissing) alerts.push(loc("NOCTIS.moral.AlertCreed"));
+      if (!a.roadItem) alerts.push(loc("NOCTIS.moral.AlertNoRoad"));
+      return {
+        id: a.id, name: a.name, img: a.img,
+        clan: s.identity?.clan || (a.type === "ghoul" ? loc("NOCTIS.js.Goule") : a.type === "mortal" ? loc("NOCTIS.js.Mortel") : ""),
+        road: m.roadName, creed: m.creedName, value: m.value, dots: m.dots,
+        aura: m.aura, wake: m.effects[0].value, virtues: m.virtues,
+        risk: m.value ? loc("NOCTIS.moral.AtRiskValue", { n: m.value }) : loc("NOCTIS.moral.AtRiskNone"),
+        nextSin: m.forbidden[0] ? `${m.forbidden[0].level} — ${m.forbidden[0].sin}` : "",
+        recent: m.log.slice(0, 4), logCount: m.log.length, gains: m.gains, losses: m.losses, alerts
+      };
+    });
     return {
-      tab: this._tab, isXp: this._tab === "xp", isBlood: this._tab === "blood",
+      tab: this._tab, isXp: this._tab === "xp", isBlood: this._tab === "blood", isMoral: this._tab === "moral",
+      moralPcs, hasMoral: moralPcs.length > 0,
       pcs, flagged, totals, history, today, families: FAMILIES.map(f => ({ key: f.key, label: f.label })), hasPcs: pcs.length > 0,
       bloodPcs, hasBlood: bloodPcs.length > 0
     };
+  }
+
+  static async #onMoralSin(event, target) { const a = game.actors.get(target.closest("[data-actor-id]")?.dataset.actorId); if (a) await sinDialog(a); this.render(); }
+  static async #onMoralNote(event, target) { const a = game.actors.get(target.closest("[data-actor-id]")?.dataset.actorId); if (a) await moralNoteDialog(a); this.render(); }
+  static async #onMoralEpiphany(event, target) { const a = game.actors.get(target.closest("[data-actor-id]")?.dataset.actorId); if (a) await epiphanyDialog(a); this.render(); }
+  static #onOpenMoral(event, target) {
+    const a = game.actors.get(target.closest("[data-actor-id]")?.dataset.actorId);
+    if (!a) return;
+    a.sheet._activeTab = "morality";
+    a.sheet.render({ force: true });
   }
 
   static #onSetTab(event, target) {

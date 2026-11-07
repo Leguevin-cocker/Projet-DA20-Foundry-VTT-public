@@ -73,7 +73,21 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
       road: new fields.SchemaField({
         name: new fields.StringField({ blank: true, initial: "" }),
         value: dots(5, 10),
-        aura: new fields.StringField({ blank: true, initial: "" })
+        aura: new fields.StringField({ blank: true, initial: "" }),
+        creed: new fields.StringField({ blank: true, initial: "" }),
+        // Journal moral : péchés, épiphanies, achats, changements
+        log: new fields.ArrayField(new fields.SchemaField({
+          id: new fields.StringField({ blank: true, initial: "" }),
+          kind: new fields.StringField({ blank: false, initial: "note" }),
+          date: new fields.StringField({ blank: true, initial: "" }),
+          real: new fields.StringField({ blank: true, initial: "" }),
+          from: new fields.NumberField({ integer: true, nullable: true, initial: null }),
+          to: new fields.NumberField({ integer: true, nullable: true, initial: null }),
+          trait: new fields.StringField({ blank: true, initial: "road" }),
+          level: new fields.NumberField({ integer: true, nullable: true, initial: null }),
+          text: new fields.StringField({ blank: true, initial: "" }),
+          note: new fields.StringField({ blank: true, initial: "" })
+        }))
       }),
       willpower: new fields.SchemaField({
         permanent: dots(1, 10),

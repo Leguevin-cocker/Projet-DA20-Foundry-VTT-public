@@ -1,0 +1,104 @@
+<section class="tab tab-morality {{tab.cssClass}}" data-tab="morality">
+  {{#with moral}}
+  <header class="mor-head">
+    <div class="mor-title">
+      <h2>{{roadName}}</h2>
+      <p>{{#if latin}}<em>{{latin}}</em>{{/if}}{{#if nickname}} · {{localize "NOCTIS.moral.Followers" nickname=nickname}}{{/if}}</p>
+      <div class="mor-creed">
+        {{#if hasCreeds}}
+          <i class="fa-solid fa-book-bible"></i>
+          {{#if creedName}}<b>{{creedName}}</b>{{else}}<span class="warn">{{#if creedMissing}}{{localize "NOCTIS.moral.CreedToChoose"}}{{else}}{{localize "NOCTIS.moral.NoCreed"}}{{/if}}</span>{{/if}}
+          {{#if @root.owner}}<a data-action="moralCreed" data-tooltip="{{localize "NOCTIS.moral.ChooseCreedTip"}}"><i class="fa-solid fa-pen"></i></a>{{/if}}
+          {{#if creedSummary}}<small>{{creedSummary}}</small>{{/if}}
+        {{else if hasRoad}}<small>{{localize "NOCTIS.moral.RoadHasNoCreed"}}</small>{{/if}}
+      </div>
+    </div>
+    <div class="mor-score">
+      <span class="mor-num">{{value}}</span>
+      <div class="mor-dots">{{#each dots}}<i class="{{#if filled}}on{{/if}}"></i>{{/each}}</div>
+      <div class="mor-virtues">{{#each virtues}}<span data-tooltip="{{localize "NOCTIS.moral.CappedTip" n=capped}}">{{label}} <b>{{value}}</b></span>{{/each}}</div>
+    </div>
+  </header>
+
+  {{#unless @root.road}}<p class="drop-hint"><i class="fa-solid fa-hand-pointer"></i> {{localize "NOCTIS.moral.DropHint"}}</p>{{/unless}}
+
+  <div class="mor-grid">
+    <article class="mor-aura {{#if aura.good}}good{{/if}}{{#if aura.bad}}bad{{/if}}">
+      <h3><i class="fa-solid fa-masks-theater"></i> {{localize "NOCTIS.moral.AuraTitle" name=aura.name}}</h3>
+      <div class="mor-aura-mod"><b>{{aura.modLabel}}</b><span>{{localize "NOCTIS.moral.Difficulty"}}</span></div>
+      {{#if aura.text}}<p>{{aura.text}}</p>{{/if}}
+      <p class="mor-applies"><i class="fa-solid fa-bullseye"></i> {{#if aura.rolls}}{{localize "NOCTIS.moral.AppliesRolls" rolls=aura.rolls}}{{else}}{{localize "NOCTIS.moral.AppliesMortals"}}{{/if}}</p>
+      <table class="mor-aura-table"><tr><th>{{localize "NOCTIS.moral.Score"}}</th>{{#each aura.table}}<td class="{{#if active}}active{{/if}}">{{range}}</td>{{/each}}</tr><tr><th>{{localize "NOCTIS.moral.Difficulty"}}</th>{{#each aura.table}}<td class="{{#if active}}active{{/if}}">{{modLabel}}</td>{{/each}}</tr></table>
+    </article>
+    <div class="mor-effects">
+      {{#each effects}}
+        <div class="mor-effect"><i class="{{icon}}"></i><div><b>{{title}}</b> <span class="val">{{value}}</span><small>{{text}}</small></div></div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{#if hasRows}}
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.moral.Hierarchy"}}</span></h2>
+  <div class="mor-sins">
+    <div class="mor-col forbidden">
+      <h4><i class="fa-solid fa-ban"></i> {{localize "NOCTIS.moral.Forbidden" n=value}}</h4>
+      {{#each forbidden}}
+        <div class="sin-row {{#if creed}}creed{{/if}}">
+          <span class="lvl">{{level}}</span>
+          <div class="sin-txt"><b>{{sin}}</b>{{#if why}}<small>{{why}}</small>{{/if}}{{#if creed}}<em class="tag">{{localize "NOCTIS.moral.CreedTag"}}</em>{{/if}}</div>
+          {{#if @root.owner}}<a class="sin-roll" data-action="moralSin" data-level="{{level}}" data-tooltip="{{localize "NOCTIS.moral.SinRollTip" diff=diff}}"><i class="fa-solid fa-dice-d10"></i> {{diff}}</a>{{/if}}
+        </div>
+      {{else}}<p class="empty">{{localize "NOCTIS.moral.ForbiddenNone"}}</p>{{/each}}
+    </div>
+    <div class="mor-col allowed">
+      <h4><i class="fa-solid fa-circle-check"></i> {{localize "NOCTIS.moral.Allowed"}}</h4>
+      {{#each allowed}}
+        <div class="sin-row {{#if creed}}creed{{/if}}">
+          <span class="lvl">{{level}}</span>
+          <div class="sin-txt"><b>{{sin}}</b>{{#if why}}<small>{{why}}</small>{{/if}}{{#if creed}}<em class="tag">{{localize "NOCTIS.moral.CreedTag"}}</em>{{/if}}</div>
+        </div>
+      {{else}}<p class="empty">{{localize "NOCTIS.moral.AllowedNone"}}</p>{{/each}}
+      <p class="hint">{{localize "NOCTIS.moral.AllowedHint"}}</p>
+    </div>
+  </div>
+  {{else if hasRoad}}
+  <p class="hint">{{localize "NOCTIS.moral.NoHierarchy"}}</p>
+  {{/if}}
+
+  {{#if ethics.length}}
+  <div class="columns two mor-ethics">
+    <div><h2 class="noctis-section"><span>{{localize "NOCTIS.moral.Ethics"}}</span></h2><ul>{{#each ethics}}<li>{{this}}</li>{{/each}}</ul></div>
+    <div><h2 class="noctis-section"><span>{{#if creedName}}{{creedName}}{{else}}{{localize "NOCTIS.moral.Creed"}}{{/if}}</span></h2>{{#if creedEthics.length}}<ul>{{#each creedEthics}}<li>{{this}}</li>{{/each}}</ul>{{else}}<p class="empty">{{#if creedName}}{{creedSummary}}{{else}}{{localize "NOCTIS.moral.NoCreedChosen"}}{{/if}}</p>{{/if}}</div>
+  </div>
+  {{/if}}
+
+  <h2 class="noctis-section"><span>{{localize "NOCTIS.moral.Journal"}}</span></h2>
+  <div class="mor-log-bar">
+    <span><i class="fa-solid fa-arrow-trend-up"></i> {{localize "NOCTIS.moral.Gains" n=gains}} · <i class="fa-solid fa-arrow-trend-down"></i> {{localize "NOCTIS.moral.Losses" n=losses}}</span>
+    {{#if @root.owner}}
+    <a class="btn" data-action="moralSin"><i class="fa-solid fa-skull"></i> {{localize "NOCTIS.moral.SinCommitted"}}</a>
+    <a class="btn" data-action="moralEpiphany"><i class="fa-solid fa-sun"></i> {{localize "NOCTIS.moral.Kind.epiphany"}}</a>
+    <a class="btn" data-action="moralNote"><i class="fa-solid fa-feather"></i> {{localize "NOCTIS.moral.RecordEvent"}}</a>
+    {{/if}}
+  </div>
+  <ol class="mor-log">
+    {{#each log}}
+      <li class="k-{{kind}} {{#if up}}up{{/if}}{{#if down}}down{{/if}}">
+        <i class="{{icon}}"></i>
+        <div class="ml-body">
+          <header><b>{{kindLabel}}</b>{{#if deltaLabel}} <span class="delta">{{#if traitLabel}}{{traitLabel}} {{/if}}{{deltaLabel}}</span>{{/if}}<span class="date">{{date}}{{#if real}} · {{real}}{{/if}}</span></header>
+          <p>{{text}}</p>{{#if note}}<small>{{note}}</small>{{/if}}
+        </div>
+        {{#if @root.isGM}}<a class="ml-del" data-action="moralDelete" data-id="{{id}}" data-tooltip="{{localize "NOCTIS.moral.DeleteTip"}}"><i class="fa-solid fa-xmark"></i></a>{{/if}}
+      </li>
+    {{else}}
+      <li class="empty">{{localize "NOCTIS.moral.JournalEmpty"}}</li>
+    {{/each}}
+  </ol>
+
+  <details class="mor-rules" open>
+    <summary><i class="fa-solid fa-book"></i> {{localize "NOCTIS.moral.Rules"}}</summary>
+    <div class="columns two">{{#each rules}}<div class="mor-rule"><i class="{{icon}}"></i><div><b>{{title}}</b><p>{{text}}</p></div></div>{{/each}}</div>
+  </details>
+  {{/with}}
+</section>

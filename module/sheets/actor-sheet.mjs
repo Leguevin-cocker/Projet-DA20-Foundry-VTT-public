@@ -10,6 +10,7 @@ import { provocationDialog, lucidTurn, endCrisis } from "../beast.mjs";
 import { ATTRIBUTE_HELP, ABILITY_HELP, BACKGROUND_HELP, VIRTUE_HELP } from "../trait-help.mjs";
 import { loc, registerLocalizable } from "../i18n.mjs";
 import { htmlToText, applyPlainText } from "../helpers/plain-text.mjs";
+import { addMoralEntry, chooseCreed, moralContext, sinDialog, epiphanyDialog, moralNoteDialog, setCreed, deleteMoralEntry } from "../morality.mjs";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -19,6 +20,7 @@ const TABS = [
   { id: "disciplines", label: "NOCTIS.js.Disciplines", icon: "fa-solid fa-droplet" },
   { id: "combat", label: "Combat", icon: "fa-solid fa-khanda" },
   { id: "advantages", label: "NOCTIS.js.Avantages", icon: "fa-solid fa-crown" },
+  { id: "morality", label: "NOCTIS.moral.Road", icon: "fa-solid fa-scale-balanced" },
   { id: "experience", label: "NOCTIS.js.Experience", icon: "fa-solid fa-scroll" },
   { id: "relations", label: "NOCTIS.js.Relations", icon: "fa-solid fa-people-group" },
   { id: "domain", label: "NOCTIS.js.Domaine", icon: "fa-solid fa-chess-rook" },
@@ -85,7 +87,12 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleStatus: NOCTISActorSheet.#onToggleStatus,
       beastTest: NOCTISActorSheet.#onBeastTest,
       beastLucid: NOCTISActorSheet.#onBeastLucid,
-      beastEnd: NOCTISActorSheet.#onBeastEnd
+      beastEnd: NOCTISActorSheet.#onBeastEnd,
+      moralSin: NOCTISActorSheet.#onMoralSin,
+      moralEpiphany: NOCTISActorSheet.#onMoralEpiphany,
+      moralNote: NOCTISActorSheet.#onMoralNote,
+      moralDelete: NOCTISActorSheet.#onMoralDelete,
+      moralCreed: NOCTISActorSheet.#onMoralCreed
     }
   };
 
@@ -101,6 +108,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     combat: { template: "systems/noctis/templates/actor/tab-combat.hbs", scrollable: [""] },
     experience: { template: "systems/noctis/templates/actor/tab-experience.hbs", scrollable: [""] },
     biography: { template: "systems/noctis/templates/actor/tab-biography.hbs", scrollable: [""] },
+    morality: { template: "systems/noctis/templates/actor/tab-morality.hbs", scrollable: [""] },
     variants: { template: "systems/noctis/templates/actor/tab-variants.hbs", scrollable: [""] }
   };
 
@@ -215,13 +223,15 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     const clan = actor.clanItem;
     const road = actor.roadItem;
+    const moral = moralContext(actor);
 
     Object.assign(ctx, {
       actor, system: s, type, config: NOCTIS,
       isVampire: s.isVampire, usesBlood: s.usesBlood, isGhoul: type === "ghoul", isMortal: type === "mortal", isNpc: type === "npc",
       editable: this.isEditable, owner: actor.isOwner, isGM: game.user.isGM,
       locked: this.locked, creationDone: s.creation.done, isPC: !!actor.getFlag("noctis", "isPC"), inCombat: actor.inActiveCombat,
-      tabs: TABS.map(t => ({ ...t, active: t.id === this._activeTab, cssClass: t.id === this._activeTab ? "active" : "" })),
+      tabs: TABS.map(t => ({ ...t, label: t.id === "morality" ? moral.shortName : t.label, active: t.id === this._activeTab, cssClass: t.id === this._activeTab ? "active" : "" })),
+      moral,
       activeTab: this._activeTab,
       variantsTab: { id: "variants", label: loc("NOCTIS.js.Variantes"), icon: "fa-solid fa-gear", cssClass: this._activeTab === "variants" ? "active" : "" },
       variants: variantList(),
@@ -616,9 +626,14 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     switch (item.type) {
       case "clan": return this.#dropClan(data, item);
       case "road": {
+        const creed = await chooseCreed(item);
+        if (creed === null) return null;
+        const c = (item.system.creeds ?? []).find(x => x.name === creed);
         const old = actor.items.filter(i => i.type === "road").map(i => i.id);
         if (old.length) await actor.deleteEmbeddedDocuments("Item", old);
-        await actor.update({ "system.road.name": item.name, "system.virtues.conscience.type": item.system.virtue1, "system.virtues.selfcontrol.type": item.system.virtue2, "system.road.aura": item.system.aura });
+        const prev = actor.system.road.name;
+        await actor.update({ "system.road.name": item.name, "system.road.creed": creed, "system.virtues.conscience.type": c?.virtue1 ?? item.system.virtue1, "system.virtues.selfcontrol.type": c?.virtue2 ?? item.system.virtue2, "system.road.aura": item.system.aura }, { noctisMoral: false });
+        if (actor.system.creation?.done && prev && prev !== item.name) await addMoralEntry(actor, { kind: "change", text: loc("NOCTIS.moral.RoadChange", { from: prev, to: item.name + (creed ? ` (${creed})` : "") }) });
         ui.notifications.info(loc("NOCTIS.js.SuitDesormaisLa", { name: actor.name, name2: item.name }));
         return actor.createEmbeddedDocuments("Item", [data]);
       }
@@ -720,6 +735,29 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   static #onBeastTest(event, target) { return provocationDialog(this.actor, target.dataset.kind); }
+  static async #onMoralSin(event, target) {
+    const lvl = Number(target.dataset.level);
+    return sinDialog(this.actor, Number.isFinite(lvl) && lvl > 0 ? lvl : null);
+  }
+
+  static async #onMoralEpiphany() { return epiphanyDialog(this.actor); }
+
+  static async #onMoralNote() { return moralNoteDialog(this.actor); }
+
+  static async #onMoralDelete(event, target) {
+    if (!game.user.isGM) return;
+    const ok = await DialogV2.confirm({ window: { title: loc("NOCTIS.moral.DeleteTitle") }, content: `<p>${loc("NOCTIS.moral.DeleteConfirm")}</p>`, rejectClose: false });
+    if (ok) return deleteMoralEntry(this.actor, target.dataset.id);
+  }
+
+  static async #onMoralCreed() {
+    const road = this.actor.roadItem;
+    if (!road) return ui.notifications.warn(loc("NOCTIS.moral.NoRoadItem"));
+    const creed = await chooseCreed(road, this.actor.system.road.creed);
+    if (creed === null) return;
+    return setCreed(this.actor, creed);
+  }
+
   static #onBeastLucid() { return lucidTurn(this.actor); }
   static #onBeastEnd() { return endCrisis(this.actor); }
 

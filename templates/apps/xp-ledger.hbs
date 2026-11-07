@@ -2,7 +2,43 @@
   <nav class="dash-tabs">
     <a class="{{#if isXp}}active{{/if}}" data-action="setTab" data-tab="xp"><i class="fa-solid fa-scroll"></i> {{localize "NOCTIS.ui.Experience"}}</a>
     <a class="{{#if isBlood}}active{{/if}}" data-action="setTab" data-tab="blood"><i class="fa-solid fa-droplet"></i> {{localize "NOCTIS.ui.Sang2"}}</a>
+    <a class="{{#if isMoral}}active{{/if}}" data-action="setTab" data-tab="moral"><i class="fa-solid fa-scale-balanced"></i> {{localize "NOCTIS.moral.Roads"}}</a>
   </nav>
+{{#if isMoral}}
+  <p class="hint moral-intro">{{localize "NOCTIS.moral.DashIntro"}}</p>
+  <div class="moral-board ledger-table-wrap">
+    {{#each moralPcs}}
+      <article class="moral-pc" data-actor-id="{{id}}">
+        <header>
+          <a data-action="openMoral" data-tooltip="{{localize "NOCTIS.moral.OpenTab"}}"><img src="{{img}}" alt=""></a>
+          <div class="mp-id"><b>{{name}}</b><small>{{clan}}</small></div>
+          <div class="mp-score"><span>{{value}}</span><div class="mor-dots">{{#each dots}}<i class="{{#if filled}}on{{/if}}"></i>{{/each}}</div></div>
+        </header>
+        <p class="mp-road"><b>{{road}}</b>{{#if creed}} · {{creed}}{{/if}}</p>
+        <div class="mp-facts">
+          <span class="aura {{#if aura.good}}good{{/if}}{{#if aura.bad}}bad{{/if}}" data-tooltip="{{aura.rolls}}"><i class="fa-solid fa-masks-theater"></i> {{aura.name}} <b>{{aura.modLabel}}</b></span>
+          <span><i class="fa-solid fa-moon"></i> {{wake}}</span>
+          <span><i class="fa-solid fa-dice-d20"></i> {{localize "NOCTIS.moral.CapValue" n=value}}</span>
+          <span><i class="fa-solid fa-ban"></i> {{risk}}</span>
+        </div>
+        <p class="mp-virtues">{{#each virtues}}<span>{{label}} <b>{{value}}</b></span>{{/each}}</p>
+        {{#if nextSin}}<p class="mp-next"><i class="fa-solid fa-skull"></i> {{localize "NOCTIS.moral.NextSin" sin=nextSin}}</p>{{/if}}
+        {{#each alerts}}<p class="alert"><i class="fa-solid fa-triangle-exclamation"></i> {{this}}</p>{{/each}}
+        <ol class="mp-log">
+          {{#each recent}}<li class="{{#if up}}up{{/if}}{{#if down}}down{{/if}}"><i class="{{icon}}"></i> <b>{{kindLabel}}</b>{{#if deltaLabel}} {{deltaLabel}}{{/if}} — {{text}} <em>{{date}}</em></li>{{else}}<li class="empty">{{localize "NOCTIS.moral.JournalEmptyShort"}}</li>{{/each}}
+        </ol>
+        <footer>
+          <span class="mp-count">{{localize "NOCTIS.moral.Counts" gains=gains losses=losses n=logCount}}</span>
+          <a data-action="moralSin" data-tooltip="{{localize "NOCTIS.moral.SinCommitted"}}"><i class="fa-solid fa-skull"></i></a>
+          <a data-action="moralEpiphany" data-tooltip="{{localize "NOCTIS.moral.Kind.epiphany"}}"><i class="fa-solid fa-sun"></i></a>
+          <a data-action="moralNote" data-tooltip="{{localize "NOCTIS.moral.NoteTip"}}"><i class="fa-solid fa-feather"></i></a>
+        </footer>
+      </article>
+    {{else}}
+      <p class="empty">{{localize "NOCTIS.moral.NoPcs"}}</p>
+    {{/each}}
+  </div>
+{{/if}}
 {{#if isXp}}
   <section class="ledger-award">
     <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.AttribuerDeLExperience"}}</span></h2>
