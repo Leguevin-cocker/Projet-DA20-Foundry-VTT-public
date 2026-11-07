@@ -1619,3 +1619,4 @@ body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px s
 .noctis prose-mirror .ProseMirror { min-height: 100px; outline: none; }
 .noctis prose-mirror .ProseMirror p, .noctis prose-mirror .ProseMirror li, .noctis prose-mirror .ProseMirror h1,
 .noctis prose-mirror .ProseMirror h2, .noctis prose-mirror .ProseMirror h3, .noctis prose-mirror .ProseMirror h4 { color: inherit; }
+.noctis textarea.plain-text { width: 100%; min-height: 140px; resize: vertical; font-family: var(--noctis-font-body); font-size: 14px; line-height: 1.45; color: var(--noctis-ink); background: rgba(255, 252, 244, 0.55); border: 1px solid rgba(90, 70, 54, 0.3); border-radius: 4px; padding: 6px 8px; }

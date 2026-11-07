@@ -9,6 +9,7 @@ import { STATUSES, hasStatus, setStatus, hungerThreshold } from "../status.mjs";
 import { provocationDialog, lucidTurn, endCrisis } from "../beast.mjs";
 import { ATTRIBUTE_HELP, ABILITY_HELP, BACKGROUND_HELP, VIRTUE_HELP } from "../trait-help.mjs";
 import { loc, registerLocalizable } from "../i18n.mjs";
+import { htmlToText, applyPlainText } from "../helpers/plain-text.mjs";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -135,6 +136,14 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     } catch (err) { console.warn(loc("NOCTIS.js.NoctisRecapitulatifDeCreation"), err); return null; }
   }
 
+  /** Histoire et notes : champs texte simples, enregistrés en HTML. */
+  _processFormData(event, form, formData) {
+    const data = super._processFormData(event, form, formData);
+    applyPlainText(data, "bioText", "system.biography", this.actor.system.biography);
+    applyPlainText(data, "notesText", "system.notes", this.actor.system.notes);
+    return data;
+  }
+
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);
     const actor = this.actor;
@@ -237,6 +246,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       archetypes: NOCTIS.archetypes,
       npcKinds: { vampire: loc("NOCTIS.js.Vampire"), ghoul: loc("NOCTIS.js.Goule"), mortal: loc("NOCTIS.js.Mortel"), creature: loc("NOCTIS.js.Creature") },
       enrichedBio: await enrich(s.biography),
+      bioText: htmlToText(s.biography), notesText: htmlToText(s.notes),
       enrichedNotes: await enrich(s.notes),
       bloodFlags: { perTurn: s.blood.perTurn },
       ...this.#relationsContext(),

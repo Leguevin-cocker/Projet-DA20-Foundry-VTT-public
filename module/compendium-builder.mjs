@@ -4,13 +4,14 @@ import { loc, registerLocalizable } from "./i18n.mjs";
  * systems/noctis/data/*.json. Lancé automatiquement par le MJ au premier
  * chargement et à chaque mise à jour des données.
  */
-export const COMPENDIUM_VERSION = "1.2.0";
+export const COMPENDIUM_VERSION = "1.3.0";
 
 /** Contenu d'exemple, écrit pour ce système : à compléter ou remplacer par celui de votre table. */
 export const PACKS = [
   { name: "noctis-clans", label: "NOCTIS.js.NoctisExemplesLignees", type: "Item", file: "clans.json", v: 2 },
   { name: "noctis-merits", label: "NOCTIS.js.NoctisExemplesAtoutsEtHandicaps", type: "Item", file: "merits.json", v: 1 },
-  { name: "noctis-equipment", label: "NOCTIS.js.NoctisArmesEtArmures", type: "Item", file: "equipment.json", v: 1 }
+  { name: "noctis-equipment", label: "NOCTIS.js.NoctisArmesEtArmures", type: "Item", file: "equipment.json", v: 1 },
+  { name: "noctis-npcs", label: "NOCTIS.js.NoctisPnjPrets", type: "Actor", file: "npcs.json", v: 1 }
 ];
 
 /** Identifiant stable (16 caractères) tiré du pack et du nom : les liens vers les objets survivent aux reconstructions. */
@@ -49,27 +50,41 @@ export async function buildCompendiums(replace = false) {
     if (existing && !sameLang) { try { await existing.deleteCompendium(); existing = null; } catch (e) { console.warn("NOCTIS |", e); } }
     const res = await fetch(foundry.utils.getRoute(`systems/noctis/${dir}/${def.file}`));
     if (!res.ok) { console.warn(loc("NOCTIS.js.NoctisIntrouvable", { file: def.file })); continue; }
-    const docs = await res.json();
+    const raw = await res.json();
+    // Deux formats : liste de documents, ou { folders: [{ name, parent, color, sorting, sort }], documents }
+    const docs = Array.isArray(raw) ? raw : (raw.documents ?? []);
+    const folderDefs = Array.isArray(raw) ? [] : (raw.folders ?? []);
+    const DocClass = def.type === "Actor" ? Actor : Item;
     let pack = game.packs.get(`world.${def.name}`);
     if (!pack) {
       pack = await CC.createCompendium({ type: def.type, label: def.label, name: def.name, package: "world" });
     } else if (replace) {
       await pack.configure({ locked: false });
       const ids = (await pack.getIndex()).map(e => e._id);
-      if (ids.length) await Item.deleteDocuments(ids, { pack: pack.collection });
+      if (ids.length) await DocClass.deleteDocuments(ids, { pack: pack.collection });
     } else {
       await pack.configure({ locked: false });
       const ids = (await pack.getIndex()).map(e => e._id);
-      if (ids.length) await Item.deleteDocuments(ids, { pack: pack.collection });
+      if (ids.length) await DocClass.deleteDocuments(ids, { pack: pack.collection });
     }
     const oldFolders = pack.folders?.map(f => f.id) ?? [];
     if (oldFolders.length) { try { await Folder.deleteDocuments(oldFolders, { pack: pack.collection }); } catch (e) { console.warn(loc("NOCTIS.js.NoctisDossiers"), e); } }
     // Dossiers internes (par catégorie)
     const folderIds = {};
-    const folderNames = [...new Set(docs.map(d => d.folder).filter(Boolean))];
-    for (const fname of folderNames) {
-      const f = await Folder.create({ name: fname, type: def.type }, { pack: pack.collection });
-      folderIds[fname] = f?.id;
+    const folderNames = [...new Set([...folderDefs.map(f => f.name), ...docs.map(d => d.folder).filter(Boolean)])];
+    const pending = folderNames.map(name => folderDefs.find(f => f.name === name) ?? { name });
+    // Parents d'abord
+    for (let guard = 0; pending.length && guard < 10; guard++) {
+      for (const fd of [...pending]) {
+        if (fd.parent && !(fd.parent in folderIds) && folderNames.includes(fd.parent)) continue;
+        const data = { name: fd.name, type: def.type, folder: fd.parent ? folderIds[fd.parent] ?? null : null };
+        if (fd.color) data.color = fd.color;
+        if (fd.sorting) data.sorting = fd.sorting;
+        if (fd.sort !== undefined) data.sort = fd.sort;
+        const f = await Folder.create(data, { pack: pack.collection });
+        folderIds[fd.name] = f?.id;
+        pending.splice(pending.indexOf(fd), 1);
+      }
     }
     const seen = new Set();
     const clean = docs.map(d => {
@@ -81,7 +96,7 @@ export async function buildCompendiums(replace = false) {
       return c;
     });
     for (let i = 0; i < clean.length; i += 100) {
-      await Item.createDocuments(clean.slice(i, i + 100), { pack: pack.collection, keepId: true });
+      await DocClass.createDocuments(clean.slice(i, i + 100), { pack: pack.collection, keepId: true });
     }
     if (folder) { try { await pack.configure({ folder: folder.id }); } catch (e) { console.warn(loc("NOCTIS.js.NoctisDossier"), e); } }
     await pack.configure({ locked: true });

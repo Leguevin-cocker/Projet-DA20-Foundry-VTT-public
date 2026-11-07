@@ -1,3 +1,4 @@
+import { htmlToText, applyPlainText } from "../helpers/plain-text.mjs";
 import { slugKey } from "../registry.mjs";
 import { NOCTIS, rollTargetChoices } from "../config.mjs";
 import { loc } from "../i18n.mjs";
@@ -33,6 +34,7 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       editable: this.isEditable,
       typeLabel: game.i18n.localize(CONFIG.Item.typeLabels?.[item.type] ?? item.type),
       enrichedDescription: await foundry.applications.ux.TextEditor.implementation.enrichHTML(s.description ?? "", { secrets: item.isOwner, relativeTo: item }),
+      descriptionText: htmlToText(s.description),
       targets: rollTargetChoices(),
       modifierTargets: {
         "": "—",
@@ -70,6 +72,7 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
    */
   _processFormData(event, form, formData) {
     const data = super._processFormData(event, form, formData);
+    applyPlainText(data, "descriptionText", "system.description", this.item.system.description);
     for (const field of ["modifiers", "bonuses", "powers", "sins", "levels"]) {
       const v = data.system?.[field];
       if (v && !Array.isArray(v) && typeof v === "object") {

@@ -9,7 +9,7 @@
   </div>
 
   <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Histoire"}}</span></h2>
-  <prose-mirror name="system.biography" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.biography}}">{{{enrichedBio}}}</prose-mirror>
+  <textarea class="plain-text" name="bioText" rows="10" {{#unless editable}}disabled{{/unless}}>{{bioText}}</textarea>
 
   <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Possessions"}}</span></h2>
   <div class="columns two">
@@ -29,5 +29,5 @@
   <div class="list-footer"><span></span><a class="add-row" data-action="itemCreate" data-type="gear"><i class="fa-solid fa-plus"></i> {{localize "NOCTIS.ui.Objet"}}</a></div>
 
   <h2 class="noctis-section"><span>{{localize "NOCTIS.ui.Notes"}}</span></h2>
-  <prose-mirror name="system.notes" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.notes}}">{{{enrichedNotes}}}</prose-mirror>
+  <textarea class="plain-text" name="notesText" rows="8" {{#unless editable}}disabled{{/unless}}>{{notesText}}</textarea>
 </section>

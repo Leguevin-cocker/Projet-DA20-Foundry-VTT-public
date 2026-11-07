@@ -10,7 +10,8 @@ difficulties, 1s cancelling successes, 7 health levels, blood, Willpower).
 language (English for any language other than French).
 
 **Included:** the 13 clans (names, clan disciplines, a short summary of each weakness), example Merits and Flaws,
-generic weapons and armor.
+generic weapons and armor, and 63 ready-made NPCs (mortals, ghouls, a typical vampire per clan, Lupines,
+animals) with stats and tactics, sorted into folders.
 
 **Not included:** no text from the books, **no discipline sheets** (each table enters the powers in the workshop) and
 **no Roads** (Humanity included: each table creates its own with their Hierarchy of Sins). You need the core rulebook
@@ -82,7 +83,7 @@ In Foundry VTT, *Install System* → paste the manifest URL:
 https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json
 ```
 
-The first time a world loads, the GM builds the compendiums (“Noctis — Clans”, Merits and Flaws, weapons and armor).
+The first time a world loads, the GM builds the compendiums (“Noctis — Clans”, Merits and Flaws, weapons and armor, ready-made NPCs).
 
 ## License
 

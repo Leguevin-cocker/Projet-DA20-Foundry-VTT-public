@@ -11,7 +11,8 @@ compendiums sont construits dans cette langue. *The interface follows Foundry's 
 in that language (English for any language other than French).*
 
 **Ce qui est fourni :** les 13 clans (noms, disciplines de clan, faiblesse résumée), des atouts et handicaps d'exemple,
-des armes et armures génériques.
+des armes et armures génériques, et 63 PNJ prêts à l'emploi (mortels, goules, un vampire type par clan, Lupins,
+animaux) avec caractéristiques et tactique, rangés par dossiers.
 
 **Ce qui n'est pas fourni :** aucun texte des livres, **aucune fiche de discipline** (les pouvoirs sont à saisir par chaque
 table dans l'atelier) et **aucune Voie** (Humanité comprise : chaque table crée les siennes avec leur hiérarchie des
@@ -80,7 +81,7 @@ Dans Foundry VTT, *Installer un système* → coller l'adresse du manifeste :
 https://github.com/Leguevin-cocker/Projet-DA20-Foundry-VTT-public/releases/latest/download/system.json
 ```
 
-Au premier chargement d'un monde, le MJ construit les compendiums (« Noctis — Clans », atouts et handicaps, armes et armures).
+Au premier chargement d'un monde, le MJ construit les compendiums (« Noctis — Clans », atouts et handicaps, armes et armures, PNJ prêts à l'emploi).
 
 ## Licence
 

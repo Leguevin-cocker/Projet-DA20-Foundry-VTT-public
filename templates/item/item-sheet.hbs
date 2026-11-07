@@ -151,7 +151,7 @@
     {{/if}}
 
     <h3 class="noctis-subsection">{{localize "NOCTIS.ui.Description"}}</h3>
-    <prose-mirror name="system.description" button="true" toggled="true" {{#if editable}}editable{{/if}} value="{{system.description}}">{{{enrichedDescription}}}</prose-mirror>
+    <textarea class="plain-text" name="descriptionText" rows="8" {{#unless editable}}disabled{{/unless}}>{{descriptionText}}</textarea>
 
     <details class="automation" {{#if system.bonuses.length}}open{{/if}}>
       <summary><i class="fa-solid fa-gears"></i> {{localize "NOCTIS.ui.Automatisation"}}</summary>
