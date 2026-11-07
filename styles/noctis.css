@@ -1605,3 +1605,17 @@ body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px s
 .noctis .ws-list li.empty { display: block; font-style: italic; color: #6b5a3e; border-left-color: transparent; }
 .noctis .ws-foot { margin: 8px 0 0; font-size: 12px; color: #6b5a3e; }
 .noctis-workshop-btn { flex: 0 0 100%; }
+
+/* Fiche d'objet : défilement du corps (pouvoirs, description, automatisation) */
+.noctis.sheet.item .window-content { display: flex; flex-direction: column; overflow: hidden; }
+.noctis.sheet.item .window-content > .noctis-item-sheet { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.noctis.sheet.item .item-body { flex: 1; min-height: 0; overflow-y: auto; padding-right: 6px; }
+
+/* Éditeur de texte : le texte saisi reste lisible sur le parchemin (thème sombre de Foundry) */
+.noctis prose-mirror, .noctis prose-mirror .editor-content, .noctis prose-mirror .ProseMirror,
+.noctis .editor, .noctis .editor-content, .noctis .ProseMirror {
+  color: var(--noctis-ink); caret-color: var(--noctis-ink);
+}
+.noctis prose-mirror .ProseMirror { min-height: 100px; outline: none; }
+.noctis prose-mirror .ProseMirror p, .noctis prose-mirror .ProseMirror li, .noctis prose-mirror .ProseMirror h1,
+.noctis prose-mirror .ProseMirror h2, .noctis prose-mirror .ProseMirror h3, .noctis prose-mirror .ProseMirror h4 { color: inherit; }
