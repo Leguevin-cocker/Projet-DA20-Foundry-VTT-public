@@ -49,6 +49,21 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
     return {
       biography: new fields.HTMLField({ initial: "" }),
       notes: new fields.HTMLField({ initial: "" }),
+      // Vue « Biographie » : ce que voient les joueurs en accès limité
+      profile: new fields.SchemaField({
+        img: new fields.StringField({ blank: true, initial: "" }),
+        title: new fields.StringField({ blank: true, initial: "" }),
+        description: new fields.HTMLField({ initial: "" }),
+        show: new fields.SchemaField({
+          player: new fields.BooleanField({ initial: true }),
+          chronicle: new fields.BooleanField({ initial: true }),
+          concept: new fields.BooleanField({ initial: true }),
+          clan: new fields.BooleanField({ initial: false }),
+          apparentAge: new fields.BooleanField({ initial: false }),
+          demeanor: new fields.BooleanField({ initial: false }),
+          haven: new fields.BooleanField({ initial: false })
+        })
+      }),
       identity: new fields.SchemaField({
         player: new fields.StringField({ blank: true, initial: "" }),
         chronicle: new fields.StringField({ blank: true, initial: "" }),

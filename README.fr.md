@@ -32,8 +32,10 @@ Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](ht
 
 ## Ce que fait le système
 
-- **Fiches** modernes : traits à points cliquables, panneau contextuel, onglets Traits, Disciplines, Combat, Avantages,
+- **Fiches** modernes : traits à points cliquables, panneau contextuel, onglets Biographie, Traits, Disciplines, Combat, Avantages,
   Voie, Expérience, Relations, Domaine, Chronique, Variantes.
+- **Vue Biographie** : un profil public (portrait, titre, joueur, chronique, éléments d'identité choisis et description),
+  réglé par le joueur. Un utilisateur qui n'a qu'un accès limité à un personnage ne voit que cette vue.
 - **Créateur de personnage** guidé (pas à pas, points comptés, étapes validées) ou libre. Il lit tout le contenu du monde
   et des compendiums.
 - **Jets** : fenêtre de jet complète (spécialité, Volonté, amplification par le sang, actions multiples, bonus et malus

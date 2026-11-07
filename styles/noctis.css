@@ -1765,3 +1765,32 @@ body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px s
 .noctis .creed-editor .stack-label { display: block; font-size: 0.85em; color: var(--noctis-ink-soft); margin-top: 4px; }
 .noctis textarea.plain-text.small { min-height: 60px; }
 .noctis .sins-editor td:nth-child(3) input { font-style: italic; }
+
+/* ===== Vue Biographie (profil public, accès limité) ===== */
+.noctis .tab-profile { padding: 14px 18px; }
+.noctis .profile-card { display: grid; grid-template-columns: minmax(180px, 280px) minmax(0, 1fr); gap: 20px; align-items: start;
+  background: rgba(255, 250, 235, 0.55); border: 1px solid var(--noctis-gold, #c9a35a); border-radius: 6px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.noctis .profile-portrait { position: relative; }
+.noctis .profile-portrait img { width: 100%; height: auto; max-height: 420px; object-fit: cover; object-position: top; border: 3px solid var(--noctis-gold, #c9a35a); border-radius: 4px; background: #1f150e; display: block; }
+.noctis .profile-portrait .pp-edit { position: absolute; right: 6px; bottom: 6px; background: rgba(0,0,0,.6); color: #fff3cf; border-radius: 50%; width: 28px; height: 28px; display: grid; place-items: center; }
+.noctis .profile-main h1 { font-family: var(--noctis-font-title, var(--noctis-font-head)); color: var(--noctis-blood-deep, #5a1014); margin: 0; font-size: 30px; border: none; }
+.noctis .profile-title { font-style: italic; color: var(--noctis-ink-soft, #4a3a2a); margin: 2px 0 10px; font-size: 16px; }
+.noctis .profile-facts { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 12px; padding: 8px 0; border-top: 1px solid rgba(90,16,20,.25); border-bottom: 1px solid rgba(90,16,20,.25); }
+.noctis .profile-facts div { display: flex; flex-direction: column; }
+.noctis .profile-facts dt { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--noctis-muted, #7a6a55); }
+.noctis .profile-facts dd { margin: 0; font-family: var(--noctis-font-head); color: var(--noctis-ink, #2a1d12); font-size: 15px; }
+.noctis .profile-desc { font-size: 15px; line-height: 1.55; color: var(--noctis-ink, #2a1d12); }
+.noctis .profile-desc .empty { color: var(--noctis-muted, #7a6a55); font-style: italic; }
+.noctis .profile-config { margin-top: 14px; background: rgba(255,250,235,.4); border: 1px dashed var(--noctis-gold, #c9a35a); border-radius: 4px; padding: 6px 12px 10px; }
+.noctis .profile-config summary { cursor: pointer; font-family: var(--noctis-font-head); color: var(--noctis-blood-deep, #5a1014); }
+.noctis .profile-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin: 8px 0; }
+.noctis .profile-config label { display: flex; flex-direction: column; gap: 2px; }
+.noctis .profile-config label > span { font-size: 12px; color: var(--noctis-ink-soft, #4a3a2a); }
+.noctis .profile-config .pc-img { display: flex; gap: 6px; align-items: center; flex-direction: row; }
+.noctis .profile-config .pc-img input { flex: 1; }
+.noctis .profile-toggles { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 8px; }
+.noctis .profile-toggles label { flex-direction: row; align-items: center; gap: 4px; }
+/* Accès limité : la fiche ne montre que la vue Biographie */
+.noctis.sheet.actor.kcd.limited-view .window-content { display: block; overflow-y: auto; background: var(--kcd-wood-dark, #1f150e); }
+.noctis.sheet.actor.limited-view .window-content > section.tab-profile { display: block; }
+@media (max-width: 640px) { .noctis .profile-card { grid-template-columns: 1fr; } }

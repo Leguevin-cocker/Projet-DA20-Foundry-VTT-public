@@ -1,0 +1,28 @@
+<section class="tab tab-profile {{tab.cssClass}}" data-tab="profile">
+  <article class="profile-card">
+    <div class="profile-portrait">
+      <img src="{{profile.img}}" alt="{{actor.name}}">
+      {{#if editable}}<a class="pp-edit" data-action="pickProfileImage" data-tooltip="{{localize "NOCTIS.profile.PickImage"}}"><i class="fa-solid fa-image"></i></a>{{/if}}
+    </div>
+    <div class="profile-main">
+      <h1>{{actor.name}}</h1>
+      {{#if profile.title}}<p class="profile-title">{{profile.title}}</p>{{/if}}
+      {{#if profile.facts.length}}<dl class="profile-facts">{{#each profile.facts}}<div><dt>{{label}}</dt><dd>{{value}}</dd></div>{{/each}}</dl>{{/if}}
+      <div class="profile-desc">{{#if profile.descHtml}}{{{profile.descHtml}}}{{else}}<p class="empty">{{localize "NOCTIS.profile.NoDescription"}}</p>{{/if}}</div>
+    </div>
+  </article>
+  {{#if editable}}
+  <details class="profile-config" {{#unless profile.descHtml}}open{{/unless}}>
+    <summary><i class="fa-solid fa-sliders"></i> {{localize "NOCTIS.profile.Configure"}}</summary>
+    <p class="hint">{{localize "NOCTIS.profile.ConfigHint"}}</p>
+    <div class="profile-config-grid">
+      <label><span>{{localize "NOCTIS.profile.Title"}}</span><input type="text" name="system.profile.title" value="{{system.profile.title}}" placeholder="{{localize "NOCTIS.profile.TitlePlaceholder"}}"></label>
+      <label><span>{{localize "NOCTIS.profile.Image"}}</span><span class="pc-img"><input type="text" name="system.profile.img" value="{{system.profile.img}}" placeholder="{{localize "NOCTIS.profile.ImagePlaceholder"}}"><a data-action="pickProfileImage" data-tooltip="{{localize "NOCTIS.profile.PickImage"}}"><i class="fa-solid fa-folder-open"></i></a></span></label>
+    </div>
+    <label class="stack"><span>{{localize "NOCTIS.profile.Description"}}</span><textarea class="plain-text" name="profileText" rows="8" placeholder="{{localize "NOCTIS.profile.DescriptionPlaceholder"}}">{{profile.descText}}</textarea></label>
+    <div class="profile-toggles"><span>{{localize "NOCTIS.profile.Show"}} :</span>
+      {{#each profile.toggles}}<label><input type="checkbox" name="system.profile.show.{{key}}" {{#if on}}checked{{/if}}> {{label}}</label>{{/each}}
+    </div>
+  </details>
+  {{/if}}
+</section>

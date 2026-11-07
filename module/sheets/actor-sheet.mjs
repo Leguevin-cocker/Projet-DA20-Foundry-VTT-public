@@ -16,6 +16,7 @@ const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const TABS = [
+  { id: "profile", label: "NOCTIS.profile.Tab", icon: "fa-solid fa-id-card" },
   { id: "traits", label: "NOCTIS.js.Traits", icon: "fa-solid fa-user" },
   { id: "disciplines", label: "NOCTIS.js.Disciplines", icon: "fa-solid fa-droplet" },
   { id: "combat", label: "Combat", icon: "fa-solid fa-khanda" },
@@ -43,6 +44,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     form: { submitOnChange: true },
     actions: {
       switchTab: NOCTISActorSheet.#onSwitchTab,
+      pickProfileImage: NOCTISActorSheet.#onPickProfileImage,
       select: NOCTISActorSheet.#onSelect,
       setDots: NOCTISActorSheet.#onSetDots,
       setSquares: NOCTISActorSheet.#onSetSquares,
@@ -108,6 +110,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     combat: { template: "systems/noctis/templates/actor/tab-combat.hbs", scrollable: [""] },
     experience: { template: "systems/noctis/templates/actor/tab-experience.hbs", scrollable: [""] },
     biography: { template: "systems/noctis/templates/actor/tab-biography.hbs", scrollable: [""] },
+    profile: { template: "systems/noctis/templates/actor/tab-profile.hbs", scrollable: [""] },
     morality: { template: "systems/noctis/templates/actor/tab-morality.hbs", scrollable: [""] },
     variants: { template: "systems/noctis/templates/actor/tab-variants.hbs", scrollable: [""] }
   };
@@ -149,12 +152,39 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const data = super._processFormData(event, form, formData);
     applyPlainText(data, "bioText", "system.biography", this.actor.system.biography);
     applyPlainText(data, "notesText", "system.notes", this.actor.system.notes);
+    applyPlainText(data, "profileText", "system.profile.description", this.actor.system.profile?.description);
     return data;
+  }
+
+  /** Accès limité : seule la vue Biographie est rendue. */
+  get isLimitedView() { return !this.actor.isOwner && this.actor.limited; }
+
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+    if (this.isLimitedView) {
+      options.parts = ["profile"];
+      this._activeTab = "profile";
+    }
+  }
+
+  /** Contexte de la vue Biographie. */
+  async #profileContext() {
+    const a = this.actor, s = a.system, p = s.profile ?? {}, show = p.show ?? {}, id = s.identity ?? {};
+    const owner = game.users.find(u => !u.isGM && a.testUserPermission(u, "OWNER"));
+    const player = id.player || owner?.name || "";
+    const chronicle = id.chronicle || game.world?.title || "";
+    const L = { player: loc("NOCTIS.profile.Player"), chronicle: loc("NOCTIS.profile.Chronicle"), concept: loc("NOCTIS.profile.Concept"), clan: loc("NOCTIS.profile.Clan"), apparentAge: loc("NOCTIS.profile.ApparentAge"), demeanor: loc("NOCTIS.profile.Demeanor"), haven: loc("NOCTIS.profile.Haven") };
+    const values = { player, chronicle, concept: id.concept, clan: id.clan, apparentAge: id.apparentAge, demeanor: id.demeanor, haven: id.haven };
+    const facts = Object.keys(L).filter(k => show[k] && values[k]).map(k => ({ label: L[k], value: values[k] }));
+    const descHtml = p.description ? await foundry.applications.ux.TextEditor.implementation.enrichHTML(p.description, { secrets: a.isOwner, relativeTo: a }) : "";
+    return { img: p.img || a.img, title: p.title, facts, descHtml, descText: htmlToText(p.description),
+      toggles: Object.keys(L).map(k => ({ key: k, label: L[k], on: !!show[k] })) };
   }
 
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);
     const actor = this.actor;
+    if (this.isLimitedView) return Object.assign(ctx, { actor, system: actor.system, editable: false, owner: false, profile: await this.#profileContext() });
     const s = actor.system;
     const max = Math.max(5, s.maxTrait ?? 5);
     const type = actor.type;
@@ -233,6 +263,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       tabs: TABS.map(t => ({ ...t, label: t.id === "morality" ? moral.shortName : t.label, active: t.id === this._activeTab, cssClass: t.id === this._activeTab ? "active" : "" })),
       moral,
       activeTab: this._activeTab,
+      profile: await this.#profileContext(),
       variantsTab: { id: "variants", label: loc("NOCTIS.js.Variantes"), icon: "fa-solid fa-gear", cssClass: this._activeTab === "variants" ? "active" : "" },
       variants: variantList(),
       statusChoices: STATUSES.filter(st => st.id !== "dead" || hasStatus(actor, "dead")).map(st => ({ ...st, active: hasStatus(actor, st.id) })),
@@ -269,6 +300,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _preparePartContext(partId, context, options) {
     const ctx = await super._preparePartContext(partId, context, options);
     ctx.tab = { id: partId, active: partId === this._activeTab, cssClass: partId === this._activeTab ? "active" : "" };
+    if (partId === "context" && this.isLimitedView) return ctx;
     if (partId === "context") ctx.sel = await this.#selectionContext(ctx);
     return ctx;
   }
@@ -276,6 +308,8 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _onRender(context, options) {
     await super._onRender(context, options);
     const el = this.element;
+    el.classList.toggle("limited-view", this.isLimitedView);
+    if (this.isLimitedView) { if (options.isFirstRender) this.setPosition({ width: 760, height: 640 }); return; }
     el.classList.toggle("locked", this.locked);
     el.classList.add(`type-${this.actor.type}`);
     this.#markSelected();
@@ -822,6 +856,15 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       ],
       rejectClose: false
     });
+  }
+
+  static async #onPickProfileImage() {
+    if (!this.isEditable) return;
+    const fp = new foundry.applications.apps.FilePicker.implementation({
+      type: "image", current: this.actor.system.profile?.img || this.actor.img,
+      callback: path => this.actor.update({ "system.profile.img": path })
+    });
+    return fp.browse();
   }
 
   static async #onPickImage() {

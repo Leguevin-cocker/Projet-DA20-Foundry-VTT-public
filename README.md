@@ -32,8 +32,10 @@ This project is free fan content published under the
 
 ## Features
 
-- **Modern sheets**: clickable dots, context panel, tabs for Traits, Disciplines, Combat, Advantages, Road, Experience,
+- **Modern sheets**: clickable dots, context panel, tabs for Biography, Traits, Disciplines, Combat, Advantages, Road, Experience,
   Relations, Domain, Chronicle and Variants.
+- **Biography view**: a public profile (portrait, title, player, chronicle, chosen identity facts and a description),
+  set up by the player. Users with only Limited access to a character see this view and nothing else.
 - **Character creator**, guided (step by step, points counted, steps validated) or free. It reads all the content from
   the world and the compendiums.
 - **Rolls**: a full roll window (specialty, Willpower, blood boosts, multiple actions, automatic bonuses and penalties
