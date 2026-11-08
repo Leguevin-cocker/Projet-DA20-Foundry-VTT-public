@@ -66,8 +66,8 @@ function lightData(spec) {
   const d = canvas.scene?.grid?.distance ?? 1;
   const anim = { halo: { type: "fog", speed: 1, intensity: 2 }, pulse: { type: "pulse", speed: 2, intensity: 4 }, flicker: { type: "flame", speed: 4, intensity: 4 } }[spec.style];
   return {
-    dim: d * (spec.tier === "high" ? 0.6 : 0.4), bright: 0, color: spec.color.css, alpha: spec.tier === "mid" ? 0.25 : 0.45,
-    luminosity: spec.tier === "low" ? -0.35 : 0.3, attenuation: 0.8, animation: anim
+    dim: d * (spec.tier === "high" ? 0.6 : 0.4), bright: d * 0.15, color: spec.color.css, alpha: spec.tier === "mid" ? 0.45 : 0.7,
+    luminosity: spec.tier === "low" ? -0.4 : 0.5, attenuation: 0.5, coloration: 1, animation: anim
   };
 }
 
@@ -107,12 +107,34 @@ async function restoreLight(tokenDoc) {
 export function refreshActorAura(actor) {
   if (!canvas?.ready || !isWriter() || !actor) return;
   const docs = actor.isToken ? [actor.token] : actor.getActiveTokens(false, true);
-  for (const t of docs) applyToToken(t).catch(e => console.warn(`${SYS} | aura`, e));
+  for (const t of docs) applyToToken(t).catch(reportError);
+}
+
+let reported = false;
+function reportError(e) {
+  console.error(`${SYS} | aura`, e);
+  if (!reported && game.user.isGM) { reported = true; ui.notifications.error(`Aura : ${e.message}`); }
+}
+
+/** Diagnostic (console F12) : état de l'aura de chaque jeton de la scène, puis nouvelle application. */
+export async function auraDebug() {
+  const rows = [];
+  for (const t of canvas.scene?.tokens ?? []) {
+    let spec = null, err = "";
+    try { spec = auraSpec(t.actor); } catch (e) { err = e.message; }
+    rows.push({ token: t.name, type: t.actor?.type, vampire: !!t.actor?.system?.isVampire, showAura: t.actor?.system?.road?.showAura,
+      road: t.actor?.roadItem?.name ?? "—", score: t.actor?.system?.road?.value, tier: spec?.tier ?? "—", style: spec?.style ?? "—",
+      color: spec?.color?.css ?? "—", key: t.getFlag(SYS, "auraKey") ?? "—", light: t.getFlag(SYS, "auraLight") ? "aura" : (t.light?.dim ? "autre" : "aucune"), err });
+  }
+  console.table(rows);
+  console.log(`${SYS} | aura : mode=${mode()}, Token Magic FX=${hasTMFX() ? "actif" : "inactif"}, MJ actif=${game.users.activeGM?.name}, moi=${game.user.name}, écrit=${isWriter()}`);
+  for (const t of canvas.scene?.tokens ?? []) { await t.unsetFlag(SYS, "auraKey"); await applyToToken(t).catch(reportError); }
+  return rows;
 }
 
 export function refreshAllAuras() {
   if (!canvas?.ready || !isWriter()) return;
-  for (const t of canvas.scene.tokens) applyToToken(t).catch(e => console.warn(`${SYS} | aura`, e));
+  for (const t of canvas.scene.tokens) applyToToken(t).catch(reportError);
 }
 
 export function registerAuraHooks() {
@@ -125,6 +147,6 @@ export function registerAuraHooks() {
     if (item.type !== "road" || item.parent || !isWriter()) return;
     for (const a of game.actors) if (a.system.road?.name === item.name) for (const i of a.items) if (i.type === "road") i.update({ "system.auraColor": item.system.auraColor, "system.auraStyle": item.system.auraStyle });
   });
-  Hooks.on("createToken", (t) => setTimeout(() => applyToToken(t), 200));
+  Hooks.on("createToken", (t) => setTimeout(() => applyToToken(t).catch(reportError), 200));
   Hooks.on("canvasReady", () => setTimeout(refreshAllAuras, 500));
 }

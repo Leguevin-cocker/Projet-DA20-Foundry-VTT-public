@@ -23,7 +23,7 @@ import { registerStatuses, queueStatusSync, setStatus } from "./module/status.mj
 import { registerBeastSettings, onBloodChange, beastTest, provocationDialog } from "./module/beast.mjs";
 import * as Time from "./module/time/time.mjs";
 import * as Morality from "./module/morality.mjs";
-import { registerAuraSettings, registerAuraHooks, refreshAllAuras } from "./module/aura-fx.mjs";
+import { registerAuraSettings, registerAuraHooks, refreshAllAuras, auraDebug } from "./module/aura-fx.mjs";
 import { ChronicleCalendar, ChronicleCalendarGM } from "./module/apps/calendar.mjs";
 import { Workshop } from "./module/apps/workshop.mjs";
 import { loc, localizeRegistered } from "./module/i18n.mjs";
@@ -33,7 +33,7 @@ Hooks.once("init", () => {
 
   CONFIG.NOCTIS = NOCTIS;
   game.noctis = { NOCTIS, CharacterCreator, XpLedger, openXpLedger: () => XpLedger.open(), openGmDashboard: () => XpLedger.open(), promptCelerity, variantList, RollDialog, rollPool, xpCost, manualDamageDialog, buildCompendiums, damageTargets,
-    beastTest, provocationDialog, time: Time, ChronicleCalendar, ChronicleCalendarGM, openCalendar: (date) => ChronicleCalendar.open(date), openCalendarGM: (date) => ChronicleCalendarGM.open(date), Workshop, openWorkshop: () => Workshop.open(), morality: Morality };
+    beastTest, provocationDialog, time: Time, ChronicleCalendar, ChronicleCalendarGM, openCalendar: (date) => ChronicleCalendar.open(date), openCalendarGM: (date) => ChronicleCalendarGM.open(date), Workshop, openWorkshop: () => Workshop.open(), morality: Morality, auraDebug };
 
   CONFIG.Actor.documentClass = NOCTISActor;
   CONFIG.Item.documentClass = NOCTISItem;
