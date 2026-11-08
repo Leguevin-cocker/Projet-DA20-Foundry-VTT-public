@@ -1,5 +1,6 @@
 import { NOCTIS } from "./config.mjs";
 import { rollPool } from "./dice/roll.mjs";
+import { auraTier, tierLabel } from "./aura-fx.mjs";
 import { loc } from "./i18n.mjs";
 
 /**
@@ -180,6 +181,7 @@ export function moralContext(actor) {
     aura: {
       name: road?.system.aura || s.road?.aura || "—", text: road?.system.auraText ?? "", rolls: auraRolls,
       mod, modLabel: signed(mod), good: mod < 0, bad: mod > 0,
+      auraColor: road?.system.auraColor || "#c9a35a", auraTierLabel: tierLabel(auraTier(value)),
       table: AURA_TABLE.map(r => ({ ...r, modLabel: signed(r.mod), active: value >= r.min && value <= r.max }))
     },
     effects: [

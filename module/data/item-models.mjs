@@ -118,6 +118,8 @@ export class RoadModel extends BaseItemModel {
       aura: str(""),
       auraText: str(""),
       auraRolls: str(""),
+      auraColor: str(""),
+      auraStyle: str("pulse"),
       ethics: new fields.ArrayField(new fields.StringField()),
       sins: new fields.ArrayField(sinField()),
       creedRequired: new fields.BooleanField({ initial: false }),

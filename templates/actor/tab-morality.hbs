@@ -27,6 +27,7 @@
       <h3><i class="fa-solid fa-masks-theater"></i> {{localize "NOCTIS.moral.AuraTitle" name=aura.name}}</h3>
       <div class="mor-aura-mod"><b>{{aura.modLabel}}</b><span>{{localize "NOCTIS.moral.Difficulty"}}</span></div>
       {{#if aura.text}}<p>{{aura.text}}</p>{{/if}}
+      {{#if @root.isVampire}}<label class="mor-aura-show" data-tooltip="{{localize "NOCTIS.aura.ShowTip"}}"><input type="checkbox" name="system.road.showAura" {{#if @root.system.road.showAura}}checked{{/if}} {{#unless @root.owner}}disabled{{/unless}}> <span class="swatch" style="background:{{auraColor}}"></span> {{localize "NOCTIS.aura.Show"}}{{#if auraTierLabel}} · <em>{{auraTierLabel}}</em>{{/if}}</label>{{/if}}
       <p class="mor-applies"><i class="fa-solid fa-bullseye"></i> {{#if aura.rolls}}{{localize "NOCTIS.moral.AppliesRolls" rolls=aura.rolls}}{{else}}{{localize "NOCTIS.moral.AppliesMortals"}}{{/if}}</p>
       <table class="mor-aura-table"><tr><th>{{localize "NOCTIS.moral.Score"}}</th>{{#each aura.table}}<td class="{{#if active}}active{{/if}}">{{range}}</td>{{/each}}</tr><tr><th>{{localize "NOCTIS.moral.Difficulty"}}</th>{{#each aura.table}}<td class="{{#if active}}active{{/if}}">{{modLabel}}</td>{{/each}}</tr></table>
     </article>

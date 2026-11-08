@@ -1794,3 +1794,7 @@ body.noctis-noframe .noctis-card .card-frame { border-image: none; border: 2px s
 .noctis.sheet.actor.kcd.limited-view .window-content { display: block; overflow-y: auto; background: var(--kcd-wood-dark, #1f150e); }
 .noctis.sheet.actor.limited-view .window-content > section.tab-profile { display: block; }
 @media (max-width: 640px) { .noctis .profile-card { grid-template-columns: 1fr; } }
+
+/* Aura visible : interrupteur de l'onglet Voie */
+.noctis .mor-aura-show { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; }
+.noctis .mor-aura-show .swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.4); display: inline-block; }

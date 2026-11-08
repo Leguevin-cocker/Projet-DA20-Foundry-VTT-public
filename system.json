@@ -2,7 +2,7 @@
   "id": "noctis",
   "title": "Noctis — Vampire: The Dark Ages (Dark Pack)",
   "description": "A system for Vampire: The Dark Ages 20th Anniversary Edition, in English and French. Modern sheets, guided character creator, automated combat with maneuvers, the Beast (frenzy, Rötschreck), calendar and chronicle time, experience, rule variants. The 13 clans are included; disciplines and Roads are created by each table. Free fan content (Dark Pack): portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit worldofdarkness.com. Not official World of Darkness material.",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14.370"

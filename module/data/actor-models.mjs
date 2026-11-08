@@ -90,6 +90,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
         value: dots(5, 10),
         aura: new fields.StringField({ blank: true, initial: "" }),
         creed: new fields.StringField({ blank: true, initial: "" }),
+        showAura: new fields.BooleanField({ initial: true }),
         // Journal moral : péchés, épiphanies, achats, changements
         log: new fields.ArrayField(new fields.SchemaField({
           id: new fields.StringField({ blank: true, initial: "" }),

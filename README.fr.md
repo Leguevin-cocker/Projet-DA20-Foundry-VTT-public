@@ -55,6 +55,10 @@ Ce projet est un contenu de fan gratuit, publié dans le cadre du [Dark Pack](ht
   qui lance la vertu à la bonne difficulté et applique la perte, l'épiphanie à moitié prix en XP, et un journal moral
   qui note chaque changement avec la date de la chronique. Les Voies, leurs credo et leurs péchés se saisissent dans
   l'objet Voie.
+- **Aura visible** : un halo autour des jetons de vampires, à la couleur de la Voie, éclatant à score élevé, discret au
+  milieu, sombre à score bas. Utilise [Token Magic FX](https://foundryvtt.com/packages/tokenmagic) s'il est actif
+  (liseré sur la silhouette), sinon une petite lumière animée du jeton. Réglage du monde : tous, MJ seulement ou
+  désactivé ; interrupteur par personnage.
 - **Expérience** : achat de traits sur la fiche, journal, tableau de bord MJ (attribution groupée, sang des PJ, vue des Voies).
 - **Variantes de règles** réglables (défense réflexe, dégâts minimum, PNJ au résultat moyen, initiative, 10 doubles,
   variante des 1, armure contre le feu, Volonté sur l'absorption…).

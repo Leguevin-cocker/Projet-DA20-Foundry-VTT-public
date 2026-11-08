@@ -2295,6 +2295,24 @@
       "DescriptionPlaceholder": "What is known or seen of the character: bearing, reputation, rumors…",
       "Show": "Show",
       "LimitedTitle": "{name}"
+    },
+    "aura": {
+      "SettingName": "Visible Cainite aura",
+      "SettingHint": "A halo around vampire tokens, from their Road's color and their rating. With Token Magic FX: an outline glow on the silhouette; without it: a small animated light around the token (\"GM only\" mode needs Token Magic FX).",
+      "ModeAll": "Visible to everyone",
+      "ModeGM": "GM only",
+      "ModeOff": "Disabled",
+      "Color": "Aura color",
+      "Style": "Visual effect",
+      "StyleHalo": "Steady halo",
+      "StylePulse": "Slow pulse",
+      "StyleFlicker": "Flicker",
+      "StyleNone": "None",
+      "Show": "Visible aura",
+      "ShowTip": "Shows the aura halo around the token (from Road and rating). Uncheck for a character who is hiding.",
+      "TierHigh": "Radiant aura",
+      "TierMid": "Faint aura",
+      "TierLow": "Dark aura"
     }
   }
 }

@@ -53,6 +53,8 @@
         <label><span>{{localize "NOCTIS.ui.DeuxiemeVertu"}}</span><select name="system.virtue2">{{noctisOptions virtue2 system.virtue2}}</select></label>
         <label class="wide"><span>{{localize "NOCTIS.ui.Aura"}}</span><input type="text" name="system.aura" value="{{system.aura}}"></label>
         <label class="wide" data-tooltip="{{localize "NOCTIS.moral.AuraRollsTip"}}"><span>{{localize "NOCTIS.moral.AuraRollsLabel"}}</span><input type="text" name="system.auraRolls" value="{{system.auraRolls}}"></label>
+        <label data-tooltip="{{localize "NOCTIS.aura.Color"}}"><span>{{localize "NOCTIS.aura.Color"}}</span><input type="color" name="system.auraColor" value="{{#if system.auraColor}}{{system.auraColor}}{{else}}#c9a35a{{/if}}"></label>
+        <label><span>{{localize "NOCTIS.aura.Style"}}</span><select name="system.auraStyle">{{noctisOptions auraStyles system.auraStyle}}</select></label>
         <label data-tooltip="{{localize "NOCTIS.moral.CreedRequiredTip"}}"><span>{{localize "NOCTIS.moral.CreedRequired"}}</span><input type="checkbox" name="system.creedRequired" {{#if system.creedRequired}}checked{{/if}}></label>
       {{/if}}
 

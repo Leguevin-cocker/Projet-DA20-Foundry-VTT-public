@@ -1,4 +1,5 @@
 import { htmlToText, applyPlainText } from "../helpers/plain-text.mjs";
+import { AURA_STYLES } from "../aura-fx.mjs";
 import { linesToList } from "../morality.mjs";
 import { slugKey } from "../registry.mjs";
 import { NOCTIS, rollTargetChoices } from "../config.mjs";
@@ -54,6 +55,7 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       abilityGroups: Object.fromEntries(Object.entries(NOCTIS.abilityGroups).map(([k, v]) => [k, v.label])),
       virtue1: { conscience: loc("NOCTIS.js.Conscience"), conviction: loc("NOCTIS.js.Conviction") },
       virtue2: { selfcontrol: loc("NOCTIS.js.MaitriseDeSoi"), instinct: loc("NOCTIS.js.Instinct") },
+      auraStyles: AURA_STYLES(),
       ethicsText: (s.ethics ?? []).join("\n"),
       creeds: (s.creeds ?? []).map((c, i) => ({ ...c, idx: i, n: i + 1, ethicsText: (c.ethics ?? []).join("\n") })),
       armorKinds: { armor: loc("NOCTIS.js.Armure"), shield: loc("NOCTIS.js.BouclierArmeDeParade") },

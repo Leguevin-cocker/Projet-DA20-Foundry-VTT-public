@@ -2295,6 +2295,24 @@
       "DescriptionPlaceholder": "Ce que l'on sait ou voit du personnage : allure, réputation, rumeurs…",
       "Show": "Afficher",
       "LimitedTitle": "{name}"
+    },
+    "aura": {
+      "SettingName": "Aura visible des caïnites",
+      "SettingHint": "Halo autour des jetons de vampires, selon la couleur de leur Voie et leur score. Avec Token Magic FX : un liseré sur la silhouette ; sans : une petite lumière animée autour du jeton (le mode « MJ seulement » demande Token Magic FX).",
+      "ModeAll": "Visible par tous",
+      "ModeGM": "MJ seulement",
+      "ModeOff": "Désactivée",
+      "Color": "Couleur de l'aura",
+      "Style": "Effet visuel",
+      "StyleHalo": "Halo stable",
+      "StylePulse": "Pulsation lente",
+      "StyleFlicker": "Vacillement",
+      "StyleNone": "Aucun",
+      "Show": "Aura visible",
+      "ShowTip": "Affiche le halo de l'aura autour du jeton (selon la Voie et le score). Décochez pour un personnage qui se cache.",
+      "TierHigh": "Aura éclatante",
+      "TierMid": "Aura discrète",
+      "TierLow": "Aura sombre"
     }
   }
 }

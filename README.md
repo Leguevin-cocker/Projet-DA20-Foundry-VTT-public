@@ -55,6 +55,9 @@ This project is free fan content published under the
   cap, hierarchy of sins split into at-risk and safe levels, creed overrides), a sin button that rolls the virtue at the
   right difficulty and applies the loss, epiphanies at half XP cost, and a moral journal that records every change with
   the chronicle date. Roads, their creeds and sins are written by you in the Road item.
+- **Visible aura**: a halo around vampire tokens, in the Road's color, radiant at a high rating, faint in the middle,
+  dark at a low rating. Uses [Token Magic FX](https://foundryvtt.com/packages/tokenmagic) when active (glow on the
+  silhouette), otherwise a small animated token light. World setting: everyone, GM only or off; per-character toggle.
 - **Experience**: buy traits from the sheet, a log, and a GM dashboard (group awards, PCs' blood, Roads overview).
 - **Rule variants** you can toggle (reflexive defense, minimum damage, NPCs use the average result, initiative, 10s
   always double, 1s variant, armor against fire, Willpower on soak…).
