@@ -75,7 +75,7 @@ async function applyToToken(tokenDoc) {
   if (!tokenDoc || !isWriter()) return;
   const actor = tokenDoc.actor;
   const spec = mode() === "off" ? null : auraSpec(actor);
-  const key = JSON.stringify(spec ? [spec.tier, spec.style, spec.color.css, mode()] : null);
+  const key = JSON.stringify(spec ? [2, spec.tier, spec.style, spec.color.css, mode()] : null);
   const tmfx = hasTMFX();
   // Token Magic FX
   if (tmfx) {
