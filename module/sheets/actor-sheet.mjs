@@ -206,7 +206,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       secondary: secondary.filter(i => (i.system.group || "knowledges") === gk).map(i => ({ id: i.id, label: i.name, value: i.system.value, spec: i.system.spec, path: `item.${i.id}`, ref: `item.${i.id}`, max }))
     }));
 
-    const backgrounds = Object.entries(NOCTIS.backgrounds).map(([k, label]) => ({ key: k, label, value: s.backgrounds[k].value, path: `system.backgrounds.${k}.value`, notesPath: `system.backgrounds.${k}.notes`, notes: s.backgrounds[k].notes, max: 5 }));
+    const backgrounds = Object.entries(NOCTIS.backgrounds).map(([k, label]) => ({ key: k, label, value: s.backgrounds[k]?.value ?? 0, path: `system.backgrounds.${k}.value`, notesPath: `system.backgrounds.${k}.notes`, notes: s.backgrounds[k]?.notes ?? "", max: NOCTIS.backgroundInfo?.[k]?.max ?? 5, custom: !!NOCTIS.backgroundInfo?.[k]?.custom }));
 
     const virtues = [
       { key: "conscience", label: s.virtues.conscience.label, value: s.virtues.conscience.value, path: "system.virtues.conscience.value", typePath: "system.virtues.conscience.type", type: s.virtues.conscience.type, choices: { conscience: loc("NOCTIS.js.Conscience"), conviction: loc("NOCTIS.js.Conviction") } },
@@ -560,7 +560,7 @@ export class NOCTISActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         break;
       }
       case "background": {
-        const b = s.backgrounds[sel.key];
+        const b = s.backgrounds[sel.key] ?? { value: 0, notes: "" };
         if (!b) break;
         const path = `system.backgrounds.${sel.key}.value`;
         return { title: NOCTIS.backgrounds[sel.key], initial: NOCTIS.backgrounds[sel.key].charAt(0), subtitle: loc("NOCTIS.js.Historique"), ...dots(b.value),

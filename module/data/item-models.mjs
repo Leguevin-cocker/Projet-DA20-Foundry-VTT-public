@@ -193,3 +193,33 @@ export class RitualModel extends BaseItemModel {
 }
 
 export class DerangementModel extends BaseItemModel {}
+
+/** Historique créé dans l'atelier : s'ajoute aux historiques du jeu sur toutes les fiches. */
+export class BackgroundModel extends BaseItemModel {
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      key: str(""),
+      max: int(5, { min: 1, max: 10 })
+    };
+  }
+}
+
+/** Manœuvre de combat créée dans l'atelier : proposée dans la fenêtre d'attaque. */
+export class ManeuverModel extends BaseItemModel {
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      key: str(""),
+      uses: str("weapon"),
+      short: str(""),
+      attribute: str(""),
+      ability: str(""),
+      dice: int(0, { min: -10, max: 10 }),
+      diff: int(0, { min: -5, max: 5 }),
+      damage: str("weapon"),
+      damageType: str(""),
+      effect: str("")
+    };
+  }
+}

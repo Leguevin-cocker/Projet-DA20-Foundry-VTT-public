@@ -77,6 +77,11 @@ world and compendium items and lets you:
 - create **sorcery paths** (disciplines ticked as “path”, tied to a parent discipline) and **rituals**;
 - create **Roads** with their Hierarchy of Sins;
 - create **Merits and Flaws**, with several levels if needed;
+- create **Backgrounds**: they appear on every sheet and in the creator next to the game's own, with their maximum and
+  their description as a tooltip;
+- create **combat maneuvers**: melee, unarmed or ranged, with a forced pool, dice and difficulty modifiers, damage
+  (weapon or Strength, with a bonus), damage type and an automated effect (target falls, grapple, hold, tackle,
+  disarm, stake, feeding, no defense, riposte, suppressing fire). They show up in the attack window;
 - **store** all the world's content in a compendium to reuse it elsewhere.
 
 Clans, disciplines and paths are linked through each discipline's **key**. For the game's disciplines, use the keys

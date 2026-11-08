@@ -89,6 +89,24 @@
         <label><span>{{localize "NOCTIS.ui.PorteBonusActifs"}}</span><input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}></label>
       {{/if}}
 
+      {{#if isBackground}}
+        <label data-tooltip="{{localize "NOCTIS.content.KeyPlaceholder"}}"><span>{{localize "NOCTIS.content.KeyLabel"}}</span><input type="text" name="system.key" value="{{system.key}}" placeholder="{{contentKey}}"></label>
+        <label><span>{{localize "NOCTIS.content.Max"}}</span><input type="number" name="system.max" value="{{system.max}}" min="1" max="10"></label>
+      {{/if}}
+
+      {{#if isManeuver}}
+        <label><span>{{localize "NOCTIS.content.Uses"}}</span><select name="system.uses">{{noctisOptions usesChoices system.uses}}</select></label>
+        <label data-tooltip="{{localize "NOCTIS.content.KeyPlaceholder"}}"><span>{{localize "NOCTIS.content.KeyLabel"}}</span><input type="text" name="system.key" value="{{system.key}}" placeholder="{{contentKey}}"></label>
+        <label><span>{{localize "NOCTIS.content.Attribute"}}</span><select name="system.attribute"><option value="">{{localize "NOCTIS.content.PoolOfWeapon"}}</option>{{noctisOptions attributeChoices system.attribute}}</select></label>
+        <label><span>{{localize "NOCTIS.content.Ability"}}</span><select name="system.ability"><option value="">{{localize "NOCTIS.content.PoolOfWeapon"}}</option>{{noctisOptions abilityChoices system.ability}}</select></label>
+        <label><span>{{localize "NOCTIS.content.Dice"}}</span><input type="number" name="system.dice" value="{{system.dice}}" min="-10" max="10"></label>
+        <label><span>{{localize "NOCTIS.content.Diff"}}</span><input type="number" name="system.diff" value="{{system.diff}}" min="-5" max="5"></label>
+        <label><span>{{localize "NOCTIS.content.Damage"}}</span><select name="system.damage">{{noctisOptions damageChoices system.damage}}</select></label>
+        <label><span>{{localize "NOCTIS.content.DamageType"}}</span><select name="system.damageType"><option value="">{{localize "NOCTIS.content.TypeOfWeapon"}}</option>{{noctisOptions damageTypeChoices system.damageType}}</select></label>
+        <label class="wide"><span>{{localize "NOCTIS.content.Effect"}}</span><select name="system.effect">{{noctisOptions effectChoices system.effect}}</select></label>
+        <label class="wide"><span>{{localize "NOCTIS.content.Short"}}</span><input type="text" name="system.short" value="{{system.short}}" placeholder="{{localize "NOCTIS.content.ShortPlaceholder"}}"></label>
+      {{/if}}
+
       {{#if isRitual}}
         <label><span>{{localize "NOCTIS.ui.Niveau4"}}</span><input type="number" name="system.level" value="{{system.level}}" min="1" max="10"></label>
         <label><span>{{localize "NOCTIS.ui.Sorcellerie"}}</span><select name="system.sorcery">{{noctisOptions sorceries system.sorcery}}</select></label>

@@ -5,6 +5,7 @@
 import { gatherItems, disciplineKey, refreshDisciplineRegistry } from "../registry.mjs";
 import { NOCTIS } from "../config.mjs";
 import { loc, registerLocalizable } from "../i18n.mjs";
+import { USES_CHOICES, DAMAGE_CHOICES, EFFECT_CHOICES, refreshContentRegistry } from "../content-registry.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
@@ -15,10 +16,12 @@ const KINDS = {
   merit: { label: "NOCTIS.js.AtoutsEtHandicaps", one: "NOCTIS.js.KindOneAtout", icon: "fa-solid fa-star-half-stroke", types: ["merit", "flaw"], help: "NOCTIS.js.CoutCategorieNiveauxEventuelsAvecLe" },
   ritual: { label: "NOCTIS.js.Rituels", one: "NOCTIS.js.KindOneRituel", icon: "fa-solid fa-book-skull", types: ["ritual"], help: "NOCTIS.js.RituelsDeSorcellerieNiveauVoieGroupement" },
   gear: { label: "NOCTIS.js.ArmesArmuresObjets", one: "NOCTIS.js.KindOneObjet", icon: "fa-solid fa-khanda", types: ["weapon", "armor", "gear"], help: "NOCTIS.js.DegatsPorteePerforationFeuProtectionEt" },
+  background: { label: "NOCTIS.content.Backgrounds", one: "NOCTIS.content.Background", icon: "fa-solid fa-landmark", types: ["background"], help: "NOCTIS.content.BgHelp" },
+  maneuver: { label: "NOCTIS.content.Maneuvers", one: "NOCTIS.content.Maneuver", icon: "fa-solid fa-hand-fist", types: ["maneuver"], help: "NOCTIS.content.ManHelp" },
   derangement: { label: "NOCTIS.js.Derangements", one: "NOCTIS.js.Derangement", icon: "fa-solid fa-brain", types: ["derangement"], help: "NOCTIS.js.TroublesDeLEspritAGlisser" }
 };
 
-const TYPE_LABELS = { clan: "NOCTIS.js.Lignee2", discipline: "NOCTIS.js.Discipline", road: "NOCTIS.js.Voie", merit: "NOCTIS.js.Atout", flaw: "NOCTIS.js.Handicap", ritual: "NOCTIS.js.Rituel", weapon: "NOCTIS.js.Arme", armor: "NOCTIS.js.Armure", gear: "NOCTIS.js.Objet", derangement: "NOCTIS.js.Derangement2" };
+const TYPE_LABELS = { clan: "NOCTIS.js.Lignee2", discipline: "NOCTIS.js.Discipline", road: "NOCTIS.js.Voie", merit: "NOCTIS.js.Atout", flaw: "NOCTIS.js.Handicap", ritual: "NOCTIS.js.Rituel", weapon: "NOCTIS.js.Arme", armor: "NOCTIS.js.Armure", gear: "NOCTIS.js.Objet", derangement: "NOCTIS.js.Derangement2", background: "NOCTIS.content.Background", maneuver: "NOCTIS.content.Maneuver" };
 const MY_PACK = "noctis-mon-contenu";
 
 export class Workshop extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -50,7 +53,7 @@ export class Workshop extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _prepareContext() {
     const k = KINDS[this.kind];
-    const all = await gatherItems(Object.values(KINDS).flatMap(x => x.types), ["system.key", "system.isPath", "system.parent", "system.mechanic", "system.cost", "system.category", "system.disciplines", "system.powers"]);
+    const all = await gatherItems(Object.values(KINDS).flatMap(x => x.types), ["system.key", "system.isPath", "system.parent", "system.mechanic", "system.cost", "system.category", "system.disciplines", "system.powers", "system.max", "system.uses", "system.short", "system.diff", "system.damage", "system.effect"]);
     const counts = Object.fromEntries(Object.keys(KINDS).map(key => [key, all.filter(e => KINDS[key].types.includes(e.type)).length]));
     const list = all.filter(e => k.types.includes(e.type)).map(e => {
       const sys = e.system ?? {};
@@ -62,6 +65,8 @@ export class Workshop extends HandlebarsApplicationMixin(ApplicationV2) {
         bits.push(loc("NOCTIS.js.Cle", { p0: disciplineKey(e) }));
       }
       if (e.type === "clan") bits.push((sys.disciplines ?? []).map(x => NOCTIS.disciplines[x] ?? x).join(", ") || loc("NOCTIS.js.AucuneDiscipline"));
+      if (e.type === "background") bits.push(`max ${sys.max ?? 5}`);
+      if (e.type === "maneuver") bits.push([USES_CHOICES()[sys.uses], sys.short || DAMAGE_CHOICES()[sys.damage], EFFECT_CHOICES()[sys.effect ?? ""]].filter(x => x && x !== EFFECT_CHOICES()[""]).join(" · "));
       if (["merit", "flaw"].includes(e.type)) bits.push(`${sys.cost ?? 0} pt · ${NOCTIS.meritCategories[sys.category] ?? ""}`);
       return { ...e, typeLabel: TYPE_LABELS[e.type], world: e.source === loc("NOCTIS.js.Monde"), info: bits.filter(Boolean).join(" · ") };
     }).sort((a, b) => (b.world - a.world) || a.name.localeCompare(b.name, "fr"));
@@ -77,7 +82,7 @@ export class Workshop extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static async #onCreate(event, target) {
     const type = target.dataset.type;
-    const doc = await Item.create({ name: loc("NOCTIS.js.SansNom", { p0: TYPE_LABELS[type] }), type, img: `systems/noctis/assets/icons/${({ clan: "clan", discipline: "discipline", road: "road", merit: "merit", flaw: "flaw", ritual: "ritual", weapon: "weapon", armor: "armor", gear: "gear", derangement: "derangement" })[type]}.svg` });
+    const doc = await Item.create({ name: loc("NOCTIS.js.SansNom", { p0: TYPE_LABELS[type] }), type, img: `systems/noctis/assets/icons/${({ clan: "clan", discipline: "discipline", road: "road", merit: "merit", flaw: "flaw", ritual: "ritual", weapon: "weapon", armor: "armor", gear: "gear", derangement: "derangement", background: "background", maneuver: "maneuver" })[type]}.svg` });
     doc?.sheet.render({ force: true });
     this.render();
   }
@@ -120,6 +125,7 @@ export class Workshop extends HandlebarsApplicationMixin(ApplicationV2) {
     if (replace.length) await Item.deleteDocuments(replace, { pack: pack.collection });
     await Item.createDocuments(items.map(i => { const d = i.toObject(); delete d._id; delete d.folder; return d; }), { pack: pack.collection });
     await refreshDisciplineRegistry();
+    await refreshContentRegistry();
     ui.notifications.info(loc("NOCTIS.js.ObjetSRangeSDansLe", { length: items.length }));
     this.render();
   }

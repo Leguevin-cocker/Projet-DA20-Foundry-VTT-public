@@ -1,5 +1,6 @@
 import { htmlToText, applyPlainText } from "../helpers/plain-text.mjs";
 import { AURA_STYLES } from "../aura-fx.mjs";
+import { USES_CHOICES, DAMAGE_CHOICES, EFFECT_CHOICES, slugKey as contentSlug } from "../content-registry.mjs";
 import { linesToList } from "../morality.mjs";
 import { slugKey } from "../registry.mjs";
 import { NOCTIS, rollTargetChoices } from "../config.mjs";
@@ -56,6 +57,10 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       virtue1: { conscience: loc("NOCTIS.js.Conscience"), conviction: loc("NOCTIS.js.Conviction") },
       virtue2: { selfcontrol: loc("NOCTIS.js.MaitriseDeSoi"), instinct: loc("NOCTIS.js.Instinct") },
       auraStyles: AURA_STYLES(),
+      contentKey: contentSlug(item.name),
+      usesChoices: USES_CHOICES(), damageChoices: DAMAGE_CHOICES(), effectChoices: EFFECT_CHOICES(),
+      attributeChoices: { ...NOCTIS.attributes }, abilityChoices: { ...NOCTIS.abilities },
+      damageTypeChoices: Object.fromEntries(Object.entries(NOCTIS.damageTypes).map(([k, v]) => [k, v.label ?? v])),
       ethicsText: (s.ethics ?? []).join("\n"),
       creeds: (s.creeds ?? []).map((c, i) => ({ ...c, idx: i, n: i + 1, ethicsText: (c.ethics ?? []).join("\n") })),
       armorKinds: { armor: loc("NOCTIS.js.Armure"), shield: loc("NOCTIS.js.BouclierArmeDeParade") },
@@ -65,7 +70,7 @@ export class NOCTISItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       clanDisciplinesText: (s.disciplines ?? []).map(k => NOCTIS.disciplines[k] ?? k).join(", "),
       isWeapon: item.type === "weapon", isArmor: item.type === "armor", isGear: item.type === "gear",
       isClan: item.type === "clan", isDiscipline: item.type === "discipline", isMerit: item.type === "merit" || item.type === "flaw",
-      isAbility: item.type === "ability", isRoad: item.type === "road", isRitual: item.type === "ritual",
+      isAbility: item.type === "ability", isRoad: item.type === "road", isRitual: item.type === "ritual", isBackground: item.type === "background", isManeuver: item.type === "maneuver",
       hasModifiers: !["clan", "road"].includes(item.type) || true
     });
     return ctx;

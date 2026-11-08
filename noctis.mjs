@@ -23,6 +23,7 @@ import { registerStatuses, queueStatusSync, setStatus } from "./module/status.mj
 import { registerBeastSettings, onBloodChange, beastTest, provocationDialog } from "./module/beast.mjs";
 import * as Time from "./module/time/time.mjs";
 import * as Morality from "./module/morality.mjs";
+import { registerContentHooks, refreshContentRegistry } from "./module/content-registry.mjs";
 import { registerAuraSettings, registerAuraHooks, refreshAllAuras, auraDebug } from "./module/aura-fx.mjs";
 import { ChronicleCalendar, ChronicleCalendarGM } from "./module/apps/calendar.mjs";
 import { Workshop } from "./module/apps/workshop.mjs";
@@ -55,7 +56,9 @@ Hooks.once("init", () => {
     armor: itemModels.ArmorModel,
     gear: itemModels.GearModel,
     ritual: itemModels.RitualModel,
-    derangement: itemModels.DerangementModel
+    derangement: itemModels.DerangementModel,
+    background: itemModels.BackgroundModel,
+    maneuver: itemModels.ManeuverModel
   });
 
   CONFIG.Combat.initiative = { formula: `1d10 + @initiative.value + (@initiative.base / 100)`, decimals: 2 };
@@ -71,6 +74,7 @@ Hooks.once("init", () => {
   Time.registerTimeSettings();
   registerStatuses();
   Morality.registerMoralHooks();
+  registerContentHooks();
   registerAuraSettings();
   registerAuraHooks();
   game.settings.register("noctis", "xpBatches", { scope: "world", config: false, type: Array, default: [] });

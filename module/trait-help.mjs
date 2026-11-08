@@ -124,6 +124,8 @@ export function traitTooltip(kind, key, label, cost) {
     willpower: loc("NOCTIS.js.ForceDeCaractereDepenser1Point"),
     discipline: loc("NOCTIS.js.PouvoirSurnaturelDeVotreSangOuvrez")
   };
+  const custom = kind === "background" ? CONFIG.NOCTIS?.backgroundInfo?.[key] : null;
+  if (custom?.custom) return `<div class="noctis-tip"><h4>${esc(label)}</h4>${custom.description ? `<p>${esc(custom.description).replace(/\n/g, "<br>")}</p>` : ""}${cost ? `<p class="cost">${esc(cost)}</p>` : ""}</div>`;
   const desc = { attribute: ATTRIBUTE_HELP, ability: ABILITY_HELP, background: BACKGROUND_HELP, virtue: VIRTUE_HELP }[kind]?.[key] ?? EXTRA[kind];
   let h = `<div class="noctis-tip"><h4>${esc(label)}</h4>`;
   if (desc && typeof desc === "object") {

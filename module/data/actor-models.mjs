@@ -44,7 +44,7 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
     const abilKeys = Object.keys(NOCTIS.abilities);
     const bgKeys = Object.keys(NOCTIS.backgrounds);
     const bg = {};
-    for (const k of bgKeys) bg[k] = new fields.SchemaField({ value: dots(0), notes: new fields.StringField({ blank: true, initial: "" }) });
+    const bgEntry = () => new fields.SchemaField({ value: dots(0), notes: new fields.StringField({ blank: true, initial: "" }) });
 
     return {
       biography: new fields.HTMLField({ initial: "" }),
@@ -79,7 +79,8 @@ export class BaseActorModel extends foundry.abstract.TypeDataModel {
       }),
       attributes: groupSchema(attrKeys, 1),
       abilities: groupSchema(abilKeys, 0),
-      backgrounds: new fields.SchemaField(bg),
+      // Clés libres : les historiques de l'atelier s'ajoutent à ceux du jeu
+      backgrounds: new fields.TypedObjectField(bgEntry(), { initial: () => foundry.utils.deepClone(Object.fromEntries(bgKeys.map(k => [k, { value: 0, notes: "" }]))) }),
       virtues: new fields.SchemaField({
         conscience: new fields.SchemaField({ value: dots(1, 10), type: new fields.StringField({ choices: ["conscience", "conviction"], initial: "conscience" }) }),
         selfcontrol: new fields.SchemaField({ value: dots(1, 10), type: new fields.StringField({ choices: ["selfcontrol", "instinct"], initial: "selfcontrol" }) }),

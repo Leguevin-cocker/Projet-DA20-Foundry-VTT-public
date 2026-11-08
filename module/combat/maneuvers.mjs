@@ -161,7 +161,7 @@ export function maneuversFor(weapon) {
 export function maneuverTooltip(key) {
   const m = MANEUVERS[key];
   if (!m) return "";
-  const pool = m.pool ? `${{ dexterity: loc("NOCTIS.js.Dexterite"), strength: loc("NOCTIS.js.Force") }[m.pool[0]]} + ${{ brawl: loc("NOCTIS.js.Bagarre"), melee: loc("NOCTIS.js.Melee"), archery: loc("NOCTIS.js.TirALArc") }[m.pool[1]]}${m.dice ? ` + ${m.dice}` : ""}` : loc("NOCTIS.js.GroupementDeLArme");
+  const pool = m.pool ? `${CONFIG.NOCTIS.attributes[m.pool[0]] ?? m.pool[0]} + ${CONFIG.NOCTIS.abilities[m.pool[1]] ?? m.pool[1]}${m.dice ? ` + ${m.dice}` : ""}` : (loc("NOCTIS.js.GroupementDeLArme") + (m.dice ? ` + ${m.dice}` : ""));
   return `<strong>${m.label}</strong><br>${m.tip}<br><em>${pool} · ${m.short}</em>`;
 }
 

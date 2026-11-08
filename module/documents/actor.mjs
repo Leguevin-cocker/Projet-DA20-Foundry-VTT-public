@@ -93,7 +93,7 @@ export class NOCTISActor extends Actor {
       case "willpower": return { value: s.willpower.permanent, label: loc("NOCTIS.js.Volonte"), spec: "", tags: ["willpower"] };
       case "road": return { value: s.road.value, label: s.road.name || loc("NOCTIS.js.Voie"), spec: "", tags: ["road"] };
       case "bg": {
-        const b = s.backgrounds[key];
+        const b = s.backgrounds[key] ?? (key in NOCTIS.backgrounds ? { value: 0 } : null);
         return b ? { value: b.value, label: NOCTIS.backgrounds[key], spec: "", tags: [ref, "background"] } : null;
       }
       case "faith": return { value: s.faith, label: loc("NOCTIS.js.VraieFoi"), spec: "", tags: ["faith"] };
@@ -121,7 +121,7 @@ export class NOCTISActor extends Actor {
       { value: "road", label: `${s.road.name || loc("NOCTIS.js.Voie")} (${s.road.value})` },
       ...(s.faith ? [{ value: "faith", label: loc("NOCTIS.js.VraieFoi2", { faith: s.faith }) }] : [])
     ] });
-    groups.push({ label: loc("NOCTIS.js.Historiques"), options: Object.keys(NOCTIS.backgrounds).map(k => ({ value: `bg.${k}`, label: `${NOCTIS.backgrounds[k]} (${s.backgrounds[k].value})` })) });
+    groups.push({ label: loc("NOCTIS.js.Historiques"), options: Object.keys(NOCTIS.backgrounds).map(k => ({ value: `bg.${k}`, label: `${NOCTIS.backgrounds[k]} (${s.backgrounds[k]?.value ?? 0})` })) });
     return groups;
   }
 

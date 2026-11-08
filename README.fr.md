@@ -78,6 +78,12 @@ rassemble les objets du monde et des compendiums et permet de :
 - créer des **voies de sorcellerie** (disciplines cochées « voie », rattachées à une discipline mère) et des **rituels** ;
 - créer des **Voies morales** avec leur hiérarchie des péchés ;
 - créer des **atouts et handicaps**, à plusieurs niveaux si besoin ;
+- créer des **historiques** : ils s'ajoutent sur toutes les fiches et dans le créateur, à côté de ceux du jeu, avec leur
+  maximum et leur description en infobulle ;
+- créer des **manœuvres de combat** : mêlée, mains nues ou distance, avec groupement imposé, modificateurs de dés et de
+  difficulté, dégâts (arme ou Force, avec bonus), type de dégâts et effet automatisé (chute, empoignade,
+  immobilisation, plaquage, désarmement, pieu, morsure, pas de défense, riposte, tir de couverture). Elles apparaissent
+  dans la fenêtre d'attaque ;
 - **ranger** tout le contenu du monde dans un compendium pour le réutiliser ailleurs.
 
 Les clans, disciplines et voies se relient par la **clé** de chaque discipline. Pour les disciplines du jeu, utilisez les clés
