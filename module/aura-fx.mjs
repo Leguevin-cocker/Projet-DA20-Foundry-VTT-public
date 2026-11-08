@@ -21,7 +21,7 @@ export function registerAuraSettings() {
   });
 }
 
-export const AURA_STYLES = () => ({ halo: loc("NOCTIS.aura.StyleHalo"), pulse: loc("NOCTIS.aura.StylePulse"), flicker: loc("NOCTIS.aura.StyleFlicker"), none: loc("NOCTIS.aura.StyleNone") });
+export const AURA_STYLES = () => ({ halo: loc("NOCTIS.aura.StyleHalo"), pulse: loc("NOCTIS.aura.StylePulse"), flicker: loc("NOCTIS.aura.StyleFlicker"), tentacles: loc("NOCTIS.aura.StyleTentacles"), waves: loc("NOCTIS.aura.StyleWaves"), radiant: loc("NOCTIS.aura.StyleRadiant"), none: loc("NOCTIS.aura.StyleNone") });
 
 /** Palier d'intensité selon le score : 8+ éclatant, 4 à 7 discret, 3 et moins sombre. */
 export function auraTier(value) {
@@ -45,28 +45,76 @@ export function auraSpec(actor) {
   const tier = auraTier(value);
   const base = road?.system.auraColor || DEFAULT_COLOR;
   const color = tier === "low" ? mix(base, DARK_COLOR, 0.75) : foundry.utils.Color.from(base);
-  const strength = { high: 8, mid: 3.2, low: 6 }[tier];
-  return { tier, style, color, strength, value };
+  const strength = { high: 10, mid: 4, low: 8 }[tier];
+  // Score bas : quel que soit le style, la Bête affleure en tentacules sombres
+  const shown = tier === "low" ? "tentacles" : style;
+  return { tier, style: shown, color, strength, value, size: { high: 1, mid: 0.6, low: 1.2 }[tier] };
 }
 
 /* -------------------------------------------- */
 
+const FILTER_IDS = [FILTER_ID, `${FILTER_ID}-2`];
+
+/** Filtres Token Magic FX selon le style : halo, pulsation, vacillement, tentacules, ondulations, rayonnement. */
 function tmfxParams(spec) {
-  const p = {
+  const c = spec.color.valueOf(), k = spec.size;
+  const glow = {
     filterType: "glow", filterId: FILTER_ID, outerStrength: spec.strength, innerStrength: 0,
-    color: spec.color.valueOf(), quality: 0.5, padding: 30, distance: 20, zOrder: 1
+    color: c, quality: 0.5, padding: 80, distance: 40, zOrder: 1
   };
-  if (spec.style === "pulse") p.animated = { outerStrength: { active: true, loopDuration: 3000, animType: "syncCosOscillation", val1: spec.strength * 0.45, val2: spec.strength } };
-  if (spec.style === "flicker") p.animated = { outerStrength: { active: true, loopDuration: 900, animType: "randomNumberPerLoop", val1: spec.strength * 0.5, val2: spec.strength } };
-  if (mode() === "gm") p.users = { include: game.users.filter(u => u.isGM).map(u => u.id) };
-  return p;
+  let list;
+  switch (spec.style) {
+    case "pulse":
+      glow.animated = { outerStrength: { active: true, loopDuration: 3000, animType: "syncCosOscillation", val1: spec.strength * 0.45, val2: spec.strength } };
+      list = [glow]; break;
+    case "flicker":
+      glow.animated = { outerStrength: { active: true, loopDuration: 900, animType: "randomNumberPerLoop", val1: spec.strength * 0.5, val2: spec.strength } };
+      list = [glow]; break;
+    case "tentacles":
+      // Volutes qui se tordent hors de la silhouette (xglow « brûlant »)
+      list = [{
+        filterType: "xglow", filterId: FILTER_ID, auraType: 2, color: c, thickness: 14 * k, scale: 2.5, time: 0,
+        auraIntensity: 2.5, subAuraIntensity: 1.6, threshold: 0.3, discard: false, zOrder: 1,
+        animated: {
+          time: { active: true, speed: 0.0022, animType: "move" },
+          thickness: { active: true, loopDuration: 4000, animType: "cosOscillation", val1: 9 * k, val2: 18 * k }
+        }
+      }]; break;
+    case "waves":
+      // Halo lisse qui ondule (xglow « glacial »)
+      list = [{
+        filterType: "xglow", filterId: FILTER_ID, auraType: 1, color: c, thickness: 10 * k, scale: 3, time: 0,
+        auraIntensity: 1.6, subAuraIntensity: 0.6, threshold: 0.5, discard: false, zOrder: 1,
+        animated: {
+          time: { active: true, speed: 0.0012, animType: "move" },
+          thickness: { active: true, loopDuration: 5000, animType: "cosOscillation", val1: 6 * k, val2: 13 * k },
+          subAuraIntensity: { active: true, loopDuration: 7000, animType: "cosOscillation", val1: 0.4, val2: 0.9 }
+        }
+      }]; break;
+    case "radiant":
+      // Halo + rayons tournants
+      glow.animated = { outerStrength: { active: true, loopDuration: 4000, animType: "syncCosOscillation", val1: spec.strength * 0.6, val2: spec.strength } };
+      list = [glow, {
+        filterType: "xray", filterId: `${FILTER_ID}-2`, time: 0, color: c, blend: 9, dimX: 1, dimY: 1,
+        anchorX: 0.5, anchorY: 0.5, divisor: 24, intensity: 2.5 * k, zOrder: 2,
+        animated: { time: { active: true, speed: 0.0008, animType: "move" } }
+      }]; break;
+    default:
+      list = [glow];
+  }
+  if (mode() === "gm") for (const p of list) p.users = { include: game.users.filter(u => u.isGM).map(u => u.id) };
+  return list;
 }
 
 function lightData(spec) {
   const d = canvas.scene?.grid?.distance ?? 1;
-  const anim = { halo: { type: "fog", speed: 1, intensity: 2 }, pulse: { type: "pulse", speed: 2, intensity: 4 }, flicker: { type: "flame", speed: 4, intensity: 4 } }[spec.style];
+  const anim = {
+    halo: { type: "fog", speed: 1, intensity: 2 }, pulse: { type: "pulse", speed: 2, intensity: 4 }, flicker: { type: "flame", speed: 4, intensity: 4 },
+    tentacles: { type: spec.tier === "low" ? "roiling" : "vortex", speed: 3, intensity: 6 }, waves: { type: "witchwave", speed: 2, intensity: 4 },
+    radiant: { type: "sunburst", speed: 2, intensity: 5 }
+  }[spec.style] ?? { type: "pulse", speed: 2, intensity: 4 };
   return {
-    dim: d * (spec.tier === "high" ? 1.2 : 0.8), bright: d * 0.3, color: spec.color.css, alpha: spec.tier === "mid" ? 0.45 : 0.7,
+    dim: d * (spec.tier === "high" ? 2.4 : 1.6), bright: d * 0.6, color: spec.color.css, alpha: spec.tier === "mid" ? 0.45 : 0.7,
     luminosity: spec.tier === "low" ? -0.4 : 0.5, attenuation: 0.5, coloration: 1, animation: anim
   };
 }
@@ -75,15 +123,16 @@ async function applyToToken(tokenDoc) {
   if (!tokenDoc || !isWriter()) return;
   const actor = tokenDoc.actor;
   const spec = mode() === "off" ? null : auraSpec(actor);
-  const key = JSON.stringify(spec ? [2, spec.tier, spec.style, spec.color.css, mode()] : null);
+  const key = JSON.stringify(spec ? [3, spec.tier, spec.style, spec.color.css, mode()] : null);
   const tmfx = hasTMFX();
   // Token Magic FX
   if (tmfx) {
     const placeable = tokenDoc.object;
     const prev = tokenDoc.getFlag(SYS, "auraKey");
-    if (key === prev && (!spec || TokenMagic.hasFilterId(placeable ?? tokenDoc, FILTER_ID))) return;
-    if (spec) await TokenMagic.addUpdateFilters(placeable ?? tokenDoc, [tmfxParams(spec)]);
-    else if (TokenMagic.hasFilterId(placeable ?? tokenDoc, FILTER_ID)) await TokenMagic.deleteFilters(placeable ?? tokenDoc, FILTER_ID);
+    const target = placeable ?? tokenDoc;
+    if (key === prev && (!spec || TokenMagic.hasFilterId(target, FILTER_ID))) return;
+    for (const id of FILTER_IDS) if (TokenMagic.hasFilterId(target, id)) await TokenMagic.deleteFilters(target, id);
+    if (spec) await TokenMagic.addUpdateFilters(target, tmfxParams(spec));
     await restoreLight(tokenDoc);
     return tokenDoc.setFlag(SYS, "auraKey", key);
   }

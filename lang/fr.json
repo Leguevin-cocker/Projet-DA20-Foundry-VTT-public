@@ -2312,7 +2312,10 @@
       "ShowTip": "Affiche le halo de l'aura autour du jeton (selon la Voie et le score). Décochez pour un personnage qui se cache.",
       "TierHigh": "Aura éclatante",
       "TierMid": "Aura discrète",
-      "TierLow": "Aura sombre"
+      "TierLow": "Aura sombre",
+      "StyleTentacles": "Tentacules (agressif)",
+      "StyleWaves": "Ondulations",
+      "StyleRadiant": "Rayonnement"
     }
   }
 }

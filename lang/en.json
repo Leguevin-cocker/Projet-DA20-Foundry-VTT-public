@@ -2312,7 +2312,10 @@
       "ShowTip": "Shows the aura halo around the token (from Road and rating). Uncheck for a character who is hiding.",
       "TierHigh": "Radiant aura",
       "TierMid": "Faint aura",
-      "TierLow": "Dark aura"
+      "TierLow": "Dark aura",
+      "StyleTentacles": "Tentacles (aggressive)",
+      "StyleWaves": "Undulating",
+      "StyleRadiant": "Radiant"
     }
   }
 }
