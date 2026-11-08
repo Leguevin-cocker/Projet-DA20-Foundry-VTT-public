@@ -45,7 +45,7 @@ export function auraSpec(actor) {
   const tier = auraTier(value);
   const base = road?.system.auraColor || DEFAULT_COLOR;
   const color = tier === "low" ? mix(base, DARK_COLOR, 0.75) : foundry.utils.Color.from(base);
-  const strength = { high: 4, mid: 1.6, low: 3 }[tier];
+  const strength = { high: 8, mid: 3.2, low: 6 }[tier];
   return { tier, style, color, strength, value };
 }
 
@@ -54,7 +54,7 @@ export function auraSpec(actor) {
 function tmfxParams(spec) {
   const p = {
     filterType: "glow", filterId: FILTER_ID, outerStrength: spec.strength, innerStrength: 0,
-    color: spec.color.valueOf(), quality: 0.5, padding: 10, zOrder: 1
+    color: spec.color.valueOf(), quality: 0.5, padding: 30, distance: 20, zOrder: 1
   };
   if (spec.style === "pulse") p.animated = { outerStrength: { active: true, loopDuration: 3000, animType: "syncCosOscillation", val1: spec.strength * 0.45, val2: spec.strength } };
   if (spec.style === "flicker") p.animated = { outerStrength: { active: true, loopDuration: 900, animType: "randomNumberPerLoop", val1: spec.strength * 0.5, val2: spec.strength } };
@@ -66,7 +66,7 @@ function lightData(spec) {
   const d = canvas.scene?.grid?.distance ?? 1;
   const anim = { halo: { type: "fog", speed: 1, intensity: 2 }, pulse: { type: "pulse", speed: 2, intensity: 4 }, flicker: { type: "flame", speed: 4, intensity: 4 } }[spec.style];
   return {
-    dim: d * (spec.tier === "high" ? 0.6 : 0.4), bright: d * 0.15, color: spec.color.css, alpha: spec.tier === "mid" ? 0.45 : 0.7,
+    dim: d * (spec.tier === "high" ? 1.2 : 0.8), bright: d * 0.3, color: spec.color.css, alpha: spec.tier === "mid" ? 0.45 : 0.7,
     luminosity: spec.tier === "low" ? -0.4 : 0.5, attenuation: 0.5, coloration: 1, animation: anim
   };
 }
